@@ -1,0 +1,5 @@
+the side bar filters message history and also sets the gpg keys to be used
+
+the filling of the key ring should probably only happen after the send button is pushed
+create a seperate list of emails and compare if they match, can be sorted alphanumerically
+
