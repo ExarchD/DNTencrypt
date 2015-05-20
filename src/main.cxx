@@ -10,6 +10,7 @@
 #include <gpgme.h>
 #include <mainwindow.h>
 #include "t-support.h"
+#include <vector>
 #include <iostream>
 using namespace std;
 
@@ -60,80 +61,61 @@ init_gpgme (gpgme_protocol_t proto)
 }
 
 
-int main (int argc, char* argv[] ) {
-
-//    QApplication a(argc, argv);
-//    MainWindow w;
- //   w.show();
-
-//    return a.exec();
+std::vector<friends> list_friends () {
+std::vector<friends> friendlist;
 
   gpgme_check_version (NULL);
-  gpgme_ctx_t ctx;
-  gpgme_error_t err;
   gpgme_data_t in, out;
- // gpgme_key_t key = {  NULL };
-  gpgme_key_t key[3] = { NULL, NULL, NULL };
   gpgme_encrypt_result_t result;
 
+
+gpgme_ctx_t ctx;
+gpgme_key_t key;
+gpgme_error_t err = gpgme_new (&ctx);
   init_gpgme (GPGME_PROTOCOL_OpenPGP);
 
-  err = gpgme_new (&ctx);
-  fail_if_err (err);
-  gpgme_set_armor (ctx, 1);
-
-
-  string x = "no";
-
-  err = gpgme_get_key (ctx, "pluthd@macworkie.com",
-		       &key[0], 0);
-  fail_if_err (err);
-//  err = gpgme_get_key (ctx, "asdfg@gmail.com",
-//		       &key[1], 0);
-//  fail_if_err (err);
-
-
-
- while ( x != "") {
-    std::string buffer;
-    std::getline(std::cin, buffer);
-   x = buffer.c_str();
-   if (x == "exit_program") break;
-
-   if (x == "recipient") {
-  std::cout << "Please enter recipient id" << std::endl;
-    std::getline(std::cin, buffer);
-  err = gpgme_get_key (ctx, buffer.c_str(),
-		       &key[1], 0);
-  fail_if_err (err);
-  std::cout << "Recipient changed to " << buffer.c_str() << std::endl;
-  continue;
-} 
-  err = gpgme_data_new_from_mem (&in, buffer.c_str(), buffer.length(), 0);
-  fail_if_err (err);
-  err = gpgme_data_new (&out);
   fail_if_err (err);
 
-  err = gpgme_op_encrypt (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
-  result = gpgme_op_encrypt_result (ctx);
-  if (result->invalid_recipients)
-    {
-      fprintf (stderr, "Invalid recipient encountered: %s\n",
-               result->invalid_recipients->fpr);
-      exit (1);
-    }
-
-//  x=buffer.c_str();
-  print_data (out);
+    if (!err)
+       {
+         err = gpgme_op_keylist_start (ctx, "", 0);
+         while (!err)
+           {
+             err = gpgme_op_keylist_next (ctx, &key);
+             if (err)
+               break;
+             if (key->uids && key->uids->name) {
+             if (key->uids && key->uids->email){
+		friends afriend ={key->uids->name,  key->uids->email};
+   		friendlist.push_back(afriend);
+	     }}
+             putchar ('\n');
+             gpgme_key_release (key);
+           }
+         gpgme_release (ctx);
+       }
+     if (gpg_err_code (err) != GPG_ERR_EOF)
+       {
+         fprintf (stderr, "can not list keys: %s\n", gpgme_strerror (err));
+         exit (1);
+       }
+     return friendlist;
 }
 
-  list_friends ();
-// write for loop to release all held keys
-//  gpgme_key_unref (key[0]);
-//  gpgme_key_unref (key[1]);
-  gpgme_data_release (in);
-  gpgme_data_release (out);
-  gpgme_release (ctx);
+
+
+
+
+
+
+
+int main (int argc, char* argv[] ) {
+
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
+
 
 return 0;
 }

@@ -14,10 +14,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void regenerate_list();
 private slots:
     void on_pushButton_clicked();
 
     void sendMessage();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::MainWindow *ui;
