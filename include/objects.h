@@ -6,6 +6,7 @@
 int sender(const char* host, int port, const char* msg, int length);
 int server();
 void init_gpgme (gpgme_protocol_t proto);
+void encrypter(std::vector<std::string> recipients, std::string msg);
 
 struct friends {
    std::string name;

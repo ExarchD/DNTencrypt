@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
 
@@ -40,9 +41,17 @@ void MainWindow::regenerate_list() {
 
 
 void MainWindow::sendMessage(){
-        //QString text = ui->textEdit->toPlainText();
-        //ui->textEdit->clear();
-        //ui->textBrowser->append(text);
+	std::string text = ui->mytextEdit->toPlainText().toStdString();
+        ui->mytextEdit->clear();
+	std::vector<std::string> email_list;
+	QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
+	for (int i=0; i < recipients.count(); ++i) {
+	 QListWidgetItem* item = recipients[i];
+	 email_list.push_back( item->toolTip().toStdString());
+	}
+	encrypter(email_list, text);
+//        ui->textBrowser->append(text);
+        ui->mytextEdit->setFocus();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -50,8 +59,8 @@ void MainWindow::on_pushButton_clicked()
     QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
     for (int i=0; i < recipients.count(); ++i) {
      QListWidgetItem* item = recipients[i];
-     ui->textBrowser->append(item->text());
     }
+   sendMessage();
 }
 
 
@@ -62,11 +71,17 @@ void MainWindow::on_pushButton_3_clicked()
 //    for (int i=0; i < recipients.count(); ++i) {
 //     QListWidgetItem* item = recipients[i];
 
- 	
+
+
+    std::ofstream outfile;
+    outfile.open("rejected.txt", std::ios_base::app);
     QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
     for (int i=0; i < recipients.count(); ++i) {
      QListWidgetItem* item = recipients[i];
-     ui->textBrowser->append(item->toolTip());
+     outfile << item->toolTip().toStdString();
+     outfile << "\n";
     }
- regenerate_list();
+    outfile.close();
+     regenerate_list();
+     ui->listWidget->update();
 }
