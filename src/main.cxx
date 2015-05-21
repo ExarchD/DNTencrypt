@@ -34,8 +34,9 @@ print_data (gpgme_data_t dh)
 		//  fwrite (buf, ret, 1, stdout);
 	}
 	const char * msg = b.c_str();
+	cout << msg << endl;
 	// cout << b << endl;
-	sender("127.0.0.1", 55566, msg, 512);
+//	sender("127.0.0.1", 55566, msg, 512);
 	msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
 	// cout << b << endl;
@@ -163,6 +164,7 @@ void encrypter(vector<string> recipients, string msg) {
 				result->invalid_recipients->fpr);
 		exit (1);
 	}
+	print_data(out);
 	gpgme_data_release (in);
 	gpgme_data_release (out);
 	gpgme_release (ctx);
@@ -175,15 +177,15 @@ void encrypter(vector<string> recipients, string msg) {
 
 int main (int argc, char* argv[] ) {
 
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
-	return a.exec();
-	
-//	string msg="HI";
-//	vector<string> email_list;
-//	email_list.push_back("pluthd@macworkie.com");
-//        encrypter(email_list, msg);
+//	QApplication a(argc, argv);
+//	MainWindow w;
+//	w.show();
+//	return a.exec();
+//
+	string msg="HI";
+	vector<string> email_list;
+	email_list.push_back("pluthd@macworkie.com");
+        encrypter(email_list, msg);
 
 	return 0;
 }
