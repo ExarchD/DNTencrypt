@@ -44,13 +44,13 @@ void MainWindow::sendMessage(){
 	std::string text = ui->mytextEdit->toPlainText().toStdString();
         ui->mytextEdit->clear();
 	std::vector<std::string> email_list;
+	email_list.clear();
 	QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
 	for (int i=0; i < recipients.count(); ++i) {
 	 QListWidgetItem* item = recipients[i];
 	 email_list.push_back( item->toolTip().toStdString());
 	}
-	encrypter(email_list, text);
-//        ui->textBrowser->append(text);
+	//QString error=QString::fromStdString(encrypter(email_list, text));
         ui->mytextEdit->setFocus();
 }
 
