@@ -139,18 +139,17 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_set_armor (ctx, 1);
 	int n_recipients = recipients.size();
 	//memset (key,NULL,n_recipients);
-//	gpgme_key_t key[n_recipients];
-	gpgme_key_t key[1]={NULL};
+	gpgme_key_t key[n_recipients];
 	for (int n = 0; n < n_recipients; n++) {key[n]=NULL;}
-//	for (int n = 0; n < n_recipients; n++) {
+	for (int n = 0; n < n_recipients; n++) {
 //		const char *cstr = recipients[0].c_str();
 //		names.push_back(cstr)
 //		cout << recipients[n_recipients].c_str() << " " << endl;
 //		err = gpgme_get_key (ctx, cstr,
-		err = gpgme_get_key (ctx, "pluthd@macworkie.com",
-				&key[0], 0);
+		err = gpgme_get_key (ctx, recipients[n].c_str(),
+				&key[n+1], 0);
 		fail_if_err (err);
-//	}
+	}
 	err = gpgme_data_new_from_mem (&in, msg.c_str(), msg.length(), 0);
 	fail_if_err (err);
 	err = gpgme_data_new (&out);
@@ -176,15 +175,15 @@ void encrypter(vector<string> recipients, string msg) {
 
 int main (int argc, char* argv[] ) {
 
-//	QApplication a(argc, argv);
-//	MainWindow w;
-//	w.show();
-//	return a.exec();
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+	return a.exec();
 	
-	string msg="HI";
-	vector<string> email_list;
-	email_list.push_back("pluthd@macworkie.com");
-        encrypter(email_list, msg);
+//	string msg="HI";
+//	vector<string> email_list;
+//	email_list.push_back("pluthd@macworkie.com");
+//        encrypter(email_list, msg);
 
 	return 0;
 }

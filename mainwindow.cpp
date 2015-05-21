@@ -50,7 +50,7 @@ void MainWindow::sendMessage(){
 	 QListWidgetItem* item = recipients[i];
 	 email_list.push_back( item->toolTip().toStdString());
 	}
-	//QString error=QString::fromStdString(encrypter(email_list, text));
+	encrypter(email_list, text);
         ui->mytextEdit->setFocus();
 }
 
