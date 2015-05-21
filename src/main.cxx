@@ -140,17 +140,14 @@ void encrypter(vector<string> recipients, string msg) {
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
 	int n_recipients = recipients.size();
-	gpgme_key_t key[1]={NULL};
-	//memset (key,NULL,n_recipients);
-//	gpgme_key_t key[n_recipients];
-//	for (int n = 0; n < n_recipients; n++) {key[n]=NULL;}
-//	for (int n = 0; n < n_recipients; n++) {
-//		err = gpgme_get_key (ctx, recipients[n].c_str(),
-//				&key[n+1], 0);
-		err = gpgme_get_key (ctx, "pluthd@macworkie.com",
-				&key[1], 0);
+	cout << n_recipients << endl;
+	gpgme_key_t key[n_recipients];
+	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
+	for (int n = 0; n < n_recipients; n++) {
+		err = gpgme_get_key (ctx, recipients[n].c_str(),
+				&key[n], 0);
 		fail_if_err (err);
-//	}
+	}
 	err = gpgme_data_new_from_mem (&in, msg.c_str(), msg.length(), 0);
 	fail_if_err (err);
 	err = gpgme_data_new (&out);
@@ -174,11 +171,10 @@ void encrypter(vector<string> recipients, string msg) {
                 fail_if_err (gpgme_err_code_from_errno (errno));
         while ((ret = gpgme_data_read (out, buf, BUF_SIZE)) > 0){
                 for (int x = 0; x < ret; x++) {
-        cout << "in loop"<< endl;
                         b+= buf[x];
                 }
         }
-
+	cout << b << endl;
 //	print_data(out);
 	gpgme_data_release (in);
 	gpgme_data_release (out);
@@ -192,15 +188,16 @@ void encrypter(vector<string> recipients, string msg) {
 
 int main (int argc, char* argv[] ) {
 
-//	QApplication a(argc, argv);
-//	MainWindow w;
-//	w.show();
-//	return a.exec();
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+	return a.exec();
 //
-	string msg="HI";
-	vector<string> email_list;
-	email_list.push_back("pliiaisdfauthd@macworkie.com");
-        encrypter(email_list, msg);
+//	string msg="HI";
+//	vector<string> email_list;
+//	email_list.push_back("pluthd@macworkie.com");
+//	email_list.push_back("pluthd@gmail.com");
+//        encrypter(email_list, msg);
 
 	return 0;
 }
