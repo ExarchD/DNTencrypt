@@ -11,9 +11,12 @@ SOURCES += src/main.cxx src/sender.cxx \
     src/retriever.cpp
 
 QT       += core gui
-QT += widgets
+QT += widgets concurrent
 FORMS += \
     mainwindow.ui \
     passphrase.ui
 QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -std=c++11
 LIBS+= `gpgme-config  --cflags --libs`
+
+target.path = ~/encrypt2
+INSTALLS += target

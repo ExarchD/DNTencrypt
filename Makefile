@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -march=i686 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -D_FILE_OFFSET_BITS=64 -std=c++11 -O2 -march=i686 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -Iinclude -isystem /usr/local/include -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
+INCPATH       = -I. -I. -Iinclude -isystem /usr/local/include -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtConcurrent -isystem /usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = encrypt21.0.0
 DISTDIR = /home/dpluth/Documents/encrypt2/.tmp/encrypt21.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-O1,--sort-common,--as-needed,-z,relro
-LIBS          = $(SUBLIBS) `gpgme-config --cflags --libs` -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) `gpgme-config --cflags --libs` -lQt5Widgets -lQt5Gui -lQt5Concurrent -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -340,7 +340,8 @@ Makefile: encrypt2.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mksp
 		encrypt2.pro \
 		/usr/lib/libQt5Widgets.prl \
 		/usr/lib/libQt5Gui.prl \
-		/usr/lib/libQt5Core.prl
+		/usr/lib/libQt5Core.prl \
+		/usr/lib/libQt5Concurrent.prl
 	$(QMAKE) -o Makefile encrypt2.pro
 /usr/lib/qt/mkspecs/features/spec_pre.prf:
 /usr/lib/qt/mkspecs/common/shell-unix.conf:
@@ -465,6 +466,7 @@ encrypt2.pro:
 /usr/lib/libQt5Widgets.prl:
 /usr/lib/libQt5Gui.prl:
 /usr/lib/libQt5Core.prl:
+/usr/lib/libQt5Concurrent.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile encrypt2.pro
 
@@ -508,10 +510,10 @@ compiler_moc_header_make_all: moc_mainwindow.cpp moc_passphrase.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_passphrase.cpp
 moc_mainwindow.cpp: mainwindow.h
-	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/4.9.2 -I/usr/include/c++/4.9.2/i686-pc-linux-gnu -I/usr/include/c++/4.9.2/backward -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include -I/usr/local/include -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/4.9.2 -I/usr/include/c++/4.9.2/i686-pc-linux-gnu -I/usr/include/c++/4.9.2/backward -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include -I/usr/local/include -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 moc_passphrase.cpp: passphrase.h
-	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/4.9.2 -I/usr/include/c++/4.9.2/i686-pc-linux-gnu -I/usr/include/c++/4.9.2/backward -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include -I/usr/local/include -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include-fixed -I/usr/include passphrase.h -o moc_passphrase.cpp
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/4.9.2 -I/usr/include/c++/4.9.2/i686-pc-linux-gnu -I/usr/include/c++/4.9.2/backward -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include -I/usr/local/include -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include-fixed -I/usr/include passphrase.h -o moc_passphrase.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -564,9 +566,19 @@ moc_passphrase.o: moc_passphrase.cpp
 
 ####### Install
 
-install:   FORCE
+install_target: first FORCE
+	@test -d $(INSTALL_ROOT)/home/dpluth/encrypt2 || mkdir -p $(INSTALL_ROOT)/home/dpluth/encrypt2
+	-$(INSTALL_PROGRAM) "$(QMAKE_TARGET)" "$(INSTALL_ROOT)/home/dpluth/encrypt2/$(QMAKE_TARGET)"
+	-$(STRIP) "$(INSTALL_ROOT)/home/dpluth/encrypt2/$(QMAKE_TARGET)"
 
-uninstall:   FORCE
+uninstall_target: FORCE
+	-$(DEL_FILE) "$(INSTALL_ROOT)/home/dpluth/encrypt2/$(QMAKE_TARGET)"
+	-$(DEL_DIR) $(INSTALL_ROOT)/home/dpluth/encrypt2/ 
+
+
+install:  install_target  FORCE
+
+uninstall: uninstall_target   FORCE
 
 FORCE:
 

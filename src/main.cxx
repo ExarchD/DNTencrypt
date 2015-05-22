@@ -14,7 +14,6 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <thread>
 using namespace std;
 
 
@@ -188,7 +187,6 @@ void retrieve() {
 int main (int argc, char* argv[] ) {
 
     init_gpgme (GPGME_PROTOCOL_OpenPGP);
-      std::thread worker_thread(retrieve);
     QApplication a(argc, argv);
     MainWindow w;
 //    Passphrase w;

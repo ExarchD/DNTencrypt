@@ -2,8 +2,10 @@
 #include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
+#include <QThread>
+#include <qtconcurrentrun.h>
 
-
+using namespace QtConcurrent;
 
 MainWindow::MainWindow(QWidget *parent) :
 
@@ -60,7 +62,8 @@ void MainWindow::on_pushButton_clicked()
     for (int i=0; i < recipients.count(); ++i) {
      QListWidgetItem* item = recipients[i];
     }
-   sendMessage();
+  sendMessage();
+//  QFuture<void> f1 = run(retrieve);
 }
 
 
