@@ -1,5 +1,22 @@
-the side bar filters message history and also sets the gpg keys to be used
+clientside:
 
-the filling of the key ring should probably only happen after the send button is pushed
-create a seperate list of emails and compare if they match, can be sorted alphanumerically
+	the side bar:
+		filters message history
+		#sets the gpg keys to be used 
+
+		#the filling of the key ring should probably only happen after the send button is pushed
+		#(no longer relevant)create a seperate list of emails and compare if they match, can be sorted alphanumerically
+
+
+serverside:
+
+	short term:
+		index the messages with the dates
+
+	long term:
+		import everyone's public key for indexing of messages. 
+		figure out how irc works and implement
+		create torrents for sufficiently large log files (serverside or client?)
+
+
 
