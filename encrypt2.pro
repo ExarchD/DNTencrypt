@@ -11,7 +11,5 @@ QT       += core gui
 QT += widgets
 FORMS += \
     mainwindow.ui
-CONFIG -=x86_64
-#unix|win32: LIBS += -D_FILE_OFFSET_BITS=64
-LIBS+= -L/usr/local/lib -lgpgme
-
+QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64
+LIBS+= `gpgme-config  --cflags --libs`
