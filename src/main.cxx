@@ -179,10 +179,10 @@ void encrypter(vector<string> recipients, string msg) {
 
 
 void retrieve() {
-
-    std::cout << "waiting 5 seconds" << std::endl;
-    sleep(5);
-
+   while (1) {
+    std::cout << "waiting 2 seconds" << std::endl;
+    sleep(2);
+}
 }
 
 int main (int argc, char* argv[] ) {
@@ -190,8 +190,8 @@ int main (int argc, char* argv[] ) {
     init_gpgme (GPGME_PROTOCOL_OpenPGP);
       std::thread worker_thread(retrieve);
     QApplication a(argc, argv);
-//    MainWindow w;
-    Passphrase w;
+    MainWindow w;
+//    Passphrase w;
     w.show();
 	return a.exec();
 //

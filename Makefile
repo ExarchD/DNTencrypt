@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -march=i686 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -D_FILE_OFFSET_BITS=64 -O2 -march=i686 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -D_FILE_OFFSET_BITS=64 -std=c++11 -O2 -march=i686 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I. -Iinclude -isystem /usr/local/include -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt/bin/qmake
 DEL_FILE      = rm -f
@@ -49,14 +49,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = src/main.cxx \
-		src/retriever.cxx \
 		src/sender.cxx \
-		mainwindow.cpp moc_mainwindow.cpp
+		mainwindow.cpp \
+		passphrase.cpp \
+		src/retriever.cpp moc_mainwindow.cpp \
+		moc_passphrase.cpp
 OBJECTS       = main.o \
-		retriever.o \
 		sender.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		passphrase.o \
+		retriever.o \
+		moc_mainwindow.o \
+		moc_passphrase.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/shell-unix.conf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -178,10 +182,12 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		encrypt2.pro include/objects.h \
 		include/t-support.h \
-		mainwindow.h src/main.cxx \
-		src/retriever.cxx \
+		mainwindow.h \
+		passphrase.h src/main.cxx \
 		src/sender.cxx \
-		mainwindow.cpp
+		mainwindow.cpp \
+		passphrase.cpp \
+		src/retriever.cpp
 QMAKE_TARGET  = encrypt2
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = encrypt2
@@ -209,7 +215,7 @@ first: all
 
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_passphrase.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: encrypt2.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspecs/features/spec_pre.prf \
@@ -473,9 +479,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents include/objects.h include/t-support.h mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cxx src/retriever.cxx src/sender.cxx mainwindow.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
+	$(COPY_FILE) --parents include/objects.h include/t-support.h mainwindow.h passphrase.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cxx src/sender.cxx mainwindow.cpp passphrase.cpp src/retriever.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.ui passphrase.ui $(DISTDIR)/
 
 
 clean:compiler_clean 
@@ -498,19 +504,25 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_passphrase.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_passphrase.cpp
 moc_mainwindow.cpp: mainwindow.h
 	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/4.9.2 -I/usr/include/c++/4.9.2/i686-pc-linux-gnu -I/usr/include/c++/4.9.2/backward -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include -I/usr/local/include -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
+moc_passphrase.cpp: passphrase.h
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2 -I/home/dpluth/Documents/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I/usr/include/c++/4.9.2 -I/usr/include/c++/4.9.2/i686-pc-linux-gnu -I/usr/include/c++/4.9.2/backward -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include -I/usr/local/include -I/usr/lib/gcc/i686-pc-linux-gnu/4.9.2/include-fixed -I/usr/include passphrase.h -o moc_passphrase.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h
+compiler_uic_make_all: ui_mainwindow.h ui_passphrase.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h
+	-$(DEL_FILE) ui_mainwindow.h ui_passphrase.h
 ui_mainwindow.h: mainwindow.ui
 	/usr/lib/qt/bin/uic mainwindow.ui -o ui_mainwindow.h
+
+ui_passphrase.h: passphrase.ui
+	/usr/lib/qt/bin/uic passphrase.ui -o ui_passphrase.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -524,11 +536,9 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 
 main.o: src/main.cxx include/objects.h \
 		mainwindow.h \
+		passphrase.h \
 		include/t-support.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cxx
-
-retriever.o: src/retriever.cxx 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o retriever.o src/retriever.cxx
 
 sender.o: src/sender.cxx include/objects.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sender.o src/sender.cxx
@@ -538,8 +548,19 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		include/objects.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
+passphrase.o: passphrase.cpp passphrase.h \
+		ui_passphrase.h \
+		include/objects.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o passphrase.o passphrase.cpp
+
+retriever.o: src/retriever.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o retriever.o src/retriever.cpp
+
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_passphrase.o: moc_passphrase.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_passphrase.o moc_passphrase.cpp
 
 ####### Install
 
