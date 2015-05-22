@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::regenerate_list() {
     ui->listWidget->clear();
-    std::vector<friends> list = list_friends();
+    std::vector<friends> list = list_friends(0);
     for (int h=0; h < list.size(); h++) {
     const char * name = list[h].name.c_str();
     new QListWidgetItem(tr(name), ui->listWidget);

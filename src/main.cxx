@@ -9,10 +9,12 @@
 #include <QApplication>
 #include <gpgme.h>
 #include <mainwindow.h>
+#include <passphrase.h>
 #include "t-support.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <thread>
 using namespace std;
 
 
@@ -67,34 +69,26 @@ bool comparefriends(friends a, friends b) {
 	return a.name.compare(b.name) < 0;
 }
 
-vector<friends> list_friends () {
+vector<friends> list_friends (bool secret) {
 	vector<friends> friendlist;
-
-
 	vector<string> rejected;
-
 	string line;
 	ifstream myfile;
 	myfile.open("rejected.txt");
 	while (getline (myfile, line)) rejected.push_back(line);
 	myfile.close();
-
-
 	gpgme_check_version (NULL);
 	gpgme_data_t in, out;
 	gpgme_encrypt_result_t result;
-
-
 	gpgme_ctx_t ctx;
 	gpgme_key_t key;
 	gpgme_error_t err = gpgme_new (&ctx);
-	init_gpgme (GPGME_PROTOCOL_OpenPGP);
+    //init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	int skip = 0;
 	fail_if_err (err);
-
 	if (!err)
 	{
-		err = gpgme_op_keylist_start (ctx, "", 0);
+        err = gpgme_op_keylist_start (ctx, "", secret);
 		while (!err)
 		{
 			err = gpgme_op_keylist_next (ctx, &key);
@@ -135,7 +129,7 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_error_t err;
 	gpgme_data_t in, out;
 	gpgme_encrypt_result_t result;
-	init_gpgme (GPGME_PROTOCOL_OpenPGP);
+    //init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	err = gpgme_new (&ctx);
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
@@ -184,13 +178,21 @@ void encrypter(vector<string> recipients, string msg) {
 
 
 
+void retrieve() {
 
+    std::cout << "waiting 5 seconds" << std::endl;
+    sleep(5);
+
+}
 
 int main (int argc, char* argv[] ) {
 
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
+    init_gpgme (GPGME_PROTOCOL_OpenPGP);
+      std::thread worker_thread(retrieve);
+    QApplication a(argc, argv);
+//    MainWindow w;
+    Passphrase w;
+    w.show();
 	return a.exec();
 //
 //	string msg="HI";
