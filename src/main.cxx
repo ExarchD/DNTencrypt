@@ -21,7 +21,7 @@ using namespace std;
 print_data (gpgme_data_t dh)
 {
 #define BUF_SIZE 512
-	int length;
+//	int length;
 	char buf[BUF_SIZE + 1];
 	int ret;
 	string b;
@@ -36,10 +36,10 @@ print_data (gpgme_data_t dh)
 		}
 		//  fwrite (buf, ret, 1, stdout);
 	}
-	const char * msg = b.c_str();
+//	const char * msg = b.c_str();
 	// cout << b << endl;
 //	sender("127.0.0.1", 55566, msg, 512);
-	msg=NULL;
+//	msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
 	// cout << b << endl;
 
@@ -77,8 +77,7 @@ vector<friends> list_friends (bool secret) {
 	while (getline (myfile, line)) rejected.push_back(line);
 	myfile.close();
 	gpgme_check_version (NULL);
-	gpgme_data_t in, out;
-	gpgme_encrypt_result_t result;
+//	gpgme_encrypt_result_t result;
 	gpgme_ctx_t ctx;
 	gpgme_key_t key;
 	gpgme_error_t err = gpgme_new (&ctx);
@@ -96,7 +95,7 @@ vector<friends> list_friends (bool secret) {
 			if (key->uids && key->uids->name) {
 				if (key->uids && key->uids->email){
 					skip = 0;
-					for (int l=0; l<rejected.size(); l++) {
+					for (unsigned int l=0; l<rejected.size(); l++) {
 						if (rejected[l] == key->uids->email) skip = 1;
 					}
 					if (!skip) {
@@ -127,7 +126,7 @@ vector<friends> list_friends (bool secret) {
 void encrypter(vector<string> recipients, string msg) {
 
 
-	sort(recipients.begin(), recipients.end());
+	//sort(recipients.begin(), recipients.end());
 	gpgme_check_version (NULL);
 	gpgme_ctx_t ctx;
 	gpgme_error_t err;
@@ -161,7 +160,7 @@ void encrypter(vector<string> recipients, string msg) {
 		exit (1);
 	}
         #define BUF_SIZE 512
-        int length;
+//        int length;
         char buf[BUF_SIZE + 1];
         int ret;
         string b;

@@ -8,7 +8,7 @@ Passphrase::Passphrase(QWidget *parent) :
     ui->setupUi(this);
     ui->lineEdit->setEchoMode(QLineEdit::Password);
     std::vector<friends> list = list_friends(1);
-    for (int h=0; h < list.size(); h++) {
+    for (unsigned int h=0; h < list.size(); h++) {
     const char * name = list[h].name.c_str();
     ui->comboBox->addItem(name);
     }

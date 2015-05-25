@@ -48,6 +48,7 @@
 
 
 static const char *
+
 nonnull (const char *s)
 {
   return s? s :"[none]";

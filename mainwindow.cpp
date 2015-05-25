@@ -29,12 +29,12 @@ MainWindow::~MainWindow()
 void MainWindow::regenerate_list() {
     ui->listWidget->clear();
     std::vector<friends> list = list_friends(0);
-    for (int h=0; h < list.size(); h++) {
+    for (unsigned int h=0; h < list.size(); h++) {
     const char * name = list[h].name.c_str();
     new QListWidgetItem(tr(name), ui->listWidget);
     }
     ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    for (int i = 0; i <  list.size(); i++)
+    for (unsigned int i = 0; i <  list.size(); i++)
     {
        const char * email = list[i].email.c_str();
      ui->listWidget->item(i)->setToolTip(email);
@@ -52,17 +52,20 @@ void MainWindow::sendMessage(){
 	 QListWidgetItem* item = recipients[i];
 	 email_list.push_back( item->toolTip().toStdString());
 	}
+	std::sort(email_list.begin(), email_list.end());
 	encrypter(email_list, text);
         ui->mytextEdit->setFocus();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
-    for (int i=0; i < recipients.count(); ++i) {
-     QListWidgetItem* item = recipients[i];
-    }
-  sendMessage();
+//    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
+//    for (unsigned int i=0; i < recipients.count(); ++i) {
+//     QListWidgetItem* item = recipients[i];
+//    }
+//  sendMessage();
+
+
 //  QFuture<void> f1 = run(retrieve);
 }
 
