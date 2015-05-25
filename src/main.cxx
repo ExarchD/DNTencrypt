@@ -119,10 +119,15 @@ vector<friends> list_friends (bool secret) {
 }
 
 
+//string decrypter(
+
+
+
 
 void encrypter(vector<string> recipients, string msg) {
 
 
+	sort(recipients.begin(), recipients.end());
 	gpgme_check_version (NULL);
 	gpgme_ctx_t ctx;
 	gpgme_error_t err;
@@ -137,6 +142,7 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_key_t key[n_recipients];
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
+		cout << recipients[n].c_str() << endl;
 		err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);

@@ -1,5 +1,8 @@
 clientside:
 
+	crash protection:
+		have an 'active state' checker. On normal exit, record 1, else while running record 0. If the client opens and the state is still zero, then check server for old messages or ask for log files.
+
 	the side bar:
 		filters message history
 		#sets the gpg keys to be used 
