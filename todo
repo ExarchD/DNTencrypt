@@ -1,5 +1,10 @@
 clientside:
 
+	decryption:
+		it seems i can't create my own gpg key manager
+		I see two routes, use the gpg-agent as suggested
+		go passwordless and keep the key on a keychain. No smartphone support then
+
 	crash protection:
 		have an 'active state' checker. On normal exit, record 1, else while running record 0. If the client opens and the state is still zero, then check server for old messages or ask for log files.
 

@@ -16,6 +16,9 @@
 #include <fstream>
 using namespace std;
 
+    gpgme_ctx_t ctx_main;
+    gpgme_error_t err_main;
+    gpgme_key_t key_main = NULL;
 
 
 
@@ -69,9 +72,10 @@ bool comparefriends(friends a, friends b) {
 	return a.name.compare(b.name) < 0;
 }
 
-
-void  unlock_master_key(string pass) {
-
+int  unlock_master_key(string pass, string email) {
+        gpgme_passphrase_cb_t phrase;
+        err_main = gpgme_get_key (ctx_main, email.c_str(), &key_main, 1);
+return 1;
 }
 
 vector<friends> list_friends (bool secret) {

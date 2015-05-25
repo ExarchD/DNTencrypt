@@ -20,6 +20,8 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_label_linkActivated(const QString &link);
+
     void on_pushButton_clicked();
 
 private:
