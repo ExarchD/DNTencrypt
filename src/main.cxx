@@ -17,11 +17,12 @@
 using namespace std;
 
 
-	void
-print_data (gpgme_data_t dh)
+
+
+void print_data (gpgme_data_t dh)
 {
 #define BUF_SIZE 512
-//	int length;
+	//	int length;
 	char buf[BUF_SIZE + 1];
 	int ret;
 	string b;
@@ -31,15 +32,15 @@ print_data (gpgme_data_t dh)
 	cout << "HI"<< endl;
 	while ((ret = gpgme_data_read (dh, buf, BUF_SIZE)) > 0){
 		for (int x = 0; x < ret; x++) {
-	cout << "in loop"<< endl;
+			cout << "in loop"<< endl;
 			b+= buf[x];
 		}
 		//  fwrite (buf, ret, 1, stdout);
 	}
-//	const char * msg = b.c_str();
+	//	const char * msg = b.c_str();
 	// cout << b << endl;
-//	sender("127.0.0.1", 55566, msg, 512);
-//	msg=NULL;
+	//	sender("127.0.0.1", 55566, msg, 512);
+	//	msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
 	// cout << b << endl;
 
@@ -68,6 +69,11 @@ bool comparefriends(friends a, friends b) {
 	return a.name.compare(b.name) < 0;
 }
 
+
+void  unlock_master_key(string pass) {
+
+}
+
 vector<friends> list_friends (bool secret) {
 	vector<friends> friendlist;
 	vector<string> rejected;
@@ -77,16 +83,16 @@ vector<friends> list_friends (bool secret) {
 	while (getline (myfile, line)) rejected.push_back(line);
 	myfile.close();
 	gpgme_check_version (NULL);
-//	gpgme_encrypt_result_t result;
+	//	gpgme_encrypt_result_t result;
 	gpgme_ctx_t ctx;
 	gpgme_key_t key;
 	gpgme_error_t err = gpgme_new (&ctx);
-    //init_gpgme (GPGME_PROTOCOL_OpenPGP);
+	//init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	int skip = 0;
 	fail_if_err (err);
 	if (!err)
 	{
-        err = gpgme_op_keylist_start (ctx, "", secret);
+		err = gpgme_op_keylist_start (ctx, "", secret);
 		while (!err)
 		{
 			err = gpgme_op_keylist_next (ctx, &key);
@@ -132,7 +138,7 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_error_t err;
 	gpgme_data_t in, out;
 	gpgme_encrypt_result_t result;
-    //init_gpgme (GPGME_PROTOCOL_OpenPGP);
+	//init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	err = gpgme_new (&ctx);
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
@@ -159,50 +165,52 @@ void encrypter(vector<string> recipients, string msg) {
 				result->invalid_recipients->fpr);
 		exit (1);
 	}
-        #define BUF_SIZE 512
-//        int length;
-        char buf[BUF_SIZE + 1];
-        int ret;
-        string b;
-        ret = gpgme_data_seek (out, 0, SEEK_SET);
-        if (ret)
-                fail_if_err (gpgme_err_code_from_errno (errno));
-        while ((ret = gpgme_data_read (out, buf, BUF_SIZE)) > 0){
-                for (int x = 0; x < ret; x++) {
-                        b+= buf[x];
-                }
-        }
+#define BUF_SIZE 512
+	//        int length;
+	char buf[BUF_SIZE + 1];
+	int ret;
+	string b;
+	ret = gpgme_data_seek (out, 0, SEEK_SET);
+	if (ret)
+		fail_if_err (gpgme_err_code_from_errno (errno));
+	while ((ret = gpgme_data_read (out, buf, BUF_SIZE)) > 0){
+		for (int x = 0; x < ret; x++) {
+			b+= buf[x];
+		}
+	}
 	cout << b << endl;
-//	print_data(out);
+	//	print_data(out);
 	gpgme_data_release (in);
 	gpgme_data_release (out);
 	gpgme_release (ctx);
 
 }
 
-
+int exit_program() {
+	exit(0);
+}
 
 void retrieve() {
-   while (1) {
-    std::cout << "waiting 2 seconds" << std::endl;
-    sleep(2);
-}
+	while (1) {
+		std::cout << "waiting 2 seconds" << std::endl;
+		sleep(2);
+	}
 }
 
 int main (int argc, char* argv[] ) {
 
-    init_gpgme (GPGME_PROTOCOL_OpenPGP);
-    QApplication a(argc, argv);
-    MainWindow w;
-//    Passphrase w;
-    w.show();
+	init_gpgme (GPGME_PROTOCOL_OpenPGP);
+	QApplication a(argc, argv);
+	//    MainWindow w;
+	Passphrase w;
+	w.show();
 	return a.exec();
-//
-//	string msg="HI";
-//	vector<string> email_list;
-//	email_list.push_back("pluthd@macworkie.com");
-//	email_list.push_back("pluthd@gmail.com");
-//        encrypter(email_list, msg);
+	//
+	//	string msg="HI";
+	//	vector<string> email_list;
+	//	email_list.push_back("pluthd@macworkie.com");
+	//	email_list.push_back("pluthd@gmail.com");
+	//        encrypter(email_list, msg);
 
 	return 0;
 }

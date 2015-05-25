@@ -1,6 +1,7 @@
 #include "passphrase.h"
 #include "ui_passphrase.h"
 #include "objects.h"
+#include <string>
 Passphrase::Passphrase(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Passphrase)
@@ -21,16 +22,20 @@ Passphrase::~Passphrase()
 
 void Passphrase::on_lineEdit_returnPressed()
 {
-
+   std::string pass= ui->lineEdit->text().toStdString();
+   unlock_master_key(pass);
    //check password
 }
 
 void Passphrase::on_pushButton_2_clicked()
 {
+   exit_program();
     //cancel form
 }
 
 void Passphrase::on_pushButton_clicked()
 {
+   std::string pass = ui->lineEdit->text().toStdString();
+   unlock_master_key(pass);
     //check password
 }
