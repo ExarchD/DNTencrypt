@@ -9,7 +9,6 @@
 #include <QApplication>
 #include <gpgme.h>
 #include <mainwindow.h>
-#include <passphrase.h>
 #include "t-support.h"
 #include <vector>
 #include <iostream>
@@ -72,12 +71,6 @@ bool comparefriends(friends a, friends b) {
 	return a.name.compare(b.name) < 0;
 }
 
-int  unlock_master_key(string pass, string email) {
-        gpgme_passphrase_cb_t phrase;
-        err_main = gpgme_get_key (ctx_main, email.c_str(), &key_main, 1);
-return 1;
-}
-
 vector<friends> list_friends (bool secret) {
 	vector<friends> friendlist;
 	vector<string> rejected;
@@ -128,26 +121,37 @@ vector<friends> list_friends (bool secret) {
 }
 
 
-//string decrypter(
+void decrypter() {
+	vector<string> enc_messages;
+	string line;
+	ifstream encryp_file;
+	encryp_file.open("messages.txt");
+	string s;
+	string paragraph;
+	while (getline (encryp_file, s)) { 
+	paragraph += s + "\n";
+	if (s == "-----END PGP MESSAGE-----") 	{
+	enc_messages.push_back(paragraph);
+	paragraph.clear();
+}
+}
+	cout << enc_messages[0] << endl;
+//	cout << enc_messages[1] << endl;
+//	cout << enc_messages[2] << endl;
+	encryp_file.close();
 
-
-
+}
 
 void encrypter(vector<string> recipients, string msg) {
-
-
-	//sort(recipients.begin(), recipients.end());
 	gpgme_check_version (NULL);
 	gpgme_ctx_t ctx;
 	gpgme_error_t err;
 	gpgme_data_t in, out;
 	gpgme_encrypt_result_t result;
-	//init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	err = gpgme_new (&ctx);
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
 	int n_recipients = recipients.size();
-	cout << n_recipients << endl;
 	gpgme_key_t key[n_recipients];
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
@@ -203,12 +207,12 @@ void retrieve() {
 
 int main (int argc, char* argv[] ) {
 
-	init_gpgme (GPGME_PROTOCOL_OpenPGP);
-	QApplication a(argc, argv);
-	//    MainWindow w;
-	Passphrase w;
-	w.show();
-	return a.exec();
+//	init_gpgme (GPGME_PROTOCOL_OpenPGP);
+//	QApplication a(argc, argv);
+//	MainWindow w;
+//	w.show();
+//	return a.exec();
+	decrypter();
 	//
 	//	string msg="HI";
 	//	vector<string> email_list;

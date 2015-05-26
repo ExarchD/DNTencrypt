@@ -59,11 +59,11 @@ void MainWindow::sendMessage(){
 
 void MainWindow::on_pushButton_clicked()
 {
-//    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
-//    for (unsigned int i=0; i < recipients.count(); ++i) {
-//     QListWidgetItem* item = recipients[i];
-//    }
-//  sendMessage();
+    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
+    for (unsigned int i=0; i < recipients.count(); ++i) {
+     QListWidgetItem* item = recipients[i];
+    }
+  sendMessage();
 
 
 //  QFuture<void> f1 = run(retrieve);
