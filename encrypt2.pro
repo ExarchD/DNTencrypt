@@ -8,6 +8,7 @@ HEADERS += include/objects.h include/t-support.h \
 SOURCES += src/main.cxx src/sender.cxx \
     mainwindow.cpp \
     passphrase.cpp \
+    src/encrypter.cpp \
     src/retriever.cpp
 
 QT       += core gui

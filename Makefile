@@ -52,12 +52,14 @@ SOURCES       = src/main.cxx \
 		src/sender.cxx \
 		mainwindow.cpp \
 		passphrase.cpp \
+		src/encrypter.cpp \
 		src/retriever.cpp moc_mainwindow.cpp \
 		moc_passphrase.cpp
 OBJECTS       = main.o \
 		sender.o \
 		mainwindow.o \
 		passphrase.o \
+		encrypter.o \
 		retriever.o \
 		moc_mainwindow.o \
 		moc_passphrase.o
@@ -187,6 +189,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		src/sender.cxx \
 		mainwindow.cpp \
 		passphrase.cpp \
+		src/encrypter.cpp \
 		src/retriever.cpp
 QMAKE_TARGET  = encrypt2
 DESTDIR       = #avoid trailing-slash linebreak
@@ -482,7 +485,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents include/objects.h include/t-support.h mainwindow.h passphrase.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cxx src/sender.cxx mainwindow.cpp passphrase.cpp src/retriever.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cxx src/sender.cxx mainwindow.cpp passphrase.cpp src/encrypter.cpp src/retriever.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui passphrase.ui $(DISTDIR)/
 
 
@@ -547,13 +550,18 @@ sender.o: src/sender.cxx include/objects.h
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
 		ui_mainwindow.h \
-		include/objects.h
+		include/objects.h \
+		passphrase.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 passphrase.o: passphrase.cpp passphrase.h \
 		ui_passphrase.h \
 		include/objects.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o passphrase.o passphrase.cpp
+
+encrypter.o: src/encrypter.cpp include/objects.h \
+		include/t-support.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o encrypter.o src/encrypter.cpp
 
 retriever.o: src/retriever.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o retriever.o src/retriever.cpp
