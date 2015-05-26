@@ -22,7 +22,6 @@ void print_data (gpgme_data_t dh)
         ret = gpgme_data_seek (dh, 0, SEEK_SET);
         if (ret)
                 fail_if_err (gpgme_err_code_from_errno (errno));
-        cout << "HI"<< endl;
         while ((ret = gpgme_data_read (dh, buf, BUF_SIZE)) > 0){
                 for (int x = 0; x < ret; x++) {
                         cout << "in loop"<< endl;
@@ -76,7 +75,6 @@ vector<friends> list_friends (bool secret) {
 	gpgme_ctx_t ctx;
 	gpgme_key_t key;
 	gpgme_error_t err = gpgme_new (&ctx);
-	//init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	int skip = 0;
 	fail_if_err (err);
 	if (!err)
@@ -112,6 +110,14 @@ vector<friends> list_friends (bool secret) {
 	return friendlist;
 }
 
+
+void decrypter() {
+
+}
+
+
+
+
 void encrypter(vector<string> recipients, string msg) {
 	gpgme_check_version (NULL);
 	gpgme_ctx_t ctx;
@@ -121,12 +127,11 @@ void encrypter(vector<string> recipients, string msg) {
 	err = gpgme_new (&ctx);
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
-	recipients.push_back(user_email);
+	//recipients.push_back(user_email);
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
-		cout << recipients[n].c_str() << endl;
 		err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);
@@ -136,7 +141,7 @@ void encrypter(vector<string> recipients, string msg) {
 	err = gpgme_data_new (&out);
 	fail_if_err (err);
 
-	err = gpgme_op_encrypt (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
+	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
 	result = gpgme_op_encrypt_result (ctx);
 	if (result->invalid_recipients)
 	{

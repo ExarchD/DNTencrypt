@@ -17,7 +17,7 @@ using namespace std;
 
 
 
-void decrypter() {
+void message_reader() {
 	vector<string> enc_messages;
 	string line;
 	ifstream encryp_file;
@@ -33,6 +33,13 @@ void decrypter() {
 }
 	encryp_file.close();
 
+}
+
+void message_writer(){
+        ifstream encryp_file;
+        encryp_file.open("messages.txt");
+	// add in the write down part
+        encryp_file.close();
 }
 
 int exit_program() {
