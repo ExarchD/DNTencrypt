@@ -127,7 +127,7 @@ void encrypter(vector<string> recipients, string msg) {
 	err = gpgme_new (&ctx);
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
-	//recipients.push_back(user_email);
+	recipients.push_back(user_email);
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
