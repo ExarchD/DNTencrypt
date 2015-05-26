@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-
+#include <cstring>
 using namespace std;
 
 string user_email;
@@ -15,29 +15,28 @@ string user_email;
 void print_data (gpgme_data_t dh)
 {
 #define BUF_SIZE 512
-        //      int length;
-        char buf[BUF_SIZE + 1];
-        int ret;
-        string b;
-        ret = gpgme_data_seek (dh, 0, SEEK_SET);
-        if (ret)
-                fail_if_err (gpgme_err_code_from_errno (errno));
-        while ((ret = gpgme_data_read (dh, buf, BUF_SIZE)) > 0){
-                for (int x = 0; x < ret; x++) {
-                        cout << "in loop"<< endl;
-                        b+= buf[x];
-                }
-                //  fwrite (buf, ret, 1, stdout);
-        }
-        //      const char * msg = b.c_str();
-        // cout << b << endl;
-        //      sender("127.0.0.1", 55566, msg, 512);
-        //      msg=NULL;
-        //    client("128.141.249.147", 55566, msg, 512);
-        // cout << b << endl;
+	//      int length;
+	char buf[BUF_SIZE + 1];
+	int ret;
+	string b;
+	ret = gpgme_data_seek (dh, 0, SEEK_SET);
+	if (ret)
+		fail_if_err (gpgme_err_code_from_errno (errno));
+	while ((ret = gpgme_data_read (dh, buf, BUF_SIZE)) > 0){
+		for (int x = 0; x < ret; x++) {
+			b+= buf[x];
+		}
+		//  fwrite (buf, ret, 1, stdout);
+	}
+	//      const char * msg = b.c_str();
+	// cout << b << endl;
+	//      sender("127.0.0.1", 55566, msg, 512);
+	//      msg=NULL;
+	//    client("128.141.249.147", 55566, msg, 512);
+	cout << b << endl;
 
-        if (ret < 0)
-                fail_if_err (gpgme_err_code_from_errno (errno));
+	if (ret < 0)
+		fail_if_err (gpgme_err_code_from_errno (errno));
 }
 
 
@@ -56,6 +55,14 @@ void init_gpgme (gpgme_protocol_t proto)
 	fail_if_err (err);
 }
 
+	gpgme_error_t
+passphrase_cb (void *opaque, const char *uid_hint, const char *passphrase_info,
+		int last_was_bad, int fd)
+{
+	//write (fd, "abc\n", 4);
+	write (fd, "1234\n", 5);	
+	return 0;
+}
 
 
 bool comparefriends(friends a, friends b) {
@@ -111,9 +118,54 @@ vector<friends> list_friends (bool secret) {
 }
 
 
-void decrypter() {
+int decrypter(string enc_msg, bool record) {
+  gpgme_ctx_t ctx;
+  gpgme_error_t err;
+  gpgme_data_t in, out;
+  gpgme_decrypt_result_t result;
+        // write the encrypted filename here, vmlinux-copiled.gpg will be used
+  init_gpgme (GPGME_PROTOCOL_OpenPGP);
 
-}
+  err = gpgme_new (&ctx);
+  fail_if_err (err);
+  if (err) return 1;
+
+
+  gpgme_key_t key;
+
+                err = gpgme_get_key (ctx, "pluthd@gmail.com", &key, 0);
+
+  const char *buf = enc_msg.c_str();
+  size_t nread=strlen(buf);
+  err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
+  fail_if_err (err);
+  if (err) return 1;
+
+  err = gpgme_data_new (&out);
+  fail_if_err (err);
+  if (err) return 1;
+
+  err = gpgme_op_decrypt_verify (ctx, in, out);
+  fail_if_err (err);
+  if (err) return 1;
+  result = gpgme_op_decrypt_result (ctx);
+
+  if (result->unsupported_algorithm)
+    {
+      fprintf (stderr, "%s:%i: unsupported algorithm: %s\n",
+               __FILE__, __LINE__, result->unsupported_algorithm);
+      return (1);
+    }
+
+  print_data (out);
+
+  gpgme_key_release (key);
+  gpgme_data_release (in);
+  gpgme_data_release (out);
+  gpgme_release (ctx);
+  return 0;
+
+}	
 
 
 
@@ -153,6 +205,9 @@ void encrypter(vector<string> recipients, string msg) {
 	//        int length;
 	char buf[BUF_SIZE + 1];
 	int ret;
+
+
+
 	string b;
 	ret = gpgme_data_seek (out, 0, SEEK_SET);
 	if (ret)
@@ -163,7 +218,7 @@ void encrypter(vector<string> recipients, string msg) {
 		}
 	}
 	cout << b << endl;
-	//      print_data(out);
+	//	print_data(out);
 	gpgme_data_release (in);
 	gpgme_data_release (out);
 	gpgme_release (ctx);
@@ -175,6 +230,6 @@ void encrypter(vector<string> recipients, string msg) {
 
 
 void set_user (string email) {
- user_email = email;
+	user_email = email;
 }
 

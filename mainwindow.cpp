@@ -95,4 +95,6 @@ void MainWindow::on_pushButton_3_clicked()
     outfile.close();
      regenerate_list();
      ui->listWidget->update();
+
+
 }

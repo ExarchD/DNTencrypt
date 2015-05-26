@@ -32,6 +32,10 @@ void message_reader() {
 }
 }
 	encryp_file.close();
+	for ( int i=0; i < enc_messages.size(); i++){
+	decrypter(enc_messages[i],true);
+}
+	
 
 }
 
@@ -56,11 +60,13 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
-
+/*
 	QApplication a(argc, argv);
 	MainWindow w;
 	w.show();
-	
 	return a.exec();
+*/
+     message_reader();
+
 	return 0;
 }

@@ -11,6 +11,8 @@ void retrieve();
 int start_mainwindow();
 void set_user(std::string email);
 int exit_program();
+int decrypter(std::string enc_msg, bool record);
+void message_reader();
 struct friends {
    std::string name;
    std::string email;
