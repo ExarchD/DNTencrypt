@@ -8,7 +8,8 @@ int server();
 void init_gpgme (gpgme_protocol_t proto);
 void encrypter(std::vector<std::string> recipients, std::string msg);
 void retrieve();
-int unlock_master_key(std::string pass, std::string email);
+int start_mainwindow();
+void set_user(std::string email);
 int exit_program();
 struct friends {
    std::string name;

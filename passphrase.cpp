@@ -19,7 +19,7 @@ Passphrase::Passphrase(QWidget *parent) :
     ui->comboBox->addItem(comb);
     }
     ui->lineEdit->setFocus();
-    ui->pushButton->setAutoDefault(0);
+   // ui->pushButton->setAutoDefault(0);
     ui->pushButton_2->setAutoDefault(0);
 }
 Passphrase::~Passphrase()
@@ -34,8 +34,8 @@ void Passphrase::on_lineEdit_returnPressed()
    QStringList email_addr = raw_info.split('}').first().split('{');
    std::string email = email_addr.last().toStdString();
 //    qDebug() << email_addr.first() << email_addr.last();
-   int success = unlock_master_key(pass,email);
-   if (!success) on_label_linkActivated("failed");
+//   int success = unlock_master_key(pass,email);
+//   if (!success) on_label_linkActivated("failed");
    //check password
 }
 
@@ -46,7 +46,11 @@ void Passphrase::on_label_linkActivated(const QString &link)
 
 void Passphrase::on_pushButton_clicked()
 {
-    qDebug() << " HI";
+   QString raw_info=ui->comboBox->currentText();
+   QStringList email_addr = raw_info.split('}').first().split('{');
+   std::string email = email_addr.last().toStdString();
+   set_user(email);
+   this->close();
 
 }
 

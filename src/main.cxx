@@ -10,14 +10,13 @@
 #include <gpgme.h>
 #include <mainwindow.h>
 #include "t-support.h"
+#include "passphrase.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-    gpgme_ctx_t ctx_main;
-    gpgme_error_t err_main;
-    gpgme_key_t key_main = NULL;
+    string user_email;
 
 
 
@@ -135,9 +134,6 @@ void decrypter() {
 	paragraph.clear();
 }
 }
-	cout << enc_messages[0] << endl;
-//	cout << enc_messages[1] << endl;
-//	cout << enc_messages[2] << endl;
 	encryp_file.close();
 
 }
@@ -151,6 +147,7 @@ void encrypter(vector<string> recipients, string msg) {
 	err = gpgme_new (&ctx);
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
+	recipients.push_back(user_email);
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
@@ -205,14 +202,20 @@ void retrieve() {
 	}
 }
 
+
+void set_user (string email) {
+ user_email = email;
+}
+
+
 int main (int argc, char* argv[] ) {
 
 //	init_gpgme (GPGME_PROTOCOL_OpenPGP);
-//	QApplication a(argc, argv);
-//	MainWindow w;
-//	w.show();
-//	return a.exec();
-	decrypter();
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+	
+	return a.exec();
 	//
 	//	string msg="HI";
 	//	vector<string> email_list;

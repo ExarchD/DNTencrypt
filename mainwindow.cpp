@@ -4,6 +4,7 @@
 #include "objects.h"
 #include <QThread>
 #include <qtconcurrentrun.h>
+#include <passphrase.h>
 
 using namespace QtConcurrent;
 
@@ -14,16 +15,20 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
+    Passphrase *w = new Passphrase;
+    this->hide();
+    int result = w->exec();
+    this->show();
+    delete w;
     ui->setupUi(this);
     regenerate_list();
+  
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 
 void MainWindow::regenerate_list() {
