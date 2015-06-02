@@ -13,6 +13,7 @@ void set_user(std::string email);
 int exit_program();
 int decrypter(std::string enc_msg, bool record);
 void message_reader();
+void thread_message_reader(std::vector<std::string> enc_messages, int begin, int end);
 struct friends {
    std::string name;
    std::string email;

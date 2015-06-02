@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
+#include <thread>
 using namespace std;
 
 
@@ -31,13 +32,29 @@ void message_reader() {
 	paragraph.clear();
 }
 }
+	int threads = 10;
+	std::thread myThreads[10];
 	encryp_file.close();
-	for ( int i=0; i < enc_messages.size(); i++){
-	decrypter(enc_messages[i],true);
+	for (int j=0; j<threads; j++) {
+	int begin=0;
+	if (j != 0) begin=(j*enc_messages.size())/threads;
+	int end=((j+1)*enc_messages.size())/threads;
+        myThreads[j] = std::thread(thread_message_reader, enc_messages,begin,end);
 }
-	
+
+        for (int j=0; j<threads; j++) {
+	myThreads[j].join();
+}
+}
+
+
+void thread_message_reader(vector<string> enc_messages, int begin, int end) {
+        for ( int i=begin; i < end; i++){
+        decrypter(enc_messages[i],true);
+}
 
 }
+
 
 void message_writer(){
         ifstream encryp_file;
