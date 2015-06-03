@@ -18,6 +18,21 @@ using namespace std;
 
 
 
+void thread_message_reader(vector<string> enc_messages, int begin, int end) {
+        for ( int i=begin; i < end; i++){
+        decrypter(enc_messages[i],true);
+}
+
+}
+
+void thread_message_reader2(vector<string> enc_messages, int begin, int end) {
+        for ( int i=begin; i < end; i++){
+        decrypter2(enc_messages[i],true);
+}
+
+}
+
+
 void message_reader() {
 	vector<string> enc_messages;
 	string line;
@@ -32,8 +47,9 @@ void message_reader() {
 	paragraph.clear();
 }
 }
-	int threads = 10;
-	std::thread myThreads[10];
+
+	int threads = 3;
+	std::thread myThreads[3];
 	encryp_file.close();
 	for (int j=0; j<threads; j++) {
 	int begin=0;
@@ -45,16 +61,8 @@ void message_reader() {
         for (int j=0; j<threads; j++) {
 	myThreads[j].join();
 }
-}
-
-
-void thread_message_reader(vector<string> enc_messages, int begin, int end) {
-        for ( int i=begin; i < end; i++){
-        decrypter(enc_messages[i],true);
-}
 
 }
-
 
 void message_writer(){
         ifstream encryp_file;
@@ -77,6 +85,7 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
+init_gpgme (GPGME_PROTOCOL_OpenPGP);
 /*
 	QApplication a(argc, argv);
 	MainWindow w;

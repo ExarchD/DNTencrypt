@@ -123,18 +123,11 @@ int decrypter(string enc_msg, bool record) {
   gpgme_error_t err;
   gpgme_data_t in, out;
   gpgme_decrypt_result_t result;
-        // write the encrypted filename here, vmlinux-copiled.gpg will be used
-  init_gpgme (GPGME_PROTOCOL_OpenPGP);
-
   err = gpgme_new (&ctx);
   fail_if_err (err);
   if (err) return 1;
-
-
   gpgme_key_t key;
-
-                err = gpgme_get_key (ctx, "pluthd@gmail.com", &key, 0);
-
+  err = gpgme_get_key (ctx, "pluthd@gmail.com", &key, 0);
   const char *buf = enc_msg.c_str();
   size_t nread=strlen(buf);
   err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
@@ -168,6 +161,47 @@ int decrypter(string enc_msg, bool record) {
 }	
 
 
+int decrypter2(string enc_msg2, bool record2) {
+  gpgme_ctx_t ctx2;
+  gpgme_error_t err2;
+  gpgme_data_t in2, out2;
+  gpgme_decrypt_result_t result2;
+  err2 = gpgme_new (&ctx2);
+  fail_if_err (err2);
+  if (err2) return 1;
+  gpgme_key_t key2;
+  err2 = gpgme_get_key (ctx2, "pluthd@gmail.com", &key2, 0);
+  const char *buf2 = enc_msg2.c_str();
+  size_t nread2=strlen(buf2);
+  err2 = gpgme_data_new_from_mem (&in2, buf2, nread2, 1 );
+  fail_if_err (err2);
+  if (err2) return 1;
+
+  err2 = gpgme_data_new (&out2);
+  fail_if_err (err2);
+  if (err2) return 1;
+
+  err2 = gpgme_op_decrypt_verify (ctx2, in2, out2);
+  fail_if_err (err2);
+  if (err2) return 1;
+  result2 = gpgme_op_decrypt_result (ctx2);
+
+  if (result2->unsupported_algorithm)
+    {
+      fprintf (stderr, "%s:%i: unsupported algorithm: %s\n",
+               __FILE__, __LINE__, result2->unsupported_algorithm);
+      return (1);
+    }
+
+  print_data (out2);
+
+  gpgme_key_release (key2);
+  gpgme_data_release (in2);
+  gpgme_data_release (out2);
+  gpgme_release (ctx2);
+  return 0;
+
+}
 
 
 void encrypter(vector<string> recipients, string msg) {
