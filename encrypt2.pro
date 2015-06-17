@@ -4,12 +4,14 @@ INCLUDEPATH += . include /usr/local/include
 # Input
 HEADERS += include/objects.h include/t-support.h \
     mainwindow.h \ 
-    passphrase.h
+    passphrase.h \
+    include/sha1.h
 SOURCES += src/main.cxx src/sender.cxx \
     mainwindow.cpp \
     passphrase.cpp \
     src/encrypter.cpp \
-    src/retriever.cpp
+    src/retriever.cpp \
+    src/sha1.cpp
 
 QT       += core gui
 QT += widgets concurrent

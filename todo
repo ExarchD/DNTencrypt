@@ -20,6 +20,8 @@ serverside:
 
 	short term:
 		index the messages with the dates
+		no...index the messages with iteration numbers. Store only ~10-20 messages locally
+		or store none but keep an index and otherwise act as an irc
 
 	long term:
 		import everyone's public key for indexing of messages. 
@@ -28,3 +30,15 @@ serverside:
 
 
 
+
+
+use hash of first encrypted message as identifier
+
+#include <boost/functional/hash.hpp>
+
+int hashCode()
+{
+    boost::hash<std::string> string_hash;
+
+    return string_hash("Hash me");
+}

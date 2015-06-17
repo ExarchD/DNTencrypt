@@ -48,7 +48,7 @@ void message_reader() {
 }
 }
 
-	int threads = 3;
+	int threads = 1;
 	std::thread myThreads[3];
 	encryp_file.close();
 	for (int j=0; j<threads; j++) {
@@ -86,12 +86,12 @@ void retrieve() {
 
 int main (int argc, char* argv[] ) {
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
-/*
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
-	return a.exec();
-*/
+
+//	QApplication a(argc, argv);
+//	MainWindow w;
+//	w.show();
+//	return a.exec();
+
      message_reader();
 
 	return 0;

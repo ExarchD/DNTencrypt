@@ -49,6 +49,7 @@ void MainWindow::regenerate_list() {
 
 void MainWindow::sendMessage(){
 	std::string text = ui->mytextEdit->toPlainText().toStdString();
+	ui->textBrowser->append(ui->mytextEdit->toPlainText());
         ui->mytextEdit->clear();
 	std::vector<std::string> email_list;
 	email_list.clear();
