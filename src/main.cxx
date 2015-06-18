@@ -87,12 +87,12 @@ void retrieve() {
 int main (int argc, char* argv[] ) {
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
 
-//	QApplication a(argc, argv);
-//	MainWindow w;
-//	w.show();
-//	return a.exec();
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+	return a.exec();
 
-     message_reader();
+//     message_reader();
 
 	return 0;
 }
