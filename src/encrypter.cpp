@@ -208,6 +208,12 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_data_t in, out;
 	gpgme_encrypt_result_t result;
 	err = gpgme_new (&ctx);
+
+	int num=0;
+//	num=current_message_num();
+	string num_str = std::to_string(num);
+
+
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
 	recipients.push_back(user_email);
@@ -215,8 +221,10 @@ void encrypter(vector<string> recipients, string msg) {
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
 	string message_key;
+	string ident;
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
+		if (recipients[n]!=user_email) ident+=","+sha1(recipients[n]+num_str);  // do we need the iterator? i don't think so
 		message_key+=recipients[n];
 		err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
@@ -230,7 +238,6 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_key_t key_sign;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 	err = gpgme_signers_add(ctx,key_sign);
-	cout << gpgme_signers_count(ctx) << endl;
 	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
 	result = gpgme_op_encrypt_result (ctx);
 	if (result->invalid_recipients)
@@ -255,7 +262,11 @@ void encrypter(vector<string> recipients, string msg) {
 			b+= buf[x];
 		}
 	}
-	cout << b << endl;
+	string hash;
+	hash=sha1(message_key+num_str);
+	string string_msg=b+hash+ident+"\n";
+	const char* send_msg = string_msg.c_str();
+	sender("127.0.0.1", 55566, send_msg, 512);
         //write(b,sha1(message_key));
 	//	print_data(out);
 	gpgme_data_release (in);

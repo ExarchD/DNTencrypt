@@ -7,7 +7,7 @@
 #include <string.h>
 #include "objects.h"
 #include <gpgme.h>
-#define BUF_SIZE 5000
+#define BUF_SIZE 512
 #include <iostream>
 using namespace std;
 
@@ -62,7 +62,6 @@ sender(const char* host_int, int port_int, const char* msg, int length)
     }
 
     freeaddrinfo(result);           /* No longer needed */
-//      cout << msg << endl;
     /* Send remaining command-line arguments as separate
        datagrams, and read responses from server */
     for (j = 3; j < 4; j++) {
@@ -90,6 +89,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 // should check what the best sized chunk of data is
 
         nread = read(sfd, buf, length);
+	cout << buf << endl;
         if (nread == -1) {
             perror("read");
             exit(EXIT_FAILURE);

@@ -88,7 +88,8 @@ or...we store each message until a delete message is sent from a client. the del
 checks will be made by the client each time it recieves a message...silent messages that indicate completeness sent to the server? 
 status messages are hard
 
-encrypted, hashed as 
+server/node saves message, hash of message, and n hashes(which are deleted appropriately when checked by users)
+if we want to know read status, then we continue to check these same messages until they are deleted.
 
 
 delete is completed after random number of seconds(probably not necessary...unless we're going super secret) 
