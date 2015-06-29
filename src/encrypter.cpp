@@ -29,10 +29,12 @@ void print_data (gpgme_data_t dh)
 			b+= buf[x];
 		}
 		//  fwrite (buf, ret, 1, stdout);
-	}
-	//      const char * msg = b.c_str();
+		}
+	string c = "HI";
+	      const char * msg = c.c_str();
 	// cout << b << endl;
-	//      sender("127.0.0.1", 55566, msg, 512);
+	 //     sender("127.0.0.1", 55566, msg, 512);
+	      sender("90.41.180.202", 66655, msg, 512);
 	//      msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
 	cout << b << endl;
@@ -199,6 +201,23 @@ int decrypter2(string enc_msg2, bool record2) {
   return 0;
 
 }
+void send_data (string formated_message)
+{
+#define BUF_SIZE 512
+        //      int length;
+        char buf[BUF_SIZE + 1];
+        int ret;
+              const char * msg = formated_message.c_str();
+        // cout << b << endl;
+              sender("127.0.0.1", 55566, msg, 512);
+//              sender("90.41.180.202", 66655, msg, 512);
+        //      msg=NULL;
+        //    client("128.141.249.147", 55566, msg, 512);
+        cout << formated_message << endl;
+
+        if (ret < 0)
+                fail_if_err (gpgme_err_code_from_errno (errno));
+}
 
 
 void encrypter(vector<string> recipients, string msg) {
@@ -211,13 +230,13 @@ void encrypter(vector<string> recipients, string msg) {
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
 	recipients.push_back(user_email);
-	cout << user_email << endl;
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
 	string message_key;
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
-		message_key+=recipients[n];
+
+		if (recipients[n] != user_email) message_key+=sha1(recipients[n]);
 		err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);
@@ -230,7 +249,6 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_key_t key_sign;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 	err = gpgme_signers_add(ctx,key_sign);
-	cout << gpgme_signers_count(ctx) << endl;
 	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
 	result = gpgme_op_encrypt_result (ctx);
 	if (result->invalid_recipients)
@@ -255,8 +273,10 @@ void encrypter(vector<string> recipients, string msg) {
 			b+= buf[x];
 		}
 	}
-	cout << b << endl;
-        //write(b,sha1(message_key));
+//	cout << sha1(b) << endl;
+//	cout << b << endl;
+        send_data(sha1(b)+";"+b+";"+message_key);
+
 	//	print_data(out);
 	gpgme_data_release (in);
 	gpgme_data_release (out);
