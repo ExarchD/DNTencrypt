@@ -3,12 +3,15 @@
 #include "objects.h"
 #include <string>
 #include <qdebug.h>
+#include <arpa/inet.h>
+
 Passphrase::Passphrase(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Passphrase)
 {
     ui->setupUi(this);
-    ui->lineEdit->setEchoMode(QLineEdit::Password);
+    ui->label_4->hide();
+//    ui->lineEdit->setEchoMode(QLineEdit::Password);
     std::vector<friends> list = list_friends(1);
     for (unsigned int h=0; h < list.size(); h++) {
 //    const char * name = list[h].name.c_str();
@@ -49,9 +52,16 @@ void Passphrase::on_pushButton_clicked()
    QString raw_info=ui->comboBox->currentText();
    QStringList email_addr = raw_info.split('}').first().split('{');
    std::string email = email_addr.last().toStdString();
+   std::string ip = ui->lineEdit->text().toStdString();
+   char str[INET_ADDRSTRLEN];
+   struct sockaddr_in sa;
+    //test = inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr));
+    if (inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 1 ) ui->label_4->show();
+    else {
+   set_serverip(ip);
    set_user(email);
    this->close();
-
+}
 }
 
 void Passphrase::on_pushButton_2_clicked()

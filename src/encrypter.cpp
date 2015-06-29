@@ -11,7 +11,7 @@ using namespace std;
 
 	string user_email;
 	gpgme_key_t key_sign;
-
+    string server_ip;
 
 
 void print_data (gpgme_data_t dh)
@@ -34,7 +34,7 @@ void print_data (gpgme_data_t dh)
 	      const char * msg = c.c_str();
 	// cout << b << endl;
 	 //     sender("127.0.0.1", 55566, msg, 512);
-	      sender("90.41.180.202", 66655, msg, 512);
+//          sender(server_ip.c_str(), 66655, msg, 512);
 	//      msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
 	cout << b << endl;
@@ -209,7 +209,7 @@ void send_data (string formated_message)
         int ret;
               const char * msg = formated_message.c_str();
         // cout << b << endl;
-              sender("127.0.0.1", 55566, msg, 512);
+  //            sender(server_ip, 55566, msg, 512);
 //              sender("90.41.180.202", 66655, msg, 512);
         //      msg=NULL;
         //    client("128.141.249.147", 55566, msg, 512);
@@ -295,3 +295,7 @@ void set_user (string email) {
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 }
 
+void set_serverip (string ip) {
+    server_ip = ip;
+    cout << ip << endl;
+}

@@ -10,6 +10,7 @@ void encrypter(std::vector<std::string> recipients, std::string msg);
 void retrieve();
 int start_mainwindow();
 void set_user(std::string email);
+void set_serverip(std::string ip_addr);
 int exit_program();
 int decrypter(std::string enc_msg, bool record);
 int decrypter2(std::string enc_msg2, bool record2);

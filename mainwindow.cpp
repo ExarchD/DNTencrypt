@@ -5,6 +5,8 @@
 #include <QThread>
 #include <qtconcurrentrun.h>
 #include <passphrase.h>
+#include <QKeyEvent>
+#include <iostream>
 
 using namespace QtConcurrent;
 
@@ -21,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->show();
     delete w;
     ui->setupUi(this);
+    ui->mytextEdit->installEventFilter(this);
     regenerate_list();
   
 }
@@ -98,4 +101,30 @@ void MainWindow::on_pushButton_3_clicked()
      ui->listWidget->update();
 
 
+}
+
+
+void MainWindow::keyPressEvent ( QKeyEvent * e ) {
+   // das shift+return event wollen wir nicht, weil sonst ein <br> statt ein <p> gemacht wird
+   // return => 16777220
+   if ((e->key() == Qt::Key_Enter || e->key() == 16777220) && ((e->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
+      // clone object but without shift
+      // current modifiers & all possible modifiers, but SHIFT,ALT,CTRL
+      e = new QKeyEvent(e->type(), e->key(), e->modifiers()&Qt::MetaModifier&Qt::KeypadModifier, e->text(), e->isAutoRepeat(), (ushort) e->count());
+   }
+//   QTextEdit::keyPressEvent(e);
+}
+
+
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+     if (obj == ui->mytextEdit) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent *e = static_cast<QKeyEvent*>(event);
+            if ((e->key() == Qt::Key_Enter || e->key() == 16777220) && !((e->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
+                sendMessage();
+            }
+        }
+     }
 }
