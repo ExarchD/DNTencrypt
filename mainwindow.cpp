@@ -51,18 +51,18 @@ void MainWindow::regenerate_list() {
 }
 
 
-QString timestamp()
+std::string timestamp()
 {
    time_t now = time(0);
    tm *ltm = localtime(&now);
-   QString t_stamp=ltm->tm_hour+":"+ltm->tm_min;
+   std::string t_stamp=std::to_string(ltm->tm_hour)+":"+std::to_string(ltm->tm_min);
     return t_stamp;
 }
 
 void MainWindow::sendMessage(){
 	std::string text = ui->mytextEdit->toPlainText().toStdString();
         
-	ui->textBrowser->append("Me ("+timestamp()+"): "+ ui->mytextEdit->toPlainText());
+	ui->textBrowser->append("Me ("+QString::fromUtf8(timestamp().c_str())+"): "+ ui->mytextEdit->toPlainText());
         ui->mytextEdit->clear();
 	std::vector<std::string> email_list;
 	email_list.clear();
@@ -111,18 +111,6 @@ void MainWindow::on_pushButton_3_clicked()
      ui->listWidget->update();
 
 
-}
-
-
-void MainWindow::keyPressEvent ( QKeyEvent * e ) {
-   // das shift+return event wollen wir nicht, weil sonst ein <br> statt ein <p> gemacht wird
-   // return => 16777220
-   if ((e->key() == Qt::Key_Enter || e->key() == 16777220) && ((e->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
-      // clone object but without shift
-      // current modifiers & all possible modifiers, but SHIFT,ALT,CTRL
-      e = new QKeyEvent(e->type(), e->key(), e->modifiers()&Qt::MetaModifier&Qt::KeypadModifier, e->text(), e->isAutoRepeat(), (ushort) e->count());
-   }
-//   QTextEdit::keyPressEvent(e);
 }
 
 

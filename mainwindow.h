@@ -22,8 +22,6 @@ private slots:
 
     void on_pushButton_3_clicked();
 
-    void keyPressEvent ( QKeyEvent * e );
-
     bool eventFilter(QObject *obj, QEvent *event);
 
 private:
