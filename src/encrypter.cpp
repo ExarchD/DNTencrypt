@@ -9,9 +9,7 @@
 #include "sha1.h"
 using namespace std;
 
-	string user_email;
 	gpgme_key_t key_sign;
-    string server_ip;
 
 
 void print_data (gpgme_data_t dh)
@@ -57,6 +55,8 @@ void init_gpgme (gpgme_protocol_t proto)
 
 	err = gpgme_engine_check_version (proto);
 	fail_if_err (err);
+	gpgme_ctx_t ctx;
+	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 }
 
 	gpgme_error_t
@@ -248,8 +248,11 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_signers_clear(ctx);
 	gpgme_key_t key_sign;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+	fail_if_err (err);
 	err = gpgme_signers_add(ctx,key_sign);
+	fail_if_err (err);
 	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
+	fail_if_err (err);
 	result = gpgme_op_encrypt_result (ctx);
 	if (result->invalid_recipients)
 	{
@@ -273,8 +276,6 @@ void encrypter(vector<string> recipients, string msg) {
 			b+= buf[x];
 		}
 	}
-//	cout << sha1(b) << endl;
-//	cout << b << endl;
         send_data(sha1(b)+";"+b+";"+message_key);
 
 	//	print_data(out);
@@ -284,18 +285,3 @@ void encrypter(vector<string> recipients, string msg) {
 
 }
 
-
-
-
-
-void set_user (string email) {
-	gpgme_ctx_t ctx;
-	gpgme_error_t err;
-	user_email = email;
-	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
-}
-
-void set_serverip (string ip) {
-    server_ip = ip;
-    cout << ip << endl;
-}

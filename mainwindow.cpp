@@ -8,6 +8,7 @@
 #include <passphrase.h>
 #include <QKeyEvent>
 #include <iostream>
+#include <settings.h>
 
 using namespace QtConcurrent;
 
@@ -51,18 +52,31 @@ void MainWindow::regenerate_list() {
 }
 
 
-std::string timestamp()
+
+
+//std::string ip = ui->lineEdit->text().toStdString();
+//char str[INET_ADDRSTRLEN];
+//struct sockaddr_in sa;
+// //test = inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr));
+// if (inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 1 ) ui->label_4->show();
+// else {
+//set_serverip(ip);
+
+QString timestamp()
 {
    time_t now = time(0);
    tm *ltm = localtime(&now);
-   std::string t_stamp=std::to_string(ltm->tm_hour)+":"+std::to_string(ltm->tm_min);
+//   if ((ltm->tm_min) < 10) std::cout << "HI" << std::endl;
+   QString t_stamp=QString::number(ltm->tm_hour)+":"+QString::number(ltm->tm_min);
     return t_stamp;
 }
 
 void MainWindow::sendMessage(){
 	std::string text = ui->mytextEdit->toPlainText().toStdString();
-        
-	ui->textBrowser->append("Me ("+QString::fromUtf8(timestamp().c_str())+"): "+ ui->mytextEdit->toPlainText());
+        ui->textBrowser->setTextColor(Qt::red);
+	ui->textBrowser->append("Me ("+timestamp()+"): ");
+        ui->textBrowser->setTextColor(Qt::black);
+        ui->textBrowser->insertPlainText(ui->mytextEdit->toPlainText());
         ui->mytextEdit->clear();
 	std::vector<std::string> email_list;
 	email_list.clear();
@@ -87,8 +101,6 @@ void MainWindow::on_pushButton_clicked()
 
 //  QFuture<void> f1 = run(retrieve);
 }
-
-
 
 void MainWindow::on_pushButton_3_clicked()
 {
@@ -131,3 +143,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
+
+void MainWindow::on_quit_config_triggered()
+{
+    QApplication::quit();
+}
+
+
+void MainWindow::on_actionSettings_triggered()
+{
+             settings *sset= new settings();
+    sset->show();
+    sset->raise();
+    sset->activateWindow();
+}

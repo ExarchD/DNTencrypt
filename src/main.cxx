@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <sstream>
 #include <string.h>
-#include "objects.h"
 #include <QApplication>
 #include <mainwindow.h>
 #include "passphrase.h"
@@ -14,9 +13,69 @@
 #include <fstream>
 #include <unistd.h>
 #include <thread>
+#include "objects.h"
+
 using namespace std;
 
+string user_email;
+string server_ip;
 
+void store_line(string key, string value) {
+    if (key == "user_email") user_email=value;
+    if (key == "server_ip") server_ip=value;
+}
+
+void set_serverip(std::string serverip) 
+{
+        server_ip=serverip;
+            store_line(server_ip,serverip);
+}
+
+void config_edit(string key_new, string value_new) {
+    ifstream iconf;
+    iconf.open("config.txt");
+    ofstream oconf;
+    oconf.open("config_tmp.txt");
+    string line;
+    string strTemp;
+    while(iconf >> strTemp)
+    {
+     string key;
+     key = strTemp.substr(0, strTemp.find("="));
+ //    cout << key;
+//        cout << strTemp;
+        cout << key  << " " << key_new << endl;
+        if(key == key_new){
+            strTemp = key_new+"="+value_new;
+        }
+        strTemp += "\n";
+        //cout << strTemp ;
+        oconf << strTemp;
+        rename("config_tmp.txt","config.txt");
+}
+    oconf.close();
+    iconf.close();
+}
+
+
+
+void encrypt2_init() {
+    ifstream conf;
+    string line;
+    conf.open("config.txt");
+    while (getline (conf, line))
+           {
+             istringstream is_line(line);
+             string key;
+             if( getline(is_line, key, '=') )
+             {
+               string value;
+               if( getline(is_line, value) )
+                 store_line(key, value);
+             }
+           }
+    conf.close();
+}
 
 void thread_message_reader(vector<string> enc_messages, int begin, int end) {
         for ( int i=begin; i < end; i++){
@@ -86,7 +145,7 @@ void retrieve() {
 
 int main (int argc, char* argv[] ) {
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
-
+encrypt2_init();
 	QApplication a(argc, argv);
 	MainWindow w;
 	w.show();

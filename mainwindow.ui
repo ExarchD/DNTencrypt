@@ -123,13 +123,6 @@
      </item>
     </layout>
    </widget>
-   <zorder>groupBox</zorder>
-   <zorder>frame</zorder>
-   <zorder>frame_2</zorder>
-   <zorder>mytextEdit</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton_3</zorder>
-   <zorder>pushButton_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -140,8 +133,32 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Encryptor</string>
+    </property>
+    <addaction name="quit_config"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings_2">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionSettings"/>
+   </widget>
+   <addaction name="menuSettings"/>
+   <addaction name="menuSettings_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="quit_config">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

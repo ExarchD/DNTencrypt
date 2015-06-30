@@ -19,6 +19,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
@@ -31,6 +32,8 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *quit_config;
+    QAction *actionSettings;
     QWidget *centralwidget;
     QGroupBox *groupBox;
     QListWidget *listWidget;
@@ -43,6 +46,8 @@ public:
     QGridLayout *gridLayout;
     QTextBrowser *textBrowser;
     QMenuBar *menubar;
+    QMenu *menuSettings;
+    QMenu *menuSettings_2;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -50,6 +55,10 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(798, 493);
+        quit_config = new QAction(MainWindow);
+        quit_config->setObjectName(QStringLiteral("quit_config"));
+        actionSettings = new QAction(MainWindow);
+        actionSettings->setObjectName(QStringLiteral("actionSettings"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         groupBox = new QGroupBox(centralwidget);
@@ -88,20 +97,22 @@ public:
         gridLayout->addWidget(textBrowser, 0, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
-        groupBox->raise();
-        frame->raise();
-        frame_2->raise();
-        mytextEdit->raise();
-        pushButton->raise();
-        pushButton_3->raise();
-        pushButton_2->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
         menubar->setGeometry(QRect(0, 0, 798, 19));
+        menuSettings = new QMenu(menubar);
+        menuSettings->setObjectName(QStringLiteral("menuSettings"));
+        menuSettings_2 = new QMenu(menubar);
+        menuSettings_2->setObjectName(QStringLiteral("menuSettings_2"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         MainWindow->setStatusBar(statusbar);
+
+        menubar->addAction(menuSettings->menuAction());
+        menubar->addAction(menuSettings_2->menuAction());
+        menuSettings->addAction(quit_config);
+        menuSettings_2->addAction(actionSettings);
 
         retranslateUi(MainWindow);
 
@@ -111,10 +122,14 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        quit_config->setText(QApplication::translate("MainWindow", "Quit", 0));
+        actionSettings->setText(QApplication::translate("MainWindow", "Settings", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "GroupBox", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "Add", 0));
         pushButton_3->setText(QApplication::translate("MainWindow", "Remove", 0));
         pushButton->setText(QApplication::translate("MainWindow", "Send", 0));
+        menuSettings->setTitle(QApplication::translate("MainWindow", "Encryptor", 0));
+        menuSettings_2->setTitle(QApplication::translate("MainWindow", "Options", 0));
     } // retranslateUi
 
 };
