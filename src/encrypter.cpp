@@ -209,7 +209,7 @@ void send_data (string formated_message)
         int ret;
               const char * msg = formated_message.c_str();
         // cout << b << endl;
-  //            sender(server_ip, 55566, msg, 512);
+              sender(server_ip.c_str(), 6655, msg, 512);
 //              sender("90.41.180.202", 66655, msg, 512);
         //      msg=NULL;
         //    client("128.141.249.147", 55566, msg, 512);

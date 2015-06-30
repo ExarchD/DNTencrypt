@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <ctime>
 #include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
@@ -50,9 +51,18 @@ void MainWindow::regenerate_list() {
 }
 
 
+QString timestamp()
+{
+   time_t now = time(0);
+   tm *ltm = localtime(&now);
+   QString t_stamp=ltm->tm_hour+":"+ltm->tm_min;
+    return t_stamp;
+}
+
 void MainWindow::sendMessage(){
 	std::string text = ui->mytextEdit->toPlainText().toStdString();
-	ui->textBrowser->append(ui->mytextEdit->toPlainText());
+        
+	ui->textBrowser->append("Me ("+timestamp()+"): "+ ui->mytextEdit->toPlainText());
         ui->mytextEdit->clear();
 	std::vector<std::string> email_list;
 	email_list.clear();
@@ -116,15 +126,20 @@ void MainWindow::keyPressEvent ( QKeyEvent * e ) {
 }
 
 
-
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-     if (obj == ui->mytextEdit) {
-        if (event->type() == QEvent::KeyPress) {
-            QKeyEvent *e = static_cast<QKeyEvent*>(event);
-            if ((e->key() == Qt::Key_Enter || e->key() == 16777220) && !((e->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
-                sendMessage();
-            }
+    if (event->type()==QEvent::KeyPress) {
+        QKeyEvent* key = static_cast<QKeyEvent*>(event);
+//        if ((e->key() == Qt::Key_Enter || e->key() == 16777220){
+        if ( (key->key()==Qt::Key_Enter) || (key->key()==Qt::Key_Return) && !((key->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
+            sendMessage();
+        } else {
+            return QObject::eventFilter(obj, event);
         }
-     }
+        return true;
+    } else {
+        return QObject::eventFilter(obj, event);
+    }
+    return false;
 }
+
