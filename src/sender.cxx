@@ -1,12 +1,18 @@
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include "objects.h"
-#include <gpgme.h>
+#include <sys/types.h>
+#ifdef __WIN32__
+#define __WIN32__WINNT
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#else
+#include <sys/socket.h>
+#include <netdb.h>
+#endif
 #define BUF_SIZE 5000
 #include <iostream>
 using namespace std;
@@ -24,7 +30,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 //    sprintf(host, "%d", host_int);
     char port[256];
     sprintf(port, "%d", port_int);
-
+cout <<"1";
     /* Obtain address(es) matching host/port */
 
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -50,19 +56,24 @@ sender(const char* host_int, int port_int, const char* msg, int length)
         if (sfd == -1)
             continue;
 
-        if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1)
+        if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1){
+            cout << "We connected? " <<endl;
             break;                  /* Success */
-
+}
         close(sfd);
+        cout << "we disconnected" << endl;
     }
+
 
     if (rp == NULL) {               /* No address succeeded */
         fprintf(stderr, "Could not connect\n");
         exit(EXIT_FAILURE);
     }
 
+
     freeaddrinfo(result);           /* No longer needed */
 //      cout << msg << endl;
+
     /* Send remaining command-line arguments as separate
        datagrams, and read responses from server */
     for (j = 3; j < 4; j++) {
@@ -75,26 +86,49 @@ sender(const char* host_int, int port_int, const char* msg, int length)
             continue;
         }
 
+
+        int iResult;
+        WSADATA wsaData;
+        sockaddr_in RecvAddr;
+
+        iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+        char SendBuf[1024];
+        int BufLen = 1024;
+        RecvAddr.sin_family = AF_INET;
+        unsigned short Port = 6655;
+        RecvAddr.sin_port = htons(Port);
+        RecvAddr.sin_addr.s_addr = inet_addr("192.168.1.1");
+
+        iResult = sendto(sfd,
+                         msg, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+        if (iResult == SOCKET_ERROR) {
+            wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
+          //  closesocket(SendSocket);
+            WSACleanup();
+            return 1;
+        }
+
+  /*
         if (write(sfd, msg, len) != len) {
             fprintf(stderr, "partial/failed write\n");
             exit(EXIT_FAILURE);
         }
-        
+    */
 //        fwrite (msg, , 1, stdout);
 
-
+cout << "3";
 // add loop so that we can send in 512 chunks
 // possibly remove my 'fix' so that the client app
 // recieves the data in 512 byte chunks
 // not sure if that's ideal or not
 // should check what the best sized chunk of data is
-
+/*
         nread = read(sfd, buf, length);
         if (nread == -1) {
             perror("read");
             exit(EXIT_FAILURE);
         }
-
+*/
     //    printf("Received %ld bytes: %s\n", (long) nread, buf);
     }
    return len;
