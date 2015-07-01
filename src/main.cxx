@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
-#include <thread>
+//#include <thread>
 #include "objects.h"
 
 using namespace std;
@@ -76,7 +76,7 @@ void encrypt2_init() {
            }
     conf.close();
 }
-
+/*
 void thread_message_reader(vector<string> enc_messages, int begin, int end) {
         for ( int i=begin; i < end; i++){
         decrypter(enc_messages[i],true);
@@ -90,8 +90,8 @@ void thread_message_reader2(vector<string> enc_messages, int begin, int end) {
 }
 
 }
-
-
+*/
+/*
 void message_reader() {
 	vector<string> enc_messages;
 	string line;
@@ -122,6 +122,7 @@ void message_reader() {
 }
 
 }
+*/
 
 void message_writer(){
         ifstream encryp_file;
