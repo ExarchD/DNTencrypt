@@ -32,10 +32,10 @@ void print_data (gpgme_data_t dh)
 	      const char * msg = c.c_str();
 	// cout << b << endl;
 	 //     sender("127.0.0.1", 55566, msg, 512);
-//          sender(server_ip.c_str(), 66655, msg, 512);
+          sender(server_ip.c_str(), 6655, msg, 512);
 	//      msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
-	cout << b << endl;
+//	cout << b << endl;
 
 	if (ret < 0)
 		fail_if_err (gpgme_err_code_from_errno (errno));
