@@ -235,7 +235,6 @@ void encrypter(vector<string> recipients, string msg) {
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
         if (recipients[n] != user_email){
-            cout << recipients[n] << endl;
             message_key+=sha1(recipients[n]);
             if (n!=n_recipients-2) message_key+=",";
         }

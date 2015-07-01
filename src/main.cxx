@@ -65,8 +65,6 @@ void encrypt2_init() {
     string line;
     conf.open("config.txt");
     cout << "LOADING CONFIG" << endl;
-    user_email="pluthd@windows.com";
-    server_ip="90.41.180.202";
     while (getline (conf, line))
            {
         cout <<"lin e " << line << endl;
