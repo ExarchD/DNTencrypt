@@ -2,7 +2,7 @@
 
 Installing on Ubuntu (12.04):
 
-Install qmake for qt5:
+qmake:
 
 sudo apt-add-repository ppa:ubuntu-sdk-team/ppa
 
