@@ -10,6 +10,10 @@ sudo apt-get update
 
 sudo apt-get install qtdeclarative5-dev
 
+make:
+
+sudo apt-get install build-essential
+
 make;
 
 ./encrypt2
