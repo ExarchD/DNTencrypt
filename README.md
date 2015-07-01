@@ -11,5 +11,6 @@ sudo apt-get update
 sudo apt-get install qtdeclarative5-dev
 
 make;
+
 ./encrypt2
 
