@@ -57,11 +57,9 @@ cout <<"1";
             continue;
 
         if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1){
-            cout << "We connected? " <<endl;
             break;                  /* Success */
 }
         close(sfd);
-        cout << "we disconnected" << endl;
     }
 
 
@@ -86,6 +84,7 @@ cout <<"1";
             continue;
         }
 
+#ifdef __WIN32__
 
         int iResult;
         WSADATA wsaData;
@@ -107,13 +106,14 @@ cout <<"1";
             WSACleanup();
             return 1;
         }
+#else
 
-  /*
+  
         if (write(sfd, msg, len) != len) {
             fprintf(stderr, "partial/failed write\n");
             exit(EXIT_FAILURE);
         }
-    */
+#endif   
 //        fwrite (msg, , 1, stdout);
 
 cout << "3";
