@@ -32,10 +32,10 @@ void print_data (gpgme_data_t dh)
 	      const char * msg = c.c_str();
 	// cout << b << endl;
 	 //     sender("127.0.0.1", 55566, msg, 512);
-//          sender(server_ip.c_str(), 66655, msg, 512);
+          sender(server_ip.c_str(), 6655, msg, 512);
 	//      msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
-	cout << b << endl;
+//	cout << b << endl;
 
 	if (ret < 0)
 		fail_if_err (gpgme_err_code_from_errno (errno));
@@ -50,7 +50,7 @@ void init_gpgme (gpgme_protocol_t proto)
 	setlocale (LC_ALL, "");
 	gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
 #ifndef HAVE_W32_SYSTEM
-	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
+//	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
 #endif
 
 	err = gpgme_engine_check_version (proto);
@@ -208,7 +208,6 @@ void send_data (string formated_message)
         char buf[BUF_SIZE + 1];
         int ret;
               const char * msg = formated_message.c_str();
-        // cout << b << endl;
               sender(server_ip.c_str(), 6655, msg, 512);
 //              sender("90.41.180.202", 66655, msg, 512);
         //      msg=NULL;
@@ -235,8 +234,11 @@ void encrypter(vector<string> recipients, string msg) {
 	string message_key;
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
-
-		if (recipients[n] != user_email) message_key+=sha1(recipients[n]);
+        if (recipients[n] != user_email){
+            cout << recipients[n] << endl;
+            message_key+=sha1(recipients[n]);
+            if (n!=n_recipients-2) message_key+=",";
+        }
 		err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);
@@ -265,8 +267,6 @@ void encrypter(vector<string> recipients, string msg) {
 	char buf[BUF_SIZE + 1];
 	int ret;
 
-
-
 	string b;
 	ret = gpgme_data_seek (out, 0, SEEK_SET);
 	if (ret)
@@ -277,7 +277,7 @@ void encrypter(vector<string> recipients, string msg) {
 		}
 	}
         send_data(sha1(b)+";"+b+";"+message_key);
-
+     //   send_data("HI");
 	//	print_data(out);
 	gpgme_data_release (in);
 	gpgme_data_release (out);

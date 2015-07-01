@@ -23,6 +23,7 @@ string server_ip;
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
     if (key == "server_ip") server_ip=value;
+    cout << key <<" " << value  << endl;
 }
 
 void set_serverip(std::string serverip) 
@@ -63,8 +64,12 @@ void encrypt2_init() {
     ifstream conf;
     string line;
     conf.open("config.txt");
+    cout << "LOADING CONFIG" << endl;
+    user_email="pluthd@windows.com";
+    server_ip="90.41.180.202";
     while (getline (conf, line))
            {
+        cout <<"lin e " << line << endl;
              istringstream is_line(line);
              string key;
              if( getline(is_line, key, '=') )
@@ -146,7 +151,7 @@ void retrieve() {
 
 int main (int argc, char* argv[] ) {
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
-encrypt2_init();
+    encrypt2_init();
 	QApplication a(argc, argv);
 	MainWindow w;
 	w.show();

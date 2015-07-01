@@ -22,8 +22,10 @@ FORMS += \
     passphrase.ui \
     settings.ui
 QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1
-# LIBS+= `gpgme-config  --cflags --libs`
-LIBS+=-I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error
+unix:  LIBS+= `gpgme-config  --cflags --libs`
+win32: LIBS += -lWS2_32 -L$$PWD/ -llibgpgme-11
+win32: INCLUDEPATH += $$PWD/
+win32: DEPENDPATH += $$PWD/
 
 target.path = ~/encrypt2
 INSTALLS += target

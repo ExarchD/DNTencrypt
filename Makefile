@@ -33,10 +33,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = encrypt21.0.0
-DISTDIR = /home/dpluth/Source/encrypt2/.tmp/encrypt21.0.0
+DISTDIR = /home/dpluth/Source/testasd/.tmp/encrypt21.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-O1,--sort-common,--as-needed,-z,relro
-LIBS          = $(SUBLIBS) -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error -lQt5Widgets -lQt5Gui -lQt5Concurrent -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) `gpgme-config --cflags --libs` -lQt5Widgets -lQt5Gui -lQt5Concurrent -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -442,13 +442,13 @@ compiler_moc_header_make_all: moc_mainwindow.cpp moc_passphrase.cpp moc_settings
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_passphrase.cpp moc_settings.cpp
 moc_mainwindow.cpp: mainwindow.h
-	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Source/encrypt2 -I/home/dpluth/Source/encrypt2 -I/home/dpluth/Source/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/5.1.0 -I/usr/include/c++/5.1.0/x86_64-unknown-linux-gnu -I/usr/include/c++/5.1.0/backward -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Source/testasd -I/home/dpluth/Source/testasd -I/home/dpluth/Source/testasd/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/5.1.0 -I/usr/include/c++/5.1.0/x86_64-unknown-linux-gnu -I/usr/include/c++/5.1.0/backward -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 moc_passphrase.cpp: passphrase.h
-	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Source/encrypt2 -I/home/dpluth/Source/encrypt2 -I/home/dpluth/Source/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/5.1.0 -I/usr/include/c++/5.1.0/x86_64-unknown-linux-gnu -I/usr/include/c++/5.1.0/backward -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include-fixed -I/usr/include passphrase.h -o moc_passphrase.cpp
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Source/testasd -I/home/dpluth/Source/testasd -I/home/dpluth/Source/testasd/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/5.1.0 -I/usr/include/c++/5.1.0/x86_64-unknown-linux-gnu -I/usr/include/c++/5.1.0/backward -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include-fixed -I/usr/include passphrase.h -o moc_passphrase.cpp
 
 moc_settings.cpp: settings.h
-	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Source/encrypt2 -I/home/dpluth/Source/encrypt2 -I/home/dpluth/Source/encrypt2/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/5.1.0 -I/usr/include/c++/5.1.0/x86_64-unknown-linux-gnu -I/usr/include/c++/5.1.0/backward -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include-fixed -I/usr/include settings.h -o moc_settings.cpp
+	/usr/lib/qt/bin/moc $(DEFINES) -I/usr/lib/qt/mkspecs/linux-g++ -I/home/dpluth/Source/testasd -I/home/dpluth/Source/testasd -I/home/dpluth/Source/testasd/include -I/usr/local/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtConcurrent -I/usr/include/qt/QtCore -I/usr/include/c++/5.1.0 -I/usr/include/c++/5.1.0/x86_64-unknown-linux-gnu -I/usr/include/c++/5.1.0/backward -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-unknown-linux-gnu/5.1.0/include-fixed -I/usr/include settings.h -o moc_settings.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -476,25 +476,35 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 
 main.o: src/main.cxx mainwindow.h \
 		passphrase.h \
-		include/objects.h
+		include/objects.h \
+		gpgme.h \
+		gpg-error.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cxx
 
-sender.o: src/sender.cxx include/objects.h
+sender.o: src/sender.cxx include/objects.h \
+		gpgme.h \
+		gpg-error.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sender.o src/sender.cxx
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
 		ui_mainwindow.h \
 		include/objects.h \
+		gpgme.h \
+		gpg-error.h \
 		passphrase.h \
 		settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 passphrase.o: passphrase.cpp passphrase.h \
 		ui_passphrase.h \
-		include/objects.h
+		include/objects.h \
+		gpgme.h \
+		gpg-error.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o passphrase.o passphrase.cpp
 
 encrypter.o: src/encrypter.cpp include/objects.h \
+		gpgme.h \
+		gpg-error.h \
 		include/t-support.h \
 		include/sha1.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o encrypter.o src/encrypter.cpp
@@ -507,7 +517,9 @@ sha1.o: src/sha1.cpp include/sha1.h
 
 settings.o: settings.cpp settings.h \
 		ui_settings.h \
-		include/objects.h
+		include/objects.h \
+		gpgme.h \
+		gpg-error.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings.o settings.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
