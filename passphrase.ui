@@ -7,43 +7,46 @@
     <x>0</x>
     <y>0</y>
     <width>418</width>
-    <height>103</height>
+    <height>71</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>261</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>20</y>
      <width>261</width>
      <height>26</height>
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>40</y>
+     <width>111</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>80</y>
-     <width>391</width>
+     <y>0</y>
+     <width>91</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string/>
+    <string>UserName:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -52,24 +55,11 @@
      <x>290</x>
      <y>10</y>
      <width>111</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Generate</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>50</y>
-     <width>111</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
+    <string>Connect</string>
    </property>
   </widget>
  </widget>

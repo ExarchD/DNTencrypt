@@ -22,6 +22,12 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    bool eventFilter(QObject *obj, QEvent *event);
+
+    void on_quit_config_triggered();
+
+    void on_actionSettings_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

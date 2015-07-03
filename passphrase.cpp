@@ -3,23 +3,26 @@
 #include "objects.h"
 #include <string>
 #include <qdebug.h>
+#include <iostream>
+
 Passphrase::Passphrase(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Passphrase)
 {
     ui->setupUi(this);
-    ui->lineEdit->setEchoMode(QLineEdit::Password);
+//    ui->lineEdit->setEchoMode(QLineEdit::Password);
     std::vector<friends> list = list_friends(1);
     for (unsigned int h=0; h < list.size(); h++) {
-//    const char * name = list[h].name.c_str();
-//    const char * email = list[h].email.c_str();
+
     QString name = QString::fromStdString(list[h].name);
     QString email = QString::fromStdString(list[h].email);
             QString comb = name+" {"+email+"}";
     ui->comboBox->addItem(comb);
+    if (email.toStdString() == user_email) {
+        int index = ui->comboBox->findData(comb);
+               ui->comboBox->setCurrentIndex(h);
     }
-    ui->lineEdit->setFocus();
-   // ui->pushButton->setAutoDefault(0);
+    }
     ui->pushButton_2->setAutoDefault(0);
 }
 Passphrase::~Passphrase()
@@ -29,10 +32,12 @@ Passphrase::~Passphrase()
 
 void Passphrase::on_lineEdit_returnPressed()
 {
-   std::string pass= ui->lineEdit->text().toStdString();
+   //std::string pass= ui->lineEdit->text().toStdString();
    QString raw_info=ui->comboBox->currentText();
    QStringList email_addr = raw_info.split('}').first().split('{');
    std::string email = email_addr.last().toStdString();
+   std::cout << email;
+   config_edit(user_email, email); 
 //    qDebug() << email_addr.first() << email_addr.last();
 //   int success = unlock_master_key(pass,email);
 //   if (!success) on_label_linkActivated("failed");
@@ -41,7 +46,8 @@ void Passphrase::on_lineEdit_returnPressed()
 
 void Passphrase::on_label_linkActivated(const QString &link)
 {
-  ui->label->setText("Wrong passphrase, please try again");
+//  ui->label->setText("Wrong passphrase, please try again");
+//    return 0;
 }
 
 void Passphrase::on_pushButton_clicked()
@@ -49,9 +55,9 @@ void Passphrase::on_pushButton_clicked()
    QString raw_info=ui->comboBox->currentText();
    QStringList email_addr = raw_info.split('}').first().split('{');
    std::string email = email_addr.last().toStdString();
-   set_user(email);
+   std::cout << email;
+   config_edit("user_email", email); 
    this->close();
-
 }
 
 void Passphrase::on_pushButton_2_clicked()

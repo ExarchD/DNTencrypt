@@ -9,9 +9,7 @@
 #include "sha1.h"
 using namespace std;
 
-	string user_email;
 	gpgme_key_t key_sign;
-
 
 
 void print_data (gpgme_data_t dh)
@@ -29,13 +27,15 @@ void print_data (gpgme_data_t dh)
 			b+= buf[x];
 		}
 		//  fwrite (buf, ret, 1, stdout);
-	}
-	//      const char * msg = b.c_str();
+		}
+	string c = "HI";
+	      const char * msg = c.c_str();
 	// cout << b << endl;
-	//      sender("127.0.0.1", 55566, msg, 512);
+	 //     sender("127.0.0.1", 55566, msg, 512);
+          sender(server_ip.c_str(), 6655, msg, 512);
 	//      msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
-	cout << b << endl;
+//	cout << b << endl;
 
 	if (ret < 0)
 		fail_if_err (gpgme_err_code_from_errno (errno));
@@ -50,11 +50,13 @@ void init_gpgme (gpgme_protocol_t proto)
 	setlocale (LC_ALL, "");
 	gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
 #ifndef HAVE_W32_SYSTEM
-	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
+//	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
 #endif
 
 	err = gpgme_engine_check_version (proto);
 	fail_if_err (err);
+	gpgme_ctx_t ctx;
+	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 }
 
 	gpgme_error_t
@@ -199,6 +201,22 @@ int decrypter2(string enc_msg2, bool record2) {
   return 0;
 
 }
+void send_data (string formated_message)
+{
+#define BUF_SIZE 512
+        //      int length;
+        char buf[BUF_SIZE + 1];
+        int ret;
+              const char * msg = formated_message.c_str();
+              sender(server_ip.c_str(), 6655, msg, 512);
+//              sender("90.41.180.202", 66655, msg, 512);
+        //      msg=NULL;
+        //    client("128.141.249.147", 55566, msg, 512);
+        cout << formated_message << endl;
+
+        if (ret < 0)
+                fail_if_err (gpgme_err_code_from_errno (errno));
+}
 
 
 void encrypter(vector<string> recipients, string msg) {
@@ -217,15 +235,16 @@ void encrypter(vector<string> recipients, string msg) {
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
 	recipients.push_back(user_email);
-	cout << user_email << endl;
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
 	string message_key;
 	string ident;
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
-		if (recipients[n]!=user_email) ident+=","+sha1(recipients[n]+num_str);  // do we need the iterator? i don't think so
-		message_key+=recipients[n];
+        if (recipients[n] != user_email){
+            message_key+=sha1(recipients[n]);
+            if (n!=n_recipients-2) message_key+=",";
+        }
 		err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);
@@ -237,8 +256,11 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_signers_clear(ctx);
 	gpgme_key_t key_sign;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+	fail_if_err (err);
 	err = gpgme_signers_add(ctx,key_sign);
+	fail_if_err (err);
 	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
+	fail_if_err (err);
 	result = gpgme_op_encrypt_result (ctx);
 	if (result->invalid_recipients)
 	{
@@ -251,8 +273,6 @@ void encrypter(vector<string> recipients, string msg) {
 	char buf[BUF_SIZE + 1];
 	int ret;
 
-
-
 	string b;
 	ret = gpgme_data_seek (out, 0, SEEK_SET);
 	if (ret)
@@ -262,27 +282,10 @@ void encrypter(vector<string> recipients, string msg) {
 			b+= buf[x];
 		}
 	}
-	string hash;
-	hash=sha1(message_key+num_str);
-	string string_msg=b+hash+ident+"\n";
-	const char* send_msg = string_msg.c_str();
-	sender("127.0.0.1", 55566, send_msg, 512);
-        //write(b,sha1(message_key));
-	//	print_data(out);
+        send_data(sha1(b)+";"+b+";"+message_key);
 	gpgme_data_release (in);
 	gpgme_data_release (out);
 	gpgme_release (ctx);
 
-}
-
-
-
-
-
-void set_user (string email) {
-	gpgme_ctx_t ctx;
-	gpgme_error_t err;
-	user_email = email;
-	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 }
 

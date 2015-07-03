@@ -1,10 +1,14 @@
 #include "mainwindow.h"
+#include <ctime>
 #include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
 #include <QThread>
 #include <qtconcurrentrun.h>
 #include <passphrase.h>
+#include <QKeyEvent>
+#include <iostream>
+#include <settings.h>
 
 using namespace QtConcurrent;
 
@@ -21,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->show();
     delete w;
     ui->setupUi(this);
+    ui->mytextEdit->installEventFilter(this);
     regenerate_list();
   
 }
@@ -47,9 +52,31 @@ void MainWindow::regenerate_list() {
 }
 
 
+
+
+//std::string ip = ui->lineEdit->text().toStdString();
+//char str[INET_ADDRSTRLEN];
+//struct sockaddr_in sa;
+// //test = inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr));
+// if (inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 1 ) ui->label_4->show();
+// else {
+//set_serverip(ip);
+
+QString timestamp()
+{
+   time_t now = time(0);
+   tm *ltm = localtime(&now);
+//   if ((ltm->tm_min) < 10) std::cout << "HI" << std::endl;
+   QString t_stamp=QString::number(ltm->tm_hour)+":"+QString::number(ltm->tm_min);
+    return t_stamp;
+}
+
 void MainWindow::sendMessage(){
 	std::string text = ui->mytextEdit->toPlainText().toStdString();
-	ui->textBrowser->append(ui->mytextEdit->toPlainText());
+        ui->textBrowser->setTextColor(Qt::red);
+	ui->textBrowser->append("Me ("+timestamp()+"): ");
+        ui->textBrowser->setTextColor(Qt::black);
+        ui->textBrowser->insertPlainText(ui->mytextEdit->toPlainText());
         ui->mytextEdit->clear();
 	std::vector<std::string> email_list;
 	email_list.clear();
@@ -75,8 +102,6 @@ void MainWindow::on_pushButton_clicked()
 //  QFuture<void> f1 = run(retrieve);
 }
 
-
-
 void MainWindow::on_pushButton_3_clicked()
 {
 //    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
@@ -98,4 +123,37 @@ void MainWindow::on_pushButton_3_clicked()
      ui->listWidget->update();
 
 
+}
+
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type()==QEvent::KeyPress) {
+        QKeyEvent* key = static_cast<QKeyEvent*>(event);
+//        if ((e->key() == Qt::Key_Enter || e->key() == 16777220){
+        if ( (key->key()==Qt::Key_Enter) || (key->key()==Qt::Key_Return) && !((key->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
+            sendMessage();
+        } else {
+            return QObject::eventFilter(obj, event);
+        }
+        return true;
+    } else {
+        return QObject::eventFilter(obj, event);
+    }
+    return false;
+}
+
+
+void MainWindow::on_quit_config_triggered()
+{
+    QApplication::quit();
+}
+
+
+void MainWindow::on_actionSettings_triggered()
+{
+             settings *sset= new settings();
+    sset->show();
+    sset->raise();
+    sset->activateWindow();
 }
