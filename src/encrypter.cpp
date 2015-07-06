@@ -26,16 +26,10 @@ void print_data (gpgme_data_t dh)
 		for (int x = 0; x < ret; x++) {
 			b+= buf[x];
 		}
-		//  fwrite (buf, ret, 1, stdout);
 		}
 	string c = "HI";
 	      const char * msg = c.c_str();
-	// cout << b << endl;
-	 //     sender("127.0.0.1", 55566, msg, 512);
           sender(server_ip.c_str(), 6655, msg, 512);
-	//      msg=NULL;
-	//    client("128.141.249.147", 55566, msg, 512);
-//	cout << b << endl;
 
 	if (ret < 0)
 		fail_if_err (gpgme_err_code_from_errno (errno));
@@ -209,10 +203,10 @@ void send_data (string formated_message)
         int ret;
               const char * msg = formated_message.c_str();
               sender(server_ip.c_str(), 6655, msg, 512);
-//              sender("90.41.180.202", 66655, msg, 512);
+ //             sender(server_ip, 66655, msg, 512);
         //      msg=NULL;
         //    client("128.141.249.147", 55566, msg, 512);
-        cout << formated_message << endl;
+//        cout << formated_message << endl;
 
         if (ret < 0)
                 fail_if_err (gpgme_err_code_from_errno (errno));
@@ -229,11 +223,12 @@ void encrypter(vector<string> recipients, string msg) {
 
 	int num=0;
 //	num=current_message_num();
-	string num_str = std::to_string(num);
+	string num_str = to_string(num);
 
 
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
+        cout << user_email << endl;
 	recipients.push_back(user_email);
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];

@@ -39,18 +39,16 @@ void config_edit(string key_new, string value_new) {
     oconf.open("config_tmp.txt");
     string line;
     string strTemp;
+    store_line(key_new, value_new);
     while(iconf >> strTemp)
     {
      string key;
      key = strTemp.substr(0, strTemp.find("="));
- //    cout << key;
-//        cout << strTemp;
         cout << key  << " " << key_new << endl;
         if(key == key_new){
             strTemp = key_new+"="+value_new;
         }
         strTemp += "\n";
-        //cout << strTemp ;
         oconf << strTemp;
         rename("config_tmp.txt","config.txt");
 }
@@ -67,7 +65,6 @@ void encrypt2_init() {
     cout << "LOADING CONFIG" << endl;
     while (getline (conf, line))
            {
-        cout <<"lin e " << line << endl;
              istringstream is_line(line);
              string key;
              if( getline(is_line, key, '=') )
@@ -78,6 +75,7 @@ void encrypt2_init() {
              }
            }
     conf.close();
+    cout << "CONFIG LOADED" << endl;
 }
 /*
 void thread_message_reader(vector<string> enc_messages, int begin, int end) {
