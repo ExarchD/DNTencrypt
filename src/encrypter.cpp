@@ -29,14 +29,14 @@ void init_gpgme (gpgme_protocol_t proto)
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 }
 
-	gpgme_error_t
-passphrase_cb (void *opaque, const char *uid_hint, const char *passphrase_info,
-		int last_was_bad, int fd)
-{
-	//write (fd, "abc\n", 4);
-	write (fd, "1234\n", 5);	
-	return 0;
-}
+//	gpgme_error_t
+//passphrase_cb (void *opaque, const char *uid_hint, const char *passphrase_info,
+//		int last_was_bad, int fd)
+//{
+//	//write (fd, "abc\n", 4);
+//	write (fd, "1234\n", 5);	
+//	return 0;
+//}
 
 
 bool comparefriends(friends a, friends b) {
@@ -58,17 +58,20 @@ vector<friends> list_friends (bool secret) {
 	gpgme_key_t key;
 	gpgme_error_t err = gpgme_new (&ctx);
 	int skip = 0;
-	fail_if_err (err);
+    fail_if_err (err);
+    if (debug > 1 ) cout << "looping through list" << endl;
 	if (!err)
 	{
 		err = gpgme_op_keylist_start (ctx, "", secret);
 		while (!err)
 		{
 			err = gpgme_op_keylist_next (ctx, &key);
+   			 if (debug > 1 ) cout << "next key" << endl;
 			if (err)
 				break;
 			if (key->uids && key->uids->name) {
 				if (key->uids && key->uids->email){
+   			 		if (debug > 1 ) cout << "key has email and id" << endl;
 					skip = 0;
 					for (unsigned int l=0; l<rejected.size(); l++) {
 						if (!secret && rejected[l] == key->uids->email) skip = 1;
@@ -78,7 +81,7 @@ vector<friends> list_friends (bool secret) {
 						friendlist.push_back(afriend);
 					}
 				}}
-//			putchar ('\n');
+			putchar ('\n');
 			gpgme_key_release (key);
 		}
 		gpgme_release (ctx);

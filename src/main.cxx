@@ -149,7 +149,7 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
-debug = 1;
+debug = 2;
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
     encrypt2_init();
 	QApplication a(argc, argv);
