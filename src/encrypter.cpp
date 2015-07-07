@@ -12,6 +12,23 @@ using namespace std;
 
 	gpgme_key_t key_sign;
 
+void init_gpgme (gpgme_protocol_t proto)
+{
+        gpgme_error_t err;
+
+        gpgme_check_version (NULL);
+        setlocale (LC_ALL, "");
+        gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
+#ifndef HAVE_W32_SYSTEM
+//      gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
+#endif
+
+        err = gpgme_engine_check_version (proto);
+        fail_if_err (err);
+        gpgme_ctx_t ctx;
+        err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+}
+
 
 bool comparefriends(friends a, friends b) {
 	return a.name.compare(b.name) < 0;
@@ -113,56 +130,12 @@ int decrypter(string enc_msg, bool record) {
 }	
 
 
-int decrypter2(string enc_msg2, bool record2) {
-  gpgme_ctx_t ctx2;
-  gpgme_error_t err2;
-  gpgme_data_t in2, out2;
-  gpgme_decrypt_result_t result2;
-  err2 = gpgme_new (&ctx2);
-  fail_if_err (err2);
-  if (err2) return 1;
-  const char *buf2 = enc_msg2.c_str();
-  size_t nread2=strlen(buf2);
-  err2 = gpgme_data_new_from_mem (&in2, buf2, nread2, 1 );
-  fail_if_err (err2);
-  if (err2) return 1;
-
-  err2 = gpgme_data_new (&out2);
-  fail_if_err (err2);
-  if (err2) return 1;
-
-  err2 = gpgme_op_decrypt_verify (ctx2, in2, out2);
-  fail_if_err (err2);
-  if (err2) return 1;
-  result2 = gpgme_op_decrypt_result (ctx2);
-
-  if (result2->unsupported_algorithm)
-    {
-      fprintf (stderr, "%s:%i: unsupported algorithm: %s\n",
-               __FILE__, __LINE__, result2->unsupported_algorithm);
-      return (1);
-    }
-
-  //print_data (out2);
-
-  gpgme_data_release (in2);
-  gpgme_data_release (out2);
-  gpgme_release (ctx2);
-  return 0;
-
-}
 void send_data (string formated_message)
 {
-#define BUF_SIZE 512
-        //      int length;
-        char buf[BUF_SIZE + 1];
-        int ret;
               const char * msg = formated_message.c_str();
         	if (debug > 3 ) cout << formated_message << endl;
+        	cout << formated_message << endl;
               sender(server_ip.c_str(), 6655, msg, 512);
-
-        if (ret < 0)
-                fail_if_err (gpgme_err_code_from_errno (errno));
 }
 
 
