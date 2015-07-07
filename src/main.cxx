@@ -19,6 +19,7 @@ using namespace std;
 
 string user_email;
 string server_ip;
+int debug;
 
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
@@ -67,7 +68,7 @@ void encrypt2_init() {
     cout << "LOADING CONFIG" << endl;
     while (getline (conf, line))
            {
-        cout <<"lin e " << line << endl;
+        cout <<"line " << line << endl;
              istringstream is_line(line);
              string key;
              if( getline(is_line, key, '=') )
@@ -148,6 +149,7 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
+debug = 1;
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
     encrypt2_init();
 	QApplication a(argc, argv);

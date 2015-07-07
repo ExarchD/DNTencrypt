@@ -19,8 +19,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    if (debug > 0 ) std::cout << "window initialized" << std::endl;
     Passphrase *w = new Passphrase;
     this->hide();
+    if (debug > 1 ) std::cout << "hiding window, loading passphrase dialog" << std::endl;
     int result = w->exec();
     this->show();
     delete w;
