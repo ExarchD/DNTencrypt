@@ -134,7 +134,7 @@ void send_data (string formated_message)
 {
               const char * msg = formated_message.c_str();
         	if (debug > 3 ) cout << formated_message << endl;
-        	cout << formated_message << endl;
+//        	cout << formated_message << endl;
               sender(server_ip.c_str(), 6655, msg, 512);
 }
 

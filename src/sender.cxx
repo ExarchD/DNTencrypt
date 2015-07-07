@@ -30,7 +30,6 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 //    sprintf(host, "%d", host_int);
     char port[256];
     sprintf(port, "%d", port_int);
-cout <<"1";
     /* Obtain address(es) matching host/port */
 
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -105,16 +104,14 @@ cout <<"1";
             return 1;
         }
 #else
-
   
         if (write(sfd, msg, len) != len) {
-            fprintf(stderr, "partial/failed write\n");
+            cout <<"partial/failed write" <<endl;
             exit(EXIT_FAILURE);
         }
 #endif   
 //        fwrite (msg, , 1, stdout);
 
-cout << "3";
 // add loop so that we can send in 512 chunks
 // possibly remove my 'fix' so that the client app
 // recieves the data in 512 byte chunks
