@@ -1,2 +1,2 @@
 server_ip=127.0.0.1
-user_email=pluthd@macworkie.com
+user_email=pluthd@mac.com

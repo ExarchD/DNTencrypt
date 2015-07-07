@@ -227,9 +227,9 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_encrypt_result_t result;
 	err = gpgme_new (&ctx);
 
-	int num=0;
+    //int num=0;
 //	num=current_message_num();
-	string num_str = std::to_string(num);
+//	string num_str = std::to_string(num);
 
 
 	fail_if_err (err);
