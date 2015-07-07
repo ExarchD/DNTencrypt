@@ -47,8 +47,8 @@ void init_gpgme (gpgme_protocol_t proto)
 //	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
 #endif
 
-	err = gpgme_engine_check_version (proto);
-	fail_if_err (err);
+    err = gpgme_engine_check_version (proto);
+    fail_if_err (err);
 	gpgme_ctx_t ctx;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 }
@@ -72,16 +72,18 @@ vector<friends> list_friends (bool secret) {
 	vector<string> rejected;
 	string line;
 	ifstream myfile;
-	myfile.open("rejected.txt");
+    if (debug == 1 ) std::cout << "loading file of rejected keys" << std::endl;
+    myfile.open("rejected.txt");
 	while (getline (myfile, line)) rejected.push_back(line);
-	myfile.close();
-	gpgme_check_version (NULL);
+    if (debug == 1 ) std::cout << "loaded rejects to vector" << std::endl;
+    myfile.close();
+//	gpgme_check_version (NULL);
 	//      gpgme_encrypt_result_t result;
 	gpgme_ctx_t ctx;
 	gpgme_key_t key;
 	gpgme_error_t err = gpgme_new (&ctx);
 	int skip = 0;
-	fail_if_err (err);
+    fail_if_err (err);
 	if (!err)
 	{
 		err = gpgme_op_keylist_start (ctx, "", secret);
@@ -221,9 +223,9 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_encrypt_result_t result;
 	err = gpgme_new (&ctx);
 
-	int num=0;
+//	int num=0;
 //	num=current_message_num();
-	string num_str = to_string(num);
+//	string num_str = std::to_string(num);
 
 
 	fail_if_err (err);
@@ -240,7 +242,8 @@ void encrypter(vector<string> recipients, string msg) {
             message_key+=sha1(recipients[n]);
             if (n!=n_recipients-2) message_key+=",";
         }
-		err = gpgme_get_key (ctx, recipients[n].c_str(),
+//                cout << recipients[n].c_str() << endl;
+        err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);
 	}

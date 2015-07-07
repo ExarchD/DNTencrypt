@@ -24,6 +24,7 @@ struct friends {
 std::vector<friends> list_friends(bool secret);
 extern std::string user_email;
 extern std::string server_ip;
+extern bool debug;
 
 
 #endif

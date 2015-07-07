@@ -16,7 +16,7 @@
 #include "objects.h"
 
 using namespace std;
-
+bool debug;
 string user_email;
 string server_ip;
 
@@ -146,12 +146,16 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
+    debug =1;
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
     encrypt2_init();
+    if (debug == 1 ) cout << "encryption initialized" << endl;
 	QApplication a(argc, argv);
-	MainWindow w;
+    MainWindow w;
+    if (debug == 1 ) cout << "main window loaded" << endl;
 	w.show();
 	return a.exec();
+    if (debug == 1 ) cout << "closing..." << endl;
 
 //     message_reader();
 

@@ -81,3 +81,4 @@ connor.behan@gmail.com
 dpmcgee@gmail.com
 dan@master-key.archlinux.org
 daniel@archlinux.org
+tails@boum.org

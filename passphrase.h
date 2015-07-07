@@ -16,11 +16,9 @@ public:
     ~Passphrase();
 
 private slots:
-    void on_lineEdit_returnPressed();
+ //   void on_lineEdit_returnPressed();
 
     void on_pushButton_2_clicked();
-
-    void on_label_linkActivated(const QString &link);
 
     void on_pushButton_clicked();
 
