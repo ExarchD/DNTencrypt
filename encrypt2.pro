@@ -21,11 +21,9 @@ FORMS += \
     mainwindow.ui \
     passphrase.ui \
     settings.ui
-win32: QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1
-unix: QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++11
-#macx:  QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++1
-#macx: LIBS+= -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error
-unix:  LIBS+= `gpgme-config  --cflags --libs`
+QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1a
+macx: LIBS+= -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error
+#unix:  LIBS+= `gpgme-config  --cflags --libs`
 win32: LIBS += -lWS2_32 -L$$PWD/ -llibgpgme-11
 win32: INCLUDEPATH += $$PWD/
 win32: DEPENDPATH += $$PWD/

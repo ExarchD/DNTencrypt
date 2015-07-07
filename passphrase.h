@@ -16,8 +16,6 @@ public:
     ~Passphrase();
 
 private slots:
- //   void on_lineEdit_returnPressed();
-
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();

@@ -10,9 +10,10 @@ Passphrase::Passphrase(QWidget *parent) :
     ui(new Ui::Passphrase)
 {
     ui->setupUi(this);
-    if (debug == 1 ) std::cout << "loading secret keys" << std::endl;
+    if (debug > 0 ) std::cout << "loading secret keys" << std::endl;
+//    ui->lineEdit->setEchoMode(QLineEdit::Password);
     std::vector<friends> list = list_friends(1);
-    if (debug == 1 ) std::cout << "loaded secret keys" << std::endl;
+    if (debug > 1 ) std::cout << "loaded secret keys" << std::endl;
     for (unsigned int h=0; h < list.size(); h++) {
 
     QString name = QString::fromStdString(list[h].name);
@@ -30,19 +31,6 @@ Passphrase::~Passphrase()
 {
     delete ui;
 }
-
-//void Passphrase::on_lineEdit_returnPressed()
-//{
-//   //std::string pass= ui->lineEdit->text().toStdString();
-//   QString raw_info=ui->comboBox->currentText();
-//   QStringList email_addr = raw_info.split('}').first().split('{');
-//   std::string email = email_addr.last().toStdString();
-//   config_edit(user_email, email);
-////    qDebug() << email_addr.first() << email_addr.last();
-////   int success = unlock_master_key(pass,email);
-////   if (!success) on_label_linkActivated("failed");
-//   //check password
-//}
 
 void Passphrase::on_pushButton_clicked()
 {

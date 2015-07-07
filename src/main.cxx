@@ -16,9 +16,9 @@
 #include "objects.h"
 
 using namespace std;
-bool debug;
 string user_email;
 string server_ip;
+int debug;
 
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
@@ -146,8 +146,7 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
-    user_email="pluthd@mac.com";
-    debug =1;
+debug = 2;
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
     //encrypt2_init();
     if (debug == 1 ) cout << "encryption initialized" << endl;

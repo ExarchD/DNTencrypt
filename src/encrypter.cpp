@@ -13,96 +13,12 @@ using namespace std;
 	gpgme_key_t key_sign;
 
 
-void print_data (gpgme_data_t dh)
-{
-#define BUF_SIZE 512
-	//      int length;
-	char buf[BUF_SIZE + 1];
-	int ret;
-	string b;
-	ret = gpgme_data_seek (dh, 0, SEEK_SET);
-	if (ret)
-		fail_if_err (gpgme_err_code_from_errno (errno));
-	while ((ret = gpgme_data_read (dh, buf, BUF_SIZE)) > 0){
-		for (int x = 0; x < ret; x++) {
-			b+= buf[x];
-		}
-		}
-	string c = "HI";
-	      const char * msg = c.c_str();
-          sender(server_ip.c_str(), 6655, msg, 512);
-
-	if (ret < 0)
-		fail_if_err (gpgme_err_code_from_errno (errno));
-}
-
-/*
-void init_gpgme (gpgme_protocol_t proto)
-{
-	gpgme_error_t err;
-
-	gpgme_check_version (NULL);
-	setlocale (LC_ALL, "");
-	gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
-#ifndef HAVE_W32_SYSTEM
-//	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
-#endif
-
-    if (debug == 1 ) std::cout << "loading gpgme engine" << std::endl;
-    err = gpgme_engine_check_version (proto);
-//    fail_if_err (err);
-	gpgme_ctx_t ctx;
-    if (debug == 1 ) std::cout << "getting " << user_email.c_str() << "'s key" << std::endl;
-    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
-    fail_if_err (err);
-    if (debug == 1 ) std::cout << "gpgme init finished" << std::endl;
-}
-*/
-void init_gpgme (gpgme_protocol_t proto)
-{
-gpgme_error_t   anError;
-
-setlocale (LC_ALL, "");
-printf("Checking version\n");
-gpgme_check_version (NULL);
-
-gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
-gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES,
-NULL));
-
-printf("Checking default configuration\n");
-anError = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
-if(anError != GPG_ERR_NO_ERROR)
-    cout <<"error" <<endl;
-
-printf("Changing executable path\n");
-anError = gpgme_set_engine_info(GPGME_PROTOCOL_OpenPGP, "/dummy/path", NULL);
-if(anError != GPG_ERR_NO_ERROR)
-    cout <<"error" <<endl;
-
-//printf("Checking new configuration: ");
-//anError = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
-//printf("%d\n", anError); /* anError  should be
-//GPG_ERR_INV_ENGINE */
-   gpgme_ctx_t ctx;
-   cout << "Loading key" << endl;
-   anError = gpgme_get_key (ctx, "pluthd@mac.com",&key_sign, 0);
-   cout << "Loaded key" << endl;
-}
-
-gpgme_error_t passphrase_cb (void *opaque, const char *uid_hint, const char *passphrase_info,int last_was_bad, int fd)
-{
-	//write (fd, "abc\n", 4);
-	write (fd, "1234\n", 5);	
-	return 0;
-}
-
-
 bool comparefriends(friends a, friends b) {
 	return a.name.compare(b.name) < 0;
 }
 
 vector<friends> list_friends (bool secret) {
+	if (debug > 0 ) cout << "loading friends" << endl;
 	vector<friends> friendlist;
 	vector<string> rejected;
 	string line;
@@ -119,16 +35,19 @@ vector<friends> list_friends (bool secret) {
 	gpgme_error_t err = gpgme_new (&ctx);
 	int skip = 0;
     fail_if_err (err);
+    if (debug > 1 ) cout << "looping through list" << endl;
 	if (!err)
 	{
 		err = gpgme_op_keylist_start (ctx, "", secret);
 		while (!err)
 		{
 			err = gpgme_op_keylist_next (ctx, &key);
+   			 if (debug > 1 ) cout << "next key" << endl;
 			if (err)
 				break;
 			if (key->uids && key->uids->name) {
 				if (key->uids && key->uids->email){
+   			 		if (debug > 1 ) cout << "key has email and id" << endl;
 					skip = 0;
 					for (unsigned int l=0; l<rejected.size(); l++) {
 						if (!secret && rejected[l] == key->uids->email) skip = 1;
@@ -184,7 +103,7 @@ int decrypter(string enc_msg, bool record) {
       return (1);
     }
 
-  print_data (out);
+  //print_data (out);
 
   gpgme_data_release (in);
   gpgme_data_release (out);
@@ -224,7 +143,7 @@ int decrypter2(string enc_msg2, bool record2) {
       return (1);
     }
 
-  print_data (out2);
+  //print_data (out2);
 
   gpgme_data_release (in2);
   gpgme_data_release (out2);
@@ -239,11 +158,8 @@ void send_data (string formated_message)
         char buf[BUF_SIZE + 1];
         int ret;
               const char * msg = formated_message.c_str();
+        	if (debug > 3 ) cout << formated_message << endl;
               sender(server_ip.c_str(), 6655, msg, 512);
- //             sender(server_ip, 66655, msg, 512);
-        //      msg=NULL;
-        //    client("128.141.249.147", 55566, msg, 512);
-//        cout << formated_message << endl;
 
         if (ret < 0)
                 fail_if_err (gpgme_err_code_from_errno (errno));
@@ -251,6 +167,7 @@ void send_data (string formated_message)
 
 
 void encrypter(vector<string> recipients, string msg) {
+	if (debug > 0 )  cout << "encryption algorythm starting" << endl;
 	gpgme_check_version (NULL);
 	gpgme_ctx_t ctx;
 	gpgme_error_t err;
@@ -258,7 +175,7 @@ void encrypter(vector<string> recipients, string msg) {
 	gpgme_encrypt_result_t result;
 	err = gpgme_new (&ctx);
 
-//	int num=0;
+    //int num=0;
 //	num=current_message_num();
 //	string num_str = std::to_string(num);
 
@@ -283,31 +200,34 @@ void encrypter(vector<string> recipients, string msg) {
 		fail_if_err (err);
 	}
 	err = gpgme_data_new_from_mem (&in, msg.c_str(), msg.length(), 0);
+	if (debug > 1 ) cout << "loading message"<< endl;
 	fail_if_err (err);
 	err = gpgme_data_new (&out);
 	fail_if_err (err);
+	if (debug > 1 ) cout << "cleaning signers"<< endl;
 	gpgme_signers_clear(ctx);
 	gpgme_key_t key_sign;
+	if (debug > 1 ) cout << "loading signer key"<< endl;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 	fail_if_err (err);
+	if (debug > 1 ) cout << "adding signer key"<< endl;
 	err = gpgme_signers_add(ctx,key_sign);
 	fail_if_err (err);
+        if (debug > 1 ) cout << "processing result"<< endl;
+        result = gpgme_op_encrypt_result (ctx);
+        if (debug > 1 ) cout << "processed result"<< endl;
 	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
+	if (debug > 1 ) cout << "encrypted and signed message"<< endl;
 	fail_if_err (err);
-	result = gpgme_op_encrypt_result (ctx);
-	if (result->invalid_recipients)
-	{
-		fprintf (stderr, "Invalid recipient encountered: %s\n",
-				result->invalid_recipients->fpr);
-		exit (1);
-	}
 #define BUF_SIZE 512
 	//        int length;
 	char buf[BUF_SIZE + 1];
 	int ret;
 
 	string b;
+	if (debug > 1 ) cout << "seeking through data"<< endl;
 	ret = gpgme_data_seek (out, 0, SEEK_SET);
+	if (debug > 1 ) cout << "loading data into a string" << endl;
 	if (ret)
 		fail_if_err (gpgme_err_code_from_errno (errno));
 	while ((ret = gpgme_data_read (out, buf, BUF_SIZE)) > 0){
@@ -315,7 +235,9 @@ void encrypter(vector<string> recipients, string msg) {
 			b+= buf[x];
 		}
 	}
-        send_data(sha1(b)+";"+b+";"+message_key);
+	if (!err) send_data(sha1(b)+";"+b+";"+message_key); 
+        if (!err){ if (debug > 0 )cout << "sending data" << endl; }
+	else if (debug > 0 ) cout << "not sending data, problems encrypting"<< endl;
 	gpgme_data_release (in);
 	gpgme_data_release (out);
 	gpgme_release (ctx);
