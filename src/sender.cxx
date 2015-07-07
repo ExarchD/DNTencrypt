@@ -55,18 +55,16 @@ sender(const char* host_int, int port_int, const char* msg, int length)
         if (sfd == -1)
             continue;
 
-        if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1){
+        if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1)
             break;                  /* Success */
-}
+
         close(sfd);
     }
-
 
     if (rp == NULL) {               /* No address succeeded */
         fprintf(stderr, "Could not connect\n");
         exit(EXIT_FAILURE);
     }
-
 
     freeaddrinfo(result);           /* No longer needed */
     /* Send remaining command-line arguments as separate
@@ -106,7 +104,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 #else
   
         if (write(sfd, msg, len) != len) {
-            cout <<"partial/failed write" <<endl;
+            fprintf(stderr, "partial/failed write\n");
             exit(EXIT_FAILURE);
         }
 #endif   
@@ -117,14 +115,15 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 // recieves the data in 512 byte chunks
 // not sure if that's ideal or not
 // should check what the best sized chunk of data is
-/*
+
         nread = read(sfd, buf, length);
-	cout << buf << endl;
         if (nread == -1) {
-            perror("read");
-            exit(EXIT_FAILURE);
+        perror("read");
+	cout << "MESSAGE NOT SENT" << endl;
+	cout << "please double check your server settings" << endl;
+	return 1;
         }
-*/
+
     //    printf("Received %ld bytes: %s\n", (long) nread, buf);
     }
    return len;
