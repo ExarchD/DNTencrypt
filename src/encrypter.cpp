@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstring>
 #include "sha1.h"
+#include <locale.h>
 using namespace std;
 
 	gpgme_key_t key_sign;
@@ -35,7 +36,7 @@ void print_data (gpgme_data_t dh)
 		fail_if_err (gpgme_err_code_from_errno (errno));
 }
 
-
+/*
 void init_gpgme (gpgme_protocol_t proto)
 {
 	gpgme_error_t err;
@@ -47,15 +48,49 @@ void init_gpgme (gpgme_protocol_t proto)
 //	gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
 #endif
 
+    if (debug == 1 ) std::cout << "loading gpgme engine" << std::endl;
     err = gpgme_engine_check_version (proto);
-    fail_if_err (err);
+//    fail_if_err (err);
 	gpgme_ctx_t ctx;
-	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+    if (debug == 1 ) std::cout << "getting " << user_email.c_str() << "'s key" << std::endl;
+    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+    fail_if_err (err);
+    if (debug == 1 ) std::cout << "gpgme init finished" << std::endl;
+}
+*/
+void init_gpgme (gpgme_protocol_t proto)
+{
+gpgme_error_t   anError;
+
+setlocale (LC_ALL, "");
+printf("Checking version\n");
+gpgme_check_version (NULL);
+
+gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
+gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES,
+NULL));
+
+printf("Checking default configuration\n");
+anError = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
+if(anError != GPG_ERR_NO_ERROR)
+    cout <<"error" <<endl;
+
+printf("Changing executable path\n");
+anError = gpgme_set_engine_info(GPGME_PROTOCOL_OpenPGP, "/dummy/path", NULL);
+if(anError != GPG_ERR_NO_ERROR)
+    cout <<"error" <<endl;
+
+//printf("Checking new configuration: ");
+//anError = gpgme_engine_check_version(GPGME_PROTOCOL_OpenPGP);
+//printf("%d\n", anError); /* anError  should be
+//GPG_ERR_INV_ENGINE */
+   gpgme_ctx_t ctx;
+   cout << "Loading key" << endl;
+   anError = gpgme_get_key (ctx, "pluthd@mac.com",&key_sign, 0);
+   cout << "Loaded key" << endl;
 }
 
-	gpgme_error_t
-passphrase_cb (void *opaque, const char *uid_hint, const char *passphrase_info,
-		int last_was_bad, int fd)
+gpgme_error_t passphrase_cb (void *opaque, const char *uid_hint, const char *passphrase_info,int last_was_bad, int fd)
 {
 	//write (fd, "abc\n", 4);
 	write (fd, "1234\n", 5);	

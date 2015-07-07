@@ -14,7 +14,7 @@ CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefau
 CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
-CXXFLAGS      = -pipe -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++11 -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++11 -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
+CXXFLAGS      = -pipe -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++11 -O2 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk -mmacosx-version-min=10.7 -Wall -W -fPIE $(DEFINES)
 INCPATH       = -I. -I. -Iinclude -I/usr/local/include -I../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers -I../../Qt/5.4/clang_64/lib/QtGui.framework/Versions/5/Headers -I../../Qt/5.4/clang_64/lib/QtConcurrent.framework/Versions/5/Headers -I../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I../../Qt/5.4/clang_64/mkspecs/macx-clang -F/Users/dpluth/Qt/5.4/clang_64/lib
 QMAKE         = /Users/dpluth/Desktop/qmake
 DEL_FILE      = rm -f
@@ -36,7 +36,7 @@ DISTNAME      = encrypt21.0.0
 DISTDIR = /Users/dpluth/Source/DNTencrypt/.tmp/encrypt21.0.0
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 LFLAGS        = -headerpad_max_install_names -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk -mmacosx-version-min=10.7 -Wl,-rpath,/Users/dpluth/Qt/5.4/clang_64/lib
-LIBS          = $(SUBLIBS) -F/Users/dpluth/Qt/5.4/clang_64/lib -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtConcurrent -framework OpenGL -framework AGL 
+LIBS          = $(SUBLIBS) -F/Users/dpluth/Qt/5.4/clang_64/lib `gpgme-config --cflags --libs` -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtConcurrent -framework OpenGL -framework AGL 
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
 SED           = sed

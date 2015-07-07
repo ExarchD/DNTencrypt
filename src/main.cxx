@@ -146,9 +146,10 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
+    user_email="pluthd@mac.com";
     debug =1;
 init_gpgme (GPGME_PROTOCOL_OpenPGP);
-    encrypt2_init();
+    //encrypt2_init();
     if (debug == 1 ) cout << "encryption initialized" << endl;
 	QApplication a(argc, argv);
     MainWindow w;
