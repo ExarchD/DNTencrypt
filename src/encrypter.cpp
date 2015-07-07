@@ -32,6 +32,7 @@ void print_data (gpgme_data_t dh)
 	      const char * msg = c.c_str();
 	// cout << b << endl;
 	 //     sender("127.0.0.1", 55566, msg, 512);
+cout << "attempting send" << endl;
           sender(server_ip.c_str(), 6655, msg, 512);
 	//      msg=NULL;
 	//    client("128.141.249.147", 55566, msg, 512);
@@ -85,6 +86,7 @@ vector<friends> list_friends (bool secret) {
 	//      gpgme_encrypt_result_t result;
 	gpgme_ctx_t ctx;
 	gpgme_key_t key;
+	cout << "loading friends" << endl;
 	gpgme_error_t err = gpgme_new (&ctx);
 	int skip = 0;
 	fail_if_err (err);
@@ -107,7 +109,7 @@ vector<friends> list_friends (bool secret) {
 						friendlist.push_back(afriend);
 					}
 				}}
-			putchar ('\n');
+//			putchar ('\n');
 			gpgme_key_release (key);
 		}
 		gpgme_release (ctx);
@@ -208,11 +210,8 @@ void send_data (string formated_message)
         char buf[BUF_SIZE + 1];
         int ret;
               const char * msg = formated_message.c_str();
+        	cout << formated_message << endl;
               sender(server_ip.c_str(), 6655, msg, 512);
-//              sender("90.41.180.202", 66655, msg, 512);
-        //      msg=NULL;
-        //    client("128.141.249.147", 55566, msg, 512);
-        cout << formated_message << endl;
 
         if (ret < 0)
                 fail_if_err (gpgme_err_code_from_errno (errno));
@@ -250,31 +249,34 @@ void encrypter(vector<string> recipients, string msg) {
 		fail_if_err (err);
 	}
 	err = gpgme_data_new_from_mem (&in, msg.c_str(), msg.length(), 0);
+	cout << "loading message"<< endl;
 	fail_if_err (err);
 	err = gpgme_data_new (&out);
 	fail_if_err (err);
+	cout << "cleaning signers"<< endl;
 	gpgme_signers_clear(ctx);
 	gpgme_key_t key_sign;
+	cout << "loading signer key"<< endl;
 	err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
 	fail_if_err (err);
+	cout << "adding signer key"<< endl;
 	err = gpgme_signers_add(ctx,key_sign);
 	fail_if_err (err);
+        cout << "processing result"<< endl;
+        result = gpgme_op_encrypt_result (ctx);
+        cout << "processed result"<< endl;
 	err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
+	cout << "encrypted and signed message"<< endl;
 	fail_if_err (err);
-	result = gpgme_op_encrypt_result (ctx);
-	if (result->invalid_recipients)
-	{
-		fprintf (stderr, "Invalid recipient encountered: %s\n",
-				result->invalid_recipients->fpr);
-		exit (1);
-	}
 #define BUF_SIZE 512
 	//        int length;
 	char buf[BUF_SIZE + 1];
 	int ret;
 
 	string b;
+	cout << "seeking through data"<< endl;
 	ret = gpgme_data_seek (out, 0, SEEK_SET);
+	cout << "loading data into a string" << endl;
 	if (ret)
 		fail_if_err (gpgme_err_code_from_errno (errno));
 	while ((ret = gpgme_data_read (out, buf, BUF_SIZE)) > 0){
@@ -282,7 +284,9 @@ void encrypter(vector<string> recipients, string msg) {
 			b+= buf[x];
 		}
 	}
-        send_data(sha1(b)+";"+b+";"+message_key);
+	if (!err) send_data(sha1(b)+";"+b+";"+message_key); 
+        if (!err){ cout << "sending data" << endl; }
+	else  cout << "not sending data, problems encrypting"<< endl;
 	gpgme_data_release (in);
 	gpgme_data_release (out);
 	gpgme_release (ctx);

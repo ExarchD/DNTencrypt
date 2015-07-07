@@ -41,7 +41,6 @@
           fprintf (stderr, "%s:%d: %s: %s\n",			\
                    __FILE__, __LINE__, gpgme_strsource (err),	\
 		   gpgme_strerror (err));			\
-          exit (1);						\
         }							\
     }								\
   while (0)
