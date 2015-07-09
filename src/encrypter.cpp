@@ -155,22 +155,25 @@ void encrypter(vector<string> recipients, string msg) {
 
 	fail_if_err (err);
 	gpgme_set_armor (ctx, 1);
-        cout << user_email << endl;
 	recipients.push_back(user_email);
+	if (debug > 1 ) cout << "recipients loaded"<< endl;
 	int n_recipients = recipients.size();
 	gpgme_key_t key[n_recipients];
-	string message_key;
+	if (debug > 1 ) cout << "clearing message"<< endl;
+	string message_key="";
+	if (debug > 1 ) cout << "cleared message"<< endl;
 	string ident;
 	for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
 	for (int n = 0; n < n_recipients; n++) {
         if (recipients[n] != user_email){
-            message_key+=sha1(key[n]->subkeys->keyid);
-            if (n!=n_recipients-2) message_key+=",";
-        }
-//                cout << recipients[n].c_str() << endl;
         err = gpgme_get_key (ctx, recipients[n].c_str(),
 				&key[n], 0);
 		fail_if_err (err);
+	if (debug > 1 ) cout << "adding hash of sub keys"<< endl;
+            message_key+=sha1(key[n]->subkeys->keyid);
+	if (debug > 1 ) cout << "adding delimiter"<< endl;
+            if (n!=n_recipients-2) message_key+=",";
+        }
 	}
 	err = gpgme_data_new_from_mem (&in, msg.c_str(), msg.length(), 0);
 	if (debug > 1 ) cout << "loading message"<< endl;

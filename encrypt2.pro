@@ -23,7 +23,9 @@ FORMS += \
     settings.ui
 QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1a
 macx: LIBS+= -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error
-#unix:  LIBS+= `gpgme-config  --cflags --libs`
+unix:!macx {
+LIBS+= `gpgme-config  --cflags --libs`
+}
 win32: LIBS += -lWS2_32 -L$$PWD/ -llibgpgme-11
 win32: INCLUDEPATH += $$PWD/
 win32: DEPENDPATH += $$PWD/
