@@ -23,13 +23,6 @@ int debug;
 void store_line(string key, string value) {
 	if (key == "user_email") user_email=value;
 	if (key == "server_ip") server_ip=value;
-	cout << key <<" " << value  << endl;
-}
-
-void set_serverip(std::string serverip) 
-{
-	server_ip=serverip;
-	store_line(server_ip,serverip);
 }
 
 void config_edit(string key_new, string value_new) {
@@ -44,7 +37,7 @@ void config_edit(string key_new, string value_new) {
 	{
 		string key;
 		key = strTemp.substr(0, strTemp.find("="));
-		cout << key  << " " << key_new << endl;
+		cout << key_new  << " " << value_new << endl;
 		if(key == key_new){
 			strTemp = key_new+"="+value_new;
 		}
@@ -147,7 +140,7 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
-	debug = 2;
+//	debug = 2;
 	init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	encrypt2_init();
 	if (debug == 1 ) cout << "encryption initialized" << endl;

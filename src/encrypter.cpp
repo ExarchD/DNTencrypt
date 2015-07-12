@@ -1,4 +1,5 @@
 #include "objects.h"
+#include <thread>
 #include <gpgme.h>
 #include "t-support.h"
 #include <string>
@@ -159,7 +160,10 @@ void send_data (string formated_message)
     const char * msg = formated_message.c_str();
     if (debug > 3 ) cout << formated_message << endl;
     //        	cout << formated_message << endl;
-    sender(server_ip.c_str(), 6655, msg, 512);
+    thread sending (sender,server_ip.c_str(), 6655, msg, 512);
+    sending.detach();
+
+  //  sender(server_ip.c_str(), 6655, msg, 512);
 }
 
 

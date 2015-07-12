@@ -25,7 +25,6 @@ settings::~settings()
 
 void settings::on_buttonBox_clicked(QAbstractButton *button)
 {
-    std::cout << button->text().toStdString() << std::endl;
     if (button->text() == "Apply"){
     std::string ip = ui->lineEdit->text().toStdString();
     char str[INET_ADDRSTRLEN];
@@ -37,7 +36,7 @@ void settings::on_buttonBox_clicked(QAbstractButton *button)
 #endif
      else {
          ui->label_2->hide();
-    set_serverip(ip);
+    config_edit("server_ip", ip);
      }
     }
 }

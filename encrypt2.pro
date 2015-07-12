@@ -21,7 +21,7 @@ FORMS += \
     mainwindow.ui \
     passphrase.ui \
     settings.ui
-QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1a
+QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++11
 macx: LIBS+= -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error
 unix:!macx {
 LIBS+= `gpgme-config  --cflags --libs`

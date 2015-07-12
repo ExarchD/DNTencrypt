@@ -97,7 +97,6 @@ sender(const char* host_int, int port_int, const char* msg, int length)
                          msg, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
         if (iResult == SOCKET_ERROR) {
             wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
-          //  closesocket(SendSocket);
             WSACleanup();
             return 1;
         }
@@ -126,6 +125,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 
     //    printf("Received %ld bytes: %s\n", (long) nread, buf);
     }
-   return len;
+    cout << buf << endl;
+   return 0;
     //exit(EXIT_SUCCESS);
 }

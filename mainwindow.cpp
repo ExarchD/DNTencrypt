@@ -3,7 +3,6 @@
 #include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
-#include <QThread>
 #include <qtconcurrentrun.h>
 #include <passphrase.h>
 #include <QKeyEvent>
