@@ -176,7 +176,8 @@ void encrypter(vector<string> recipients, string msg) {
     //gpgme_encrypt_result_t result;
     err = gpgme_new (&ctx);
 
-    //int num=0;
+    int msg_index;
+    msg_index=4;
     //	num=current_message_num();
     //	string num_str = std::to_string(num);
 
@@ -189,6 +190,7 @@ void encrypter(vector<string> recipients, string msg) {
     gpgme_key_t key[n_recipients];
     if (debug > 1 ) cout << "clearing message"<< endl;
     string message_key="";
+    string recipts_key="";
     if (debug > 1 ) cout << "cleared message"<< endl;
     string ident;
     for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
@@ -196,11 +198,13 @@ void encrypter(vector<string> recipients, string msg) {
             err = gpgme_get_key (ctx, recipients[n].c_str(),
                     &key[n], 0);
             fail_if_err (err);
+            message_key+=key[n]->subkeys->keyid;
+            if (n!=n_recipients-1) message_key+=",";
         if (recipients[n] != user_email){
             if (debug > 1 ) cout << "adding hash of sub keys"<< endl;
-            message_key+=sha1(key[n]->subkeys->keyid);
+            recipts_key+=sha1(key[n]->subkeys->keyid+msg_index);
             if (debug > 1 ) cout << "adding delimiter"<< endl;
-            if (n!=n_recipients-2) message_key+=",";
+            if (n!=n_recipients-2) recipts_key+=",";
         }
     }
     err = gpgme_data_new_from_mem (&in, msg.c_str(), msg.length(), 0);
@@ -239,7 +243,7 @@ void encrypter(vector<string> recipients, string msg) {
             b+= buf[x];
         }
     }
-    if (!err) send_data("0;"+sha1(b)+";"+b+";"+message_key); 
+    if (!err) send_data("0;"+sha1(message_key+msg_index)+";"+b+";"+recipts_key); 
     if (!err){ if (debug > 0 )cout << "sending data" << endl; }
     else if (debug > 0 ) cout << "not sending data, problems encrypting"<< endl;
     gpgme_data_release (in);
