@@ -12,7 +12,8 @@ int start_mainwindow();
 void set_user(std::string email);
 void set_serverip(std::string ip_addr);
 int exit_program();
-int decrypter(std::string enc_msg);
+int msg_to_gpgme_data(std::string enc_msg);
+int decrypter(gpgme_data_t in);
 void message_reader();
 void thread_message_reader(std::vector<std::string> enc_messages, int begin, int end);
 void config_edit(std::string key_new, std::string value_new);
@@ -27,5 +28,5 @@ std::vector<friends> list_friends(bool secret);
 extern std::string user_email;
 extern std::string server_ip;
 extern int debug;
-
+extern int msg_index;
 #endif

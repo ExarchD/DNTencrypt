@@ -114,12 +114,31 @@ vector<friends> list_friends (bool secret) {
     return friendlist;
 }
 
+string print_data (gpgme_data_t out) {
+#define BUF_SIZE 512
+    //        int length;
+    char buf[BUF_SIZE + 1];
+    int ret;
 
-int decrypter(string enc_msg) {
+    string b;
+    if (debug > 1 ) cout << "seeking through data"<< endl;
+    ret = gpgme_data_seek (out, 0, SEEK_SET);
+    if (debug > 1 ) cout << "loading data into a string" << endl;
+    if (ret)
+        fail_if_err (gpgme_err_code_from_errno (errno));
+    while ((ret = gpgme_data_read (out, buf, BUF_SIZE)) > 0){
+        for (int x = 0; x < ret; x++) {
+            b+= buf[x];
+        }
+    }
+return b;
+}
+
+
+int msg_to_gpgme_data(string enc_msg) {
     gpgme_ctx_t ctx;
     gpgme_error_t err;
-    gpgme_data_t in, out;
-    gpgme_decrypt_result_t result;
+    gpgme_data_t in;
     err = gpgme_new (&ctx);
     fail_if_err (err);
     if (err) return 1;
@@ -128,7 +147,21 @@ int decrypter(string enc_msg) {
     err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
     fail_if_err (err);
     if (err) return 1;
+    decrypter(in);
+    return 0;
+}
 
+
+
+
+
+
+int decrypter(gpgme_data_t in) {
+    gpgme_ctx_t ctx;
+    gpgme_error_t err;
+    gpgme_data_t out;
+    err = gpgme_new (&ctx);
+    gpgme_decrypt_result_t result;
     err = gpgme_data_new (&out);
     fail_if_err (err);
     if (err) return 1;
@@ -145,7 +178,7 @@ int decrypter(string enc_msg) {
         return (1);
     }
 
-    //print_data (out);
+    cout << print_data (out) << endl;
 
     gpgme_data_release (in);
     gpgme_data_release (out);
@@ -153,6 +186,9 @@ int decrypter(string enc_msg) {
     return 0;
 
 }	
+
+
+
 
 
 void send_data (string formated_message)
@@ -176,11 +212,9 @@ void encrypter(vector<string> recipients, string msg) {
     //gpgme_encrypt_result_t result;
     err = gpgme_new (&ctx);
 
-    int msg_index;
-    msg_index=4;
     //	num=current_message_num();
     //	string num_str = std::to_string(num);
-
+    msg_index=1;
 
     fail_if_err (err);
     gpgme_set_armor (ctx, 1);
@@ -243,7 +277,8 @@ void encrypter(vector<string> recipients, string msg) {
             b+= buf[x];
         }
     }
-    if (!err) send_data("0;"+sha1(message_key+msg_index)+";"+b+";"+recipts_key); 
+    string full_msg_key=message_key+to_string(msg_index);
+    if (!err) send_data("0;"+sha1(full_msg_key)+";"+b+";"+recipts_key); 
     if (!err){ if (debug > 0 )cout << "sending data" << endl; }
     else if (debug > 0 ) cout << "not sending data, problems encrypting"<< endl;
     gpgme_data_release (in);

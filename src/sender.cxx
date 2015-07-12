@@ -91,7 +91,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
         RecvAddr.sin_family = AF_INET;
         unsigned short Port = 6655;
         RecvAddr.sin_port = htons(Port);
-        RecvAddr.sin_addr.s_addr = inet_addr("192.168.1.1");
+        RecvAddr.sin_addr.s_addr = inet_addr("192.168.1.1"); //this is likely a problem...
 
         iResult = sendto(sfd,
                          msg, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
@@ -125,7 +125,16 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 
     //    printf("Received %ld bytes: %s\n", (long) nread, buf);
     }
-    cout << buf << endl;
+    string encrypt_return=string(buf);
+    if (encrypt_return == "SUCCESS") return 0;
+    if (encrypt_return == "Failure") return 1;
+    if (encrypt_return.find("-----BEGIN PGP MESSAGE-----") == 0)
+    {
+       msg_to_gpgme_data(encrypt_return);
+    }
+
+//    if (buf == "exists");
+    msg_index++;
    return 0;
     //exit(EXIT_SUCCESS);
 }

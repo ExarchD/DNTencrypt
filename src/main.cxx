@@ -19,6 +19,8 @@ using namespace std;
 string user_email;
 string server_ip;
 int debug;
+int msg_index;
+
 
 void store_line(string key, string value) {
 	if (key == "user_email") user_email=value;
@@ -144,6 +146,12 @@ int main (int argc, char* argv[] ) {
 	init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	encrypt2_init();
 	if (debug == 1 ) cout << "encryption initialized" << endl;
+
+        string ret_message="1;ff65dd5f02cff93809b8ec90ba46b16a2f60f545;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
+        sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
+
+
+
 	QApplication a(argc, argv);
 	MainWindow w;
 	if (debug == 1 ) cout << "main window loaded" << endl;
