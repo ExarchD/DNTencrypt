@@ -171,15 +171,20 @@ int decrypter(gpgme_data_t in) {
     gpgme_data_t out;
     err = gpgme_new (&ctx);
     gpgme_decrypt_result_t result;
+    gpgme_verify_result_t sig_result;
     err = gpgme_data_new (&out);
     fail_if_err (err);
     if (err) return 1;
 
     err = gpgme_op_decrypt_verify (ctx, in, out);
+    sig_result = gpgme_op_verify_result (ctx);
+    cout << sig_result->signatures->timestamp << endl;
+    time_t timeGMT = (time_t)sig_result->signatures->timestamp;
+    cout << ctime (&timeGMT) << endl;;
     fail_if_err (err);
     if (err) return 1;
     result = gpgme_op_decrypt_result (ctx);
-
+    cout << result->recipients->keyid << endl;
     if (result->unsupported_algorithm)
     {
         fprintf (stderr, "%s:%i: unsupported algorithm: %s\n",
