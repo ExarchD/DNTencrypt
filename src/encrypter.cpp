@@ -66,6 +66,7 @@ vector<friends> list_friends (bool secret) {
                 if (key->uids && key->uids->email){
                     if (debug > 1 ) cout << "key has email and id" << endl;
                     skip = 0;
+                    if (  !secret && user_email == key->uids->email ) skip =1;
                     for (unsigned int l=0; l<rejected.size(); l++) {
                         if (!secret && rejected[l] == key->uids->email) skip = 1;
                     }
