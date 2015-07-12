@@ -12,6 +12,7 @@
 using namespace std;
 
 gpgme_key_t key_sign;
+gpgme_ctx_t ctx;
 
 
 void init_gpgme (gpgme_protocol_t proto)
@@ -31,7 +32,6 @@ void init_gpgme (gpgme_protocol_t proto)
 
 void load_key () {
     gpgme_error_t err;
-    gpgme_ctx_t ctx;
     err = gpgme_new (&ctx);
     fail_if_err (err);
     cout << "user email: " << user_email << endl;
@@ -42,14 +42,12 @@ void load_key () {
 void gen_key (const char* xml_string) 
 {
     gpgme_error_t err;
-    gpgme_ctx_t ctx;
     err = gpgme_op_genkey_start(ctx, xml_string,  NULL, NULL);
     fail_if_err (err);
 }
 
 int gpg_wait () {
     gpgme_error_t err;
-    gpgme_ctx_t ctx;
     gpgme_wait(ctx, &err, 1);
     return 0;
 }
@@ -72,7 +70,6 @@ vector<friends> list_friends (bool secret) {
     myfile.close();
     //	gpgme_check_version (NULL);
     //      gpgme_encrypt_result_t result;
-    gpgme_ctx_t ctx;
     gpgme_key_t key;
     gpgme_error_t err = gpgme_new (&ctx);
     int skip = 0;
@@ -136,7 +133,21 @@ return b;
 
 
 int msg_to_gpgme_data(string enc_msg) {
-    gpgme_ctx_t ctx;
+    gpgme_error_t err;
+    gpgme_data_t in;
+    err = gpgme_new (&ctx);
+    fail_if_err (err);
+    if (err) return 1;
+    const char *buf = enc_msg.c_str();
+    size_t nread=strlen(buf);
+    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
+    fail_if_err (err);
+    if (err) return 1;
+    decrypter(in);
+    return 0;
+}
+
+int file_to_gpgme_data(string enc_msg) {
     gpgme_error_t err;
     gpgme_data_t in;
     err = gpgme_new (&ctx);
@@ -155,9 +166,7 @@ int msg_to_gpgme_data(string enc_msg) {
 
 
 
-
 int decrypter(gpgme_data_t in) {
-    gpgme_ctx_t ctx;
     gpgme_error_t err;
     gpgme_data_t out;
     err = gpgme_new (&ctx);
@@ -177,9 +186,7 @@ int decrypter(gpgme_data_t in) {
                 __FILE__, __LINE__, result->unsupported_algorithm);
         return (1);
     }
-
     cout << print_data (out) << endl;
-
     gpgme_data_release (in);
     gpgme_data_release (out);
     gpgme_release (ctx);
@@ -206,7 +213,6 @@ void send_data (string formated_message)
 void encrypter(vector<string> recipients, string msg) {
     if (debug > 0 )  cout << "encryption algorythm starting" << endl;
     gpgme_check_version (NULL);
-    gpgme_ctx_t ctx;
     gpgme_error_t err;
     gpgme_data_t in, out;
     //gpgme_encrypt_result_t result;

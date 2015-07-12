@@ -17,7 +17,7 @@
 #include <iostream>
 using namespace std;
 
-int
+    int
 sender(const char* host_int, int port_int, const char* msg, int length)
 {
     struct addrinfo hints;
@@ -26,8 +26,8 @@ sender(const char* host_int, int port_int, const char* msg, int length)
     size_t len;
     ssize_t nread;
     char buf[length];
-//    char host[256];
-//    sprintf(host, "%d", host_int);
+    //    char host[256];
+    //    sprintf(host, "%d", host_int);
     char port[256];
     sprintf(port, "%d", port_int);
     /* Obtain address(es) matching host/port */
@@ -51,7 +51,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
 
     for (rp = result; rp != NULL; rp = rp->ai_next) {
         sfd = socket(rp->ai_family, rp->ai_socktype,
-                     rp->ai_protocol);
+                rp->ai_protocol);
         if (sfd == -1)
             continue;
 
@@ -71,8 +71,8 @@ sender(const char* host_int, int port_int, const char* msg, int length)
        datagrams, and read responses from server */
     for (j = 3; j < 4; j++) {
         len = strlen(msg);
-                /* +1 for terminating null byte */
-          //cout << len << " " << length << endl;
+        /* +1 for terminating null byte */
+        //cout << len << " " << length << endl;
         if (len  != len) {
             fprintf(stderr,
                     "Ignoring long message in argument %d\n", j);
@@ -94,47 +94,50 @@ sender(const char* host_int, int port_int, const char* msg, int length)
         RecvAddr.sin_addr.s_addr = inet_addr("192.168.1.1"); //this is likely a problem...
 
         iResult = sendto(sfd,
-                         msg, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
+                msg, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
         if (iResult == SOCKET_ERROR) {
             wprintf(L"sendto failed with error: %d\n", WSAGetLastError());
             WSACleanup();
             return 1;
         }
 #else
-  
+
         if (write(sfd, msg, len) != len) {
             fprintf(stderr, "partial/failed write\n");
             exit(EXIT_FAILURE);
         }
 #endif   
-//        fwrite (msg, , 1, stdout);
+        //        fwrite (msg, , 1, stdout);
 
-// add loop so that we can send in 512 chunks
-// possibly remove my 'fix' so that the client app
-// recieves the data in 512 byte chunks
-// not sure if that's ideal or not
-// should check what the best sized chunk of data is
+        // add loop so that we can send in 512 chunks
+        // possibly remove my 'fix' so that the client app
+        // recieves the data in 512 byte chunks
+        // not sure if that's ideal or not
+        // should check what the best sized chunk of data is
 
         nread = read(sfd, buf, length);
         if (nread == -1) {
-        perror("read");
-	cout << "MESSAGE NOT SENT" << endl;
-	cout << "please double check your server settings" << endl;
-	return 1;
+            perror("read");
+            cout << "MESSAGE NOT SENT" << endl;
+            cout << "please double check your server settings" << endl;
+            return 1;
         }
 
-    //    printf("Received %ld bytes: %s\n", (long) nread, buf);
+        //    printf("Received %ld bytes: %s\n", (long) nread, buf);
     }
     string encrypt_return=string(buf);
     if (encrypt_return == "SUCCESS") return 0;
     if (encrypt_return == "Failure") return 1;
     if (encrypt_return.find("-----BEGIN PGP MESSAGE-----") == 0)
     {
-       msg_to_gpgme_data(encrypt_return);
+        string delimiter = ";";
+        string finalmsg=encrypt_return.substr(0, encrypt_return.find(delimiter));
+        database_insert(finalmsg);
+        msg_to_gpgme_data(finalmsg);
     }
 
-//    if (buf == "exists");
+    //    if (buf == "exists");
     msg_index++;
-   return 0;
+    return 0;
     //exit(EXIT_SUCCESS);
 }

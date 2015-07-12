@@ -13,6 +13,7 @@ SOURCES += src/main.cxx src/sender.cxx \
     src/encrypter.cpp \
     src/retriever.cpp \
     src/sha1.cpp \
+    src/sql.cpp \
     settings.cpp
 
 QT       += core gui
@@ -24,7 +25,7 @@ FORMS += \
 QMAKE_CXXFLAGS += -D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1 -std=c++11
 macx: LIBS+= -I/usr/local/include -L/usr/local/lib -lgpgme -lassuan -lgpg-error
 unix:!macx {
-LIBS+= `gpgme-config  --cflags --libs`
+LIBS+= `gpgme-config  --cflags --libs` -lsqlite3 
 }
 win32: LIBS += -lWS2_32 -L$$PWD/ -llibgpgme-11
 win32: INCLUDEPATH += $$PWD/

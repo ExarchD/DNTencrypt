@@ -20,6 +20,7 @@ void config_edit(std::string key_new, std::string value_new);
 void gen_key (const char * xml_string);
 int gpg_wait ();
 void load_key();
+int database_insert(std::string message);
 struct friends {
    std::string name;
    std::string email;

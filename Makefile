@@ -36,7 +36,7 @@ DISTNAME      = encrypt21.0.0
 DISTDIR = /home/dpluth/Documents/DNTEncrypt/.tmp/encrypt21.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-O1,--sort-common,--as-needed,-z,relro
-LIBS          = $(SUBLIBS) `gpgme-config --cflags --libs` -lQt5Widgets -lQt5Gui -lQt5Concurrent -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) `gpgme-config --cflags --libs` -lsqlite3 -lQt5Widgets -lQt5Gui -lQt5Concurrent -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -55,6 +55,7 @@ SOURCES       = src/main.cxx \
 		src/encrypter.cpp \
 		src/retriever.cpp \
 		src/sha1.cpp \
+		src/sql.cpp \
 		settings.cpp moc_mainwindow.cpp \
 		moc_passphrase.cpp \
 		moc_settings.cpp
@@ -65,6 +66,7 @@ OBJECTS       = main.o \
 		encrypter.o \
 		retriever.o \
 		sha1.o \
+		sql.o \
 		settings.o \
 		moc_mainwindow.o \
 		moc_passphrase.o \
@@ -200,6 +202,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		src/encrypter.cpp \
 		src/retriever.cpp \
 		src/sha1.cpp \
+		src/sql.cpp \
 		settings.cpp
 QMAKE_TARGET  = encrypt2
 DESTDIR       = #avoid trailing-slash linebreak
@@ -495,7 +498,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents include/objects.h include/t-support.h mainwindow.h passphrase.h include/sha1.h settings.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cxx src/sender.cxx mainwindow.cpp passphrase.cpp src/encrypter.cpp src/retriever.cpp src/sha1.cpp settings.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cxx src/sender.cxx mainwindow.cpp passphrase.cpp src/encrypter.cpp src/retriever.cpp src/sha1.cpp src/sql.cpp settings.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui passphrase.ui settings.ui $(DISTDIR)/
 
 
@@ -595,6 +598,9 @@ retriever.o: src/retriever.cpp
 
 sha1.o: src/sha1.cpp include/sha1.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sha1.o src/sha1.cpp
+
+sql.o: src/sql.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sql.o src/sql.cpp
 
 settings.o: settings.cpp settings.h \
 		ui_settings.h \
