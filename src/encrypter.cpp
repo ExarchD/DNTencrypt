@@ -12,6 +12,7 @@ using namespace std;
 
 gpgme_key_t key_sign;
 
+
 void init_gpgme (gpgme_protocol_t proto)
 {
     gpgme_error_t err;
@@ -25,8 +26,31 @@ void init_gpgme (gpgme_protocol_t proto)
 
     err = gpgme_engine_check_version (proto);
     fail_if_err (err);
+}
+
+void load_key () {
+    gpgme_error_t err;
     gpgme_ctx_t ctx;
+    err = gpgme_new (&ctx);
+    fail_if_err (err);
+    cout << "user email: " << user_email << endl;
     err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+    fail_if_err (err);
+}
+
+void gen_key (const char* xml_string) 
+{
+    gpgme_error_t err;
+    gpgme_ctx_t ctx;
+    err = gpgme_op_genkey_start(ctx, xml_string,  NULL, NULL);
+    fail_if_err (err);
+}
+
+int gpg_wait () {
+    gpgme_error_t err;
+    gpgme_ctx_t ctx;
+    gpgme_wait(ctx, &err, 1);
+    return 0;
 }
 
 
@@ -90,7 +114,7 @@ vector<friends> list_friends (bool secret) {
 }
 
 
-int decrypter(string enc_msg, bool record) {
+int decrypter(string enc_msg) {
     gpgme_ctx_t ctx;
     gpgme_error_t err;
     gpgme_data_t in, out;
@@ -98,7 +122,6 @@ int decrypter(string enc_msg, bool record) {
     err = gpgme_new (&ctx);
     fail_if_err (err);
     if (err) return 1;
-    gpgme_key_t key;
     const char *buf = enc_msg.c_str();
     size_t nread=strlen(buf);
     err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
@@ -146,7 +169,7 @@ void encrypter(vector<string> recipients, string msg) {
     gpgme_ctx_t ctx;
     gpgme_error_t err;
     gpgme_data_t in, out;
-    gpgme_encrypt_result_t result;
+    //gpgme_encrypt_result_t result;
     err = gpgme_new (&ctx);
 
     //int num=0;
@@ -166,10 +189,10 @@ void encrypter(vector<string> recipients, string msg) {
     string ident;
     for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
     for (int n = 0; n < n_recipients; n++) {
-        if (recipients[n] != user_email){
             err = gpgme_get_key (ctx, recipients[n].c_str(),
                     &key[n], 0);
             fail_if_err (err);
+        if (recipients[n] != user_email){
             if (debug > 1 ) cout << "adding hash of sub keys"<< endl;
             message_key+=sha1(key[n]->subkeys->keyid);
             if (debug > 1 ) cout << "adding delimiter"<< endl;
@@ -183,15 +206,15 @@ void encrypter(vector<string> recipients, string msg) {
     fail_if_err (err);
     if (debug > 1 ) cout << "cleaning signers"<< endl;
     gpgme_signers_clear(ctx);
-    gpgme_key_t key_sign;
-    if (debug > 1 ) cout << "loading signer key"<< endl;
-    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
-    fail_if_err (err);
+//    gpgme_key_t key_sign;
+//    if (debug > 1 ) cout << "loading signer key"<< endl;
+//    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+//    fail_if_err (err);
     if (debug > 1 ) cout << "adding signer key"<< endl;
     err = gpgme_signers_add(ctx,key_sign);
     fail_if_err (err);
     if (debug > 1 ) cout << "processing result"<< endl;
-    result = gpgme_op_encrypt_result (ctx);
+    //result = gpgme_op_encrypt_result (ctx);
     if (debug > 1 ) cout << "processed result"<< endl;
     err = gpgme_op_encrypt_sign (ctx, key, GPGME_ENCRYPT_ALWAYS_TRUST, in, out);
     if (debug > 1 ) cout << "encrypted and signed message"<< endl;

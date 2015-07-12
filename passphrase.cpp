@@ -39,6 +39,7 @@ void Passphrase::on_pushButton_clicked()
    std::string email = email_addr.last().toStdString();
    std::cout << email;
    config_edit("user_email", email); 
+   load_key();
    this->close();
 }
 
