@@ -128,7 +128,7 @@ string print_data (gpgme_data_t out) {
             b+= buf[x];
         }
     }
-return b;
+    return b;
 }
 
 
@@ -177,14 +177,41 @@ int decrypter(gpgme_data_t in) {
     if (err) return 1;
 
     err = gpgme_op_decrypt_verify (ctx, in, out);
+    fail_if_err (err);
     sig_result = gpgme_op_verify_result (ctx);
-    cout << sig_result->signatures->timestamp << endl;
+    string sig_id = string(sig_result->signatures->fpr);
+
+    gpgme_key_t key;
+    err = gpgme_get_key ( ctx, sig_result->signatures->fpr,&key, 0); 
+    cout << key->uids->name << endl;
+    cout << key->uids->email << endl;
+    fail_if_err (err);
+    
     time_t timeGMT = (time_t)sig_result->signatures->timestamp;
     cout << ctime (&timeGMT) << endl;;
     fail_if_err (err);
     if (err) return 1;
     result = gpgme_op_decrypt_result (ctx);
-    cout << result->recipients->keyid << endl;
+    cout << result->recipients << endl;
+
+    key=NULL;
+
+        err = gpgme_op_keylist_start (ctx, "", 0);
+        while (!err)
+        {
+            err = gpgme_op_keylist_next (ctx, &key);
+            if (debug > 1 ) cout << "next key" << endl;
+            if (err)
+                break;
+            if (key->uids && key->uids->name) {
+                if (key->uids && key->uids->email){
+                    if (debug > 1 ) cout << "key has email and id" << endl;
+                    cout << key->uids->email << endl;
+                    }
+                }}
+
+
+
     if (result->unsupported_algorithm)
     {
         fprintf (stderr, "%s:%i: unsupported algorithm: %s\n",
@@ -211,7 +238,7 @@ void send_data (string formated_message)
     thread sending (sender,server_ip.c_str(), 6655, msg, 512);
     sending.detach();
 
-  //  sender(server_ip.c_str(), 6655, msg, 512);
+    //  sender(server_ip.c_str(), 6655, msg, 512);
 }
 
 
@@ -240,11 +267,11 @@ void encrypter(vector<string> recipients, string msg) {
     string ident;
     for (int n = 0; n < n_recipients; n++) {key[n+1]=NULL;}
     for (int n = 0; n < n_recipients; n++) {
-            err = gpgme_get_key (ctx, recipients[n].c_str(),
-                    &key[n], 0);
-            fail_if_err (err);
-            message_key+=key[n]->subkeys->keyid;
-            if (n!=n_recipients-1) message_key+=",";
+        err = gpgme_get_key (ctx, recipients[n].c_str(),
+                &key[n], 0);
+        fail_if_err (err);
+        message_key+=key[n]->subkeys->keyid;
+        if (n!=n_recipients-1) message_key+=",";
         if (recipients[n] != user_email){
             if (debug > 1 ) cout << "adding hash of sub keys"<< endl;
             recipts_key+=sha1(key[n]->subkeys->keyid+msg_index);
@@ -259,10 +286,10 @@ void encrypter(vector<string> recipients, string msg) {
     fail_if_err (err);
     if (debug > 1 ) cout << "cleaning signers"<< endl;
     gpgme_signers_clear(ctx);
-//    gpgme_key_t key_sign;
-//    if (debug > 1 ) cout << "loading signer key"<< endl;
-//    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
-//    fail_if_err (err);
+    //    gpgme_key_t key_sign;
+    //    if (debug > 1 ) cout << "loading signer key"<< endl;
+    //    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
+    //    fail_if_err (err);
     if (debug > 1 ) cout << "adding signer key"<< endl;
     err = gpgme_signers_add(ctx,key_sign);
     fail_if_err (err);

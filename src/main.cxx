@@ -142,12 +142,13 @@ void retrieve() {
 
 
 int main (int argc, char* argv[] ) {
-//	debug = 2;
+	debug = 2;
 	init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	encrypt2_init();
+        
 	if (debug == 1 ) cout << "encryption initialized" << endl;
 
-        string ret_message="1;ff65dd5f02cff93809b8ec90ba46b16a2f60f545;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
+        string ret_message="1;7e72f698584929fb8523825b7a2da3a6a616839b;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
         sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
 
 
