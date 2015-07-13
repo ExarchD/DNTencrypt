@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
-//#include <thread>
+#include <thread>
 #include "objects.h"
 
 using namespace std;
@@ -129,6 +129,10 @@ void message_writer(){
 }
 
 int exit_program() {
+    // do all the necessary closing things
+    // shifting messages to long term storage, re-encrypting databases
+    // collecting threads
+        cout << "exiting" << endl;
 	exit(0);
 }
 
@@ -146,8 +150,8 @@ int main (int argc, char* argv[] ) {
 	init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	encrypt2_init();
         
-	if (debug == 1 ) cout << "encryption initialized" << endl;
-
+	if (debug > 1 ) cout << "encryption initialized" << endl;
+//        std::thread(thread_message_reader, enc_messages,begin,end);
         string ret_message="1;7e72f698584929fb8523825b7a2da3a6a616839b;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
         sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
 
@@ -155,12 +159,12 @@ int main (int argc, char* argv[] ) {
 
 	QApplication a(argc, argv);
 	MainWindow w;
-	if (debug == 1 ) cout << "main window loaded" << endl;
+	if (debug > 1 ) cout << "main window loaded" << endl;
 	w.show();
 	return a.exec();
-	if (debug == 1 ) cout << "closing..." << endl;
+	if (debug > 1 ) cout << "closing..." << endl;
 
 	//     message_reader();
-
+        
 	return 0;
 }

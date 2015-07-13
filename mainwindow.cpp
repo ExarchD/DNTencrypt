@@ -147,7 +147,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 void MainWindow::on_quit_config_triggered()
 {
-    QApplication::quit();
+    this->hide();
+    exit_program();
 }
 
 
@@ -158,3 +159,20 @@ void MainWindow::on_actionSettings_triggered()
     sset->raise();
     sset->activateWindow();
 }
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+ 
+    exit_program();
+//    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
+//                                                                tr("Are you sure?\n"),
+//                                                                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+//                                                                QMessageBox::Yes);
+//    if (resBtn != QMessageBox::Yes) {
+//        event->ignore();
+//    } else {
+//        event->accept();
+//    }
+}
+
+

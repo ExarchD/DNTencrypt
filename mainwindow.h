@@ -28,6 +28,9 @@ private slots:
 
     void on_actionSettings_triggered();
 
+    void closeEvent (QCloseEvent *event);
+
+
 private:
     Ui::MainWindow *ui;
 };
