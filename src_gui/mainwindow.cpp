@@ -3,13 +3,13 @@
 #include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
-#include <qtconcurrentrun.h>
+//#include <qtconcurrentrun.h>
 #include <passphrase.h>
 #include <QKeyEvent>
 #include <iostream>
 #include <settings.h>
 
-using namespace QtConcurrent;
+//using namespace QtConcurrent;
 
 MainWindow::MainWindow(QWidget *parent) :
 
