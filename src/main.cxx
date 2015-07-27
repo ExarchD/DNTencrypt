@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include <thread>
 #include "objects.h"
+#include <csignal>
+
 
 using namespace std;
 string user_email;
@@ -144,16 +146,27 @@ void retrieve() {
 }
 
 
+void signalHandler( int signum )
+{
+    cout << "Interrupt signal (" << signum << ") received.\n";
+
+    exit_program();
+//   exit(signum);  
+
+}
+
+
 
 int main (int argc, char* argv[] ) {
+        signal(SIGINT, signalHandler); 
 	debug = 2;
 	init_gpgme (GPGME_PROTOCOL_OpenPGP);
 	encrypt2_init();
         
 	if (debug > 1 ) cout << "encryption initialized" << endl;
 //        std::thread(thread_message_reader, enc_messages,begin,end);
-        string ret_message="1;7e72f698584929fb8523825b7a2da3a6a616839b;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
-        sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
+   //     string ret_message="1;7e72f698584929fb8523825b7a2da3a6a616839b;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
+ //       sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
 
 
 
