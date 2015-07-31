@@ -169,7 +169,7 @@ int main (int argc, char* argv[] ) {
  //       sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
 
 
-
+        cout << "starting" << endl;
 	QApplication a(argc, argv);
 	MainWindow w;
 	if (debug > 1 ) cout << "main window loaded" << endl;
