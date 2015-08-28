@@ -22,7 +22,7 @@ if(NOT SQLITE3_LIBRARY)
   message(SEND_ERROR "Failed to find the sqlite3 library")
 endif()
 
-add_library(sender SHARED sender.cpp )
+add_library(sender sender.cpp )
 add_library(sql sql.cpp)
 add_library(encrypt encrypter.cpp )
 add_library(sha1 sha1.cpp ../include/sha1.h )
@@ -59,10 +59,11 @@ qt5_wrap_cpp(gui_SRC
 
 add_executable(encrypt2  main.cxx ../include/objects.h ${UIS_HDRS} ${SRC} ${gui_SRC})
 target_link_libraries(encrypt2 Qt5::Widgets
+    encrypt
+    ${GPGME_LIBRARY}
+    sha1
     sender
     sql
     ${SQLITE3_LIBRARY}
-    ${GPGME_LIBRARY}
-    encrypt
-    sha1
     )
+###
