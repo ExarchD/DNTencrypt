@@ -20,6 +20,7 @@ using namespace std;
     int
 sender(const char* host_int, int port_int, const char* msg, int length)
 {
+    cout << msg << endl;
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     int sfd, s, j;
@@ -93,6 +94,7 @@ sender(const char* host_int, int port_int, const char* msg, int length)
         RecvAddr.sin_port = htons(Port);
         RecvAddr.sin_addr.s_addr = inet_addr("192.168.1.1"); //this is likely a problem...
 
+        cout << msg << endl;
         iResult = sendto(sfd,
                 msg, BufLen, 0, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr));
         if (iResult == SOCKET_ERROR) {

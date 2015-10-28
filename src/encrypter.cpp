@@ -186,7 +186,7 @@ int decrypter(gpgme_data_t in) {
     cout << key->uids->name << endl;
     cout << key->uids->email << endl;
     fail_if_err (err);
-    
+
     time_t timeGMT = (time_t)sig_result->signatures->timestamp;
     cout << ctime (&timeGMT) << endl;;
     fail_if_err (err);
@@ -196,19 +196,19 @@ int decrypter(gpgme_data_t in) {
 
     key=NULL;
 
-        err = gpgme_op_keylist_start (ctx, "", 0);
-        while (!err)
-        {
-            err = gpgme_op_keylist_next (ctx, &key);
-            if (debug > 1 ) cout << "next key" << endl;
-            if (err)
-                break;
-            if (key->uids && key->uids->name) {
-                if (key->uids && key->uids->email){
-                    if (debug > 1 ) cout << "key has email and id" << endl;
-                    cout << key->uids->email << endl;
-                    }
-                }}
+    err = gpgme_op_keylist_start (ctx, "", 0);
+    while (!err)
+    {
+        err = gpgme_op_keylist_next (ctx, &key);
+        if (debug > 1 ) cout << "next key" << endl;
+        if (err)
+            break;
+        if (key->uids && key->uids->name) {
+            if (key->uids && key->uids->email){
+                if (debug > 1 ) cout << "key has email and id" << endl;
+                cout << key->uids->email << endl;
+            }
+        }}
 
 
 
@@ -235,10 +235,10 @@ void send_data (string formated_message)
     const char * msg = formated_message.c_str();
     if (debug > 3 ) cout << formated_message << endl;
     //        	cout << formated_message << endl;
-    thread sending (sender,server_ip.c_str(), 6655, msg, 512);
-    sending.detach();
+    /* thread sending (sender,server_ip.c_str(), 6655, msg, 512); */
+    /* sending.detach(); */
 
-    //  sender(server_ip.c_str(), 6655, msg, 512);
+    sender(server_ip.c_str(), 6655, msg, 512);
 }
 
 
