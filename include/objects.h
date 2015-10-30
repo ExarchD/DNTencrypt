@@ -30,4 +30,5 @@ extern std::string user_email;
 extern std::string server_ip;
 extern int debug;
 extern int msg_index;
+extern bool configfileexist;
 #endif

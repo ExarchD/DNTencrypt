@@ -11,7 +11,6 @@ Passphrase::Passphrase(QWidget *parent) :
 {
     ui->setupUi(this);
     if (debug > 0 ) std::cout << "loading secret keys" << std::endl;
-//    ui->lineEdit->setEchoMode(QLineEdit::Password);
     std::vector<friends> list = list_friends(1);
     if (debug > 1 ) std::cout << "loaded secret keys" << std::endl;
     for (unsigned int h=0; h < list.size(); h++) {
