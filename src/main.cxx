@@ -20,6 +20,8 @@
 using namespace std;
 string user_email;
 string server_ip;
+string port_value;
+bool configfileexist;
 int debug;
 int msg_index;
 
@@ -27,6 +29,7 @@ int msg_index;
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
     if (key == "server_ip") server_ip=value;
+    if (key == "port") port_value=value;
 }
 
 void config_edit(string key_new, string value_new) {
@@ -59,6 +62,9 @@ void encrypt2_init() {
     string line;
     if (std::ifstream("config.txt"))
     {
+        configfileexist=true;
+        ifstream conf;
+        conf.open("config.txt");
         cout << "LOADING CONFIG" << endl;
         while (getline (conf, line))
         {
@@ -72,24 +78,18 @@ void encrypt2_init() {
                 store_line(key, value);
             }
         }
-        conf.close();
         cout << "CONFIG LOADED" << endl;
     }
     else 
     {
+        cout << "creating config file" << endl;
         configfileexist=false;
-        /* settings *sset= new settings(); */
-        /* sset->show(); */
-        /* sset->raise(); */
-        /* sset->activateWindow(); */
-    }
-    /* std::ofstream file(name); */
-    /* if (!file) */
-    /* { */
-    /*     cout << "cannot create file!, maybe a permissions issue" << endl; */
-    /*     exit(1); */
+        ofstream myfile;
+        myfile.open ("config.txt");
+        myfile << "port=\nserver_ip=\nuser_email=\n";
+        myfile.close();
 
-    /* } */
+    }
 }
 
 /*

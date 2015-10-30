@@ -26,17 +26,17 @@ settings::~settings()
 void settings::on_buttonBox_clicked(QAbstractButton *button)
 {
     if (button->text() == "Apply"){
-    std::string ip = ui->lineEdit->text().toStdString();
-    char str[INET_ADDRSTRLEN];
-    struct sockaddr_in sa;
-    #ifdef __WIN32__
-    if ( false ) ui->label_2->show();
+        std::string ip = ui->lineEdit->text().toStdString();
+        char str[INET_ADDRSTRLEN];
+        struct sockaddr_in sa;
+#ifdef __WIN32__
+        if ( false ) ui->label_2->show();
 #else
-     if (inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 1 ) ui->label_2->show();
+        if (inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 1 ) ui->label_2->show();
 #endif
-     else {
-         ui->label_2->hide();
-    config_edit("server_ip", ip);
-     }
+        else {
+            ui->label_2->hide();
+            config_edit("server_ip", ip);
+        }
     }
 }

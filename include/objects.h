@@ -22,12 +22,13 @@ int gpg_wait ();
 void load_key();
 int database_insert(std::string message);
 struct friends {
-   std::string name;
-   std::string email;
+    std::string name;
+    std::string email;
 };
 std::vector<friends> list_friends(bool secret);
 extern std::string user_email;
 extern std::string server_ip;
+extern std::string port_value;
 extern int debug;
 extern int msg_index;
 extern bool configfileexist;
