@@ -1,9 +1,9 @@
 #include "passphrase.h"
 #include "ui_passphrase.h"
 #include "objects.h"
+#include <iostream>
 #include <string>
 #include <qdebug.h>
-#include <iostream>
 #ifdef __WIN32__
 #define __WIN32__WINNT
 #include <winsock2.h>

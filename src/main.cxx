@@ -30,6 +30,7 @@ void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
     if (key == "server_ip") server_ip=value;
     if (key == "port") port_value=value;
+    if (key == "debug") debug=std::stoi(value);
 }
 
 void config_edit(string key_new, string value_new) {
@@ -44,7 +45,7 @@ void config_edit(string key_new, string value_new) {
     {
         string key;
         key = strTemp.substr(0, strTemp.find("="));
-        cout << key_new  << " " << value_new << endl;
+        if (debug > 3) cout << key_new  << " " << value_new << endl;
         if(key == key_new){
             strTemp = key_new+"="+value_new;
         }
