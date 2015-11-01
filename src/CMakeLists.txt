@@ -45,6 +45,7 @@ SET(SRC
     ../src_gui/mainwindow.cpp
     ../src_gui/passphraseform.cpp
     ../src_gui/passphrase.cpp
+    ../src_gui/qrecorder.cpp
     ../src_gui/settings.cpp
     )
 

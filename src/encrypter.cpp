@@ -242,7 +242,7 @@ void send_data (string formated_message)
 }
 
 
-void encrypter(vector<string> recipients, string msg) {
+message_type encrypter(vector<string> recipients, string msg) {
     if (debug > 0 )  cout << "encryption algorythm starting" << endl;
     gpgme_check_version (NULL);
     gpgme_error_t err;
@@ -315,13 +315,18 @@ void encrypter(vector<string> recipients, string msg) {
             b+= buf[x];
         }
     }
-    string full_msg_key=message_key+to_string(msg_index);
-    if (!err) send_data("0;"+sha1(full_msg_key)+";"+b+";"+recipts_key); 
-    if (!err){ if (debug > 0 )cout << "sending data" << endl; }
-    else if (debug > 0 ) cout << "not sending data, problems encrypting"<< endl;
+    message_type tmesg;
+    tmesg.pre_hash=message_key;
+    tmesg.message=b;
+    tmesg.recipients=recipts_key;
+    /* string full_msg_key=message_key+to_string(msg_index); */
+    /* if (!err) send_data("0;"+sha1(full_msg_key)+";"+b+";"+recipts_key); */ 
+    /* if (!err){ if (debug > 0 )cout << "sending data" << endl; } */
+    /* else if (debug > 0 ) cout << "not sending data, problems encrypting"<< endl; */
     gpgme_data_release (in);
     gpgme_data_release (out);
     gpgme_release (ctx);
+    return tmesg;
 
 }
 

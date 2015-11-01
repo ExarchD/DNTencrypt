@@ -24,6 +24,7 @@ int port_value;
 bool configfileexist;
 int debug;
 int msg_index;
+vector<convo> conversations;
 
 
 void store_line(string key, string value) {
@@ -31,6 +32,34 @@ void store_line(string key, string value) {
     if (key == "server_ip") server_ip=value;
     if (key == "port") port_value=stoi(value);
     if (key == "debug") debug=std::stoi(value);
+}
+
+void main_encrypter(vector<std::string> recipients, string msg)
+{
+    /* message_type current_msg = encrypter(recipients, msg); */
+    /* loop over conversations, if there is a match, then */ 
+    /* try to send by iterating the iter value and sending */
+    /* if we fail, then iterate again and send again, repeat */ 
+    /* until successful. */ 
+    /* If there is no hash match, then send a convo init message */
+    /* then send actual message */
+
+    bool match = 0;
+    for ( int x =0; x < conversations.size(), x++ )
+    {
+        if (current_message.pre_hash() == conversations[x].hash()) 
+        {
+            match = 1;
+            while (!){
+                c_messages[x].iterator++;
+                sender(server_ip.c_str(), port_value, msg, 512);
+            }
+
+        }
+    }
+    if (!match) {
+
+    }
 }
 
 void config_edit(string key_new, string value_new) {
@@ -141,18 +170,19 @@ void encrypt2_init() {
        }
        */
 
-    void message_writer(){
-        ifstream encryp_file;
-        encryp_file.open("messages.txt");
-        // add in the write down part
-        encryp_file.close();
-    }
+        void message_writer(){
+            ifstream encryp_file;
+            encryp_file.open("messages.txt");
+            // add in the write down part
+            encryp_file.close();
+        }
 
 int exit_program() {
     // do all the necessary closing things
     // shifting messages to long term storage, re-encrypting databases
     // collecting threads
     cout << "exiting" << endl;
+    /* qconvo("f98w03aso", 14); */
     exit(0);
 }
 
@@ -189,6 +219,10 @@ int main (int argc, char* argv[] ) {
 
     /* cout << check_serverstatus(server_ip.c_str(),port_value) << endl; */
     cout << "starting" << endl;
+    /* qrecord("Key","Value"); */
+    load_convos;
+    string homedir=getenv( "HOME");
+    cout << homedir << endl;
     QApplication a(argc, argv);
     MainWindow w;
     if (debug > 1 ) cout << "main window loaded" << endl;

@@ -90,7 +90,7 @@ void MainWindow::sendMessage(){
         email_list.push_back( item->toolTip().toStdString());
     }
     std::sort(email_list.begin(), email_list.end());
-    encrypter(email_list, text);
+    main_encrypt(email_list, text);
     ui->mytextEdit->setFocus();
 }
 
