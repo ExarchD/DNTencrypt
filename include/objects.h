@@ -20,6 +20,7 @@ void thread_message_reader(std::vector<std::string> enc_messages, int begin, int
 void config_edit(std::string key_new, std::string value_new);
 void gen_key (const char * xml_string);
 void qrecord(std::string key_new, std::string value_new);
+void load_config();
 void qconvo(std::string convolog, int itr);
 int gpg_wait ();
 void load_key();
@@ -38,7 +39,9 @@ struct friends {
     std::string name;
     std::string email;
 };
+void save_convos( std::vector<convo> savelist);
 std::vector<friends> list_friends(bool secret);
+std::vector <convo> load_convos ();
 extern std::string user_email;
 extern std::string server_ip;
 extern int port_value;

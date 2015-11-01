@@ -6,6 +6,7 @@
 //#include <qtconcurrentrun.h>
 #include <passphrase.h>
 #include <QKeyEvent>
+#include <QSettings>
 #include <iostream>
 #include <settings.h>
 
@@ -19,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     if (debug > 0 ) std::cout << "window initialized" << std::endl;
-    if (!configfileexist)
+    QSettings settings("DNT", "config");
+    if(!settings.contains("port") || !settings.contains("server_ip") || !settings.contains("user_email") )
+    /* if(!settings.contains("port") && !settings.contains("server_ip") && !settings.contains("user_email") ) */
     {
         Passphrase *w = new Passphrase;
         this->hide();
@@ -27,8 +30,11 @@ MainWindow::MainWindow(QWidget *parent) :
         int result = w->exec();
         this->show();
         delete w;
+        qrecord("debug","0");
     }
     ui->setupUi(this);
+    load_config();
+    load_key();
     ui->mytextEdit->installEventFilter(this);
     regenerate_list();
 
@@ -90,7 +96,7 @@ void MainWindow::sendMessage(){
         email_list.push_back( item->toolTip().toStdString());
     }
     std::sort(email_list.begin(), email_list.end());
-    main_encrypt(email_list, text);
+    main_encrypter(email_list, text);
     ui->mytextEdit->setFocus();
 }
 

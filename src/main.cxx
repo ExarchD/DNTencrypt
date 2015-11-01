@@ -15,6 +15,7 @@
 #include <thread>
 #include "objects.h"
 #include <csignal>
+#include "sha1.h"
 
 
 using namespace std;
@@ -30,9 +31,10 @@ vector<convo> conversations;
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
     if (key == "server_ip") server_ip=value;
-    if (key == "port") port_value=stoi(value);
-    if (key == "debug") debug=std::stoi(value);
+    /* if (key == "port") port_value=std::stoi(value); */
+    /* if (key == "debug") debug=std::stoi(value); */
 }
+
 
 void main_encrypter(vector<std::string> recipients, string msg)
 {
@@ -44,21 +46,39 @@ void main_encrypter(vector<std::string> recipients, string msg)
     /* If there is no hash match, then send a convo init message */
     /* then send actual message */
 
+    message_type current_message = encrypter(recipients, msg);
+    string message_key = current_message.pre_hash;
+    cout << message_key << endl;
+    string b = current_message.message;
+    cout << b << endl;
+    string recipts_key = current_message.recipients;
+    cout << recipts_key << endl;
+
+
+    cout << conversations.size() << endl;
     bool match = 0;
-    for ( int x =0; x < conversations.size(), x++ )
+    for ( int x =0; x < conversations.size(); x++ )
     {
-        if (current_message.pre_hash() == conversations[x].hash()) 
+        if (sha1(message_key) == conversations[x].hash) 
         {
+            cout << "matched" << endl;
             match = 1;
-            while (!){
-                c_messages[x].iterator++;
-                sender(server_ip.c_str(), port_value, msg, 512);
+            while (true){
+                string full_msg_key=message_key+to_string(msg_index);
+                string parsedmsg = "0;"+sha1(full_msg_key)+";"+b+";"+recipts_key; 
+                conversations[x].iterator++;
+                if (sender(server_ip.c_str(), port_value, msg.c_str(), 512))
+                    break;
             }
 
         }
     }
     if (!match) {
-
+            cout << "unmatched" << endl;
+        convo newconvo;
+        newconvo.hash=sha1(message_key);
+        newconvo.iterator=1;
+        conversations.push_back(newconvo);
     }
 }
 
@@ -181,8 +201,10 @@ int exit_program() {
     // do all the necessary closing things
     // shifting messages to long term storage, re-encrypting databases
     // collecting threads
+    
+    cout << "saving convos" << endl;
+    save_convos(conversations);
     cout << "exiting" << endl;
-    /* qconvo("f98w03aso", 14); */
     exit(0);
 }
 
@@ -220,17 +242,18 @@ int main (int argc, char* argv[] ) {
     /* cout << check_serverstatus(server_ip.c_str(),port_value) << endl; */
     cout << "starting" << endl;
     /* qrecord("Key","Value"); */
-    load_convos;
-    string homedir=getenv( "HOME");
-    cout << homedir << endl;
+    /* conversations=load_convos(); */
+    /* convo blank; */
+    /* blank.hash="zip"; */
+    /* blank.iterator=0; */
+    /* conversations.push_back(blank); */
+    /* load_convos(); */
     QApplication a(argc, argv);
     MainWindow w;
     if (debug > 1 ) cout << "main window loaded" << endl;
     w.show();
     return a.exec();
     if (debug > 1 ) cout << "closing..." << endl;
-
-    //     message_reader();
 
     return 0;
 }

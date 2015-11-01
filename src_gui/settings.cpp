@@ -57,19 +57,19 @@ void settings::on_buttonBox_clicked(QAbstractButton *button)
 #endif
         else {
             ui->label_2->hide();
-            config_edit("server_ip", ip);
+            qrecord("server_ip", ip);
         }
 
         std::string newport = ui->port_lineEdit->text().toStdString();
-        config_edit("port", newport); 
+        qrecord("port", newport); 
 
         std::string raw_info=ui->combo_debug->currentText().toStdString();
-        config_edit("debug", raw_info); 
+        qrecord("debug", raw_info); 
 
         QString raw_infoemail=ui->comboBox->currentText();
         QStringList email_addr = raw_infoemail.split('}').first().split('{');
         std::string email = email_addr.last().toStdString();
-        config_edit("user_email", email); 
+        qrecord("user_email", email); 
 
 
     }

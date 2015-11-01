@@ -286,10 +286,6 @@ message_type encrypter(vector<string> recipients, string msg) {
     fail_if_err (err);
     if (debug > 1 ) cout << "cleaning signers"<< endl;
     gpgme_signers_clear(ctx);
-    //    gpgme_key_t key_sign;
-    //    if (debug > 1 ) cout << "loading signer key"<< endl;
-    //    err = gpgme_get_key (ctx, user_email.c_str(),&key_sign, 0);
-    //    fail_if_err (err);
     if (debug > 1 ) cout << "adding signer key"<< endl;
     err = gpgme_signers_add(ctx,key_sign);
     fail_if_err (err);

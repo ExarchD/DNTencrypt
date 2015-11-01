@@ -62,13 +62,11 @@ void Passphrase::on_pushButton_clicked()
 #endif
     else {
         ui->label_2->hide();
-        config_edit("server_ip", ip);
+        qrecord("server_ip", ip);
     }
-    config_edit("user_email", email); 
-    config_edit("port", newport); 
+    qrecord("user_email", email); 
+    qrecord("port", newport); 
 
-    /* loading appropriate key */
-    load_key();
 
 
     this->close();
