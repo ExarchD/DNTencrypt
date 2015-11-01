@@ -7,19 +7,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 find_path(GPGME_INCLUDE_DIR gpgme.h)
 find_library(GPGME_LIBRARY gpgme)
 if(NOT GPGME_INCLUDE_DIR)
-  message(SEND_ERROR "Failed to find gpgme.h")
+    message(SEND_ERROR "Failed to find gpgme.h")
 endif()
 if(NOT GPGME_LIBRARY)
-  message(SEND_ERROR "Failed to find gpgme library")
+    message(SEND_ERROR "Failed to find gpgme library")
 endif()
 
 find_path(SQLITE3_INCLUDE_DIR sqlite3.h)
 find_library(SQLITE3_LIBRARY sqlite3)
 if(NOT SQLITE3_INCLUDE_DIR)
-  message(SEND_ERROR "Failed to find sqlite3.h")
+    message(SEND_ERROR "Failed to find sqlite3.h")
 endif()
 if(NOT SQLITE3_LIBRARY)
-  message(SEND_ERROR "Failed to find the sqlite3 library")
+    message(SEND_ERROR "Failed to find the sqlite3 library")
 endif()
 
 add_library(sender sender.cpp )
@@ -30,23 +30,23 @@ add_library(sha1 sha1.cpp ../include/sha1.h )
 # Qt5 requirements
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 find_package(Qt5Core)
- find_package(Qt5Gui)
- find_package(Qt5Widgets)
- find_package(Qt5Concurrent)
+find_package(Qt5Gui)
+find_package(Qt5Widgets)
+find_package(Qt5Concurrent)
 
 QT5_WRAP_UI(UIS_HDRS
     ../form_gui/mainwindow.ui
     ../form_gui/passphraseform.ui
     ../form_gui/passphrase.ui
     ../form_gui/settings.ui
-)
+    )
 
 SET(SRC
     ../src_gui/mainwindow.cpp
     ../src_gui/passphraseform.cpp
     ../src_gui/passphrase.cpp
     ../src_gui/settings.cpp
-  )
+    )
 
 
 qt5_wrap_cpp(gui_SRC 
@@ -67,3 +67,9 @@ target_link_libraries(encrypt2 Qt5::Widgets
     ${SQLITE3_LIBRARY}
     )
 ###
+
+install(TARGETS encrypt2
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib/static)
+
