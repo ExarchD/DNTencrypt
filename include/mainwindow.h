@@ -31,6 +31,8 @@ private slots:
     void closeEvent (QCloseEvent *event);
 
 
+    void on_listWidget_itemClicked(QListWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
 };

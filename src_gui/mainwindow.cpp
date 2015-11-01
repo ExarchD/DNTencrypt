@@ -185,3 +185,15 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
 
 
+
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    std::vector<std::string> email_list;
+    email_list.clear();
+    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
+    for (int i=0; i < recipients.count(); ++i) {
+        QListWidgetItem* item = recipients[i];
+        email_list.push_back( item->toolTip().toStdString());
+    }
+    // load up conversation with these participants
+}
