@@ -31,7 +31,7 @@ settings::settings(QWidget *parent) :
         }
     }
     QString oldip = QString::fromStdString(server_ip);
-    QString oldport = QString::fromStdString(port_value);
+    QString oldport = QString::number(port_value);;
     ui->ip_lineEdit->setText(oldip);
     ui->port_lineEdit->setText(oldport);
     ui->combo_debug->setCurrentIndex(debug);

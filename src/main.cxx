@@ -20,7 +20,7 @@
 using namespace std;
 string user_email;
 string server_ip;
-string port_value;
+int port_value;
 bool configfileexist;
 int debug;
 int msg_index;
@@ -29,7 +29,7 @@ int msg_index;
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
     if (key == "server_ip") server_ip=value;
-    if (key == "port") port_value=value;
+    if (key == "port") port_value=stoi(value);
     if (key == "debug") debug=std::stoi(value);
 }
 
@@ -187,6 +187,7 @@ int main (int argc, char* argv[] ) {
     //       sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
 
 
+    /* cout << check_serverstatus(server_ip.c_str(),port_value) << endl; */
     cout << "starting" << endl;
     QApplication a(argc, argv);
     MainWindow w;

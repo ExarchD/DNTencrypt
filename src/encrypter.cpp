@@ -238,7 +238,7 @@ void send_data (string formated_message)
     /* thread sending (sender,server_ip.c_str(), 6655, msg, 512); */
     /* sending.detach(); */
 
-    sender(server_ip.c_str(), 6655, msg, 512);
+    sender(server_ip.c_str(), port_value, msg, 512);
 }
 
 

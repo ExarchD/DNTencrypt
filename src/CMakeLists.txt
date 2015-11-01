@@ -22,7 +22,7 @@ if(NOT SQLITE3_LIBRARY)
     message(SEND_ERROR "Failed to find the sqlite3 library")
 endif()
 
-add_library(sender sender.cpp )
+add_library(telecharger telecharger.cpp )
 add_library(sql sql.cpp)
 add_library(encrypt encrypter.cpp )
 add_library(sha1 sha1.cpp ../include/sha1.h )
@@ -62,7 +62,7 @@ target_link_libraries(encrypt2 Qt5::Widgets
     encrypt
     ${GPGME_LIBRARY}
     sha1
-    sender
+    telecharger
     sql
     ${SQLITE3_LIBRARY}
     )
