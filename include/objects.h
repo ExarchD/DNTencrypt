@@ -3,8 +3,6 @@
 #include <vector>
 #include <string>
 #include <gpgme.h>
-int sender(const char* host, int port, const char* msg, int length);
-int check_serverstatus(const char* host, int port);
 int server();
 void init_gpgme (gpgme_protocol_t proto);
 void main_encrypter(std::vector<std::string> recipients, std::string msg);

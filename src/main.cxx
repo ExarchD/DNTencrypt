@@ -16,6 +16,7 @@
 #include "objects.h"
 #include <csignal>
 #include "sha1.h"
+#include "telecharger.h"
 
 
 using namespace std;
