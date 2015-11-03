@@ -1,3 +1,6 @@
+make conversation objects? they are created at startup. They are fed participants, and then messages. Internally they have an iterator, a hash, the salt, etc. The can do: sending, retrieving, etc etc;
+
+
 clientside:
 
 	decryption:
