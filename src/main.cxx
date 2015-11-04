@@ -17,6 +17,8 @@
 #include <csignal>
 #include "sha1.h"
 #include "telecharger.h"
+#include "encrypter.h"
+#include "conversation.h"
 
 
 using namespace std;
@@ -242,6 +244,18 @@ int main (int argc, char* argv[] ) {
 
     /* cout << check_serverstatus(server_ip.c_str(),port_value) << endl; */
     cout << "starting" << endl;
+    std::vector<std::string> test;
+    string basic="HI";
+    test.push_back(basic);
+    
+    string msg="msg";
+
+    Conversation *convos;
+    /* convos->send(basic,msg); */
+    convos->send();
+    /* int success = convos->send(5); */
+
+    
     /* qrecord("Key","Value"); */
     /* conversations=load_convos(); */
     /* convo blank; */

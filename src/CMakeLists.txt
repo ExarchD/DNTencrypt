@@ -23,6 +23,7 @@ if(NOT SQLITE3_LIBRARY)
 endif()
 
 add_library(telecharger telecharger.cpp )
+add_library(conversation conversation.cpp ../include/conversation.h )
 add_library(sql sql.cpp)
 add_library(encrypt encrypter.cpp )
 add_library(sha1 sha1.cpp ../include/sha1.h )
@@ -59,14 +60,12 @@ qt5_wrap_cpp(gui_SRC
 
 
 add_executable(encrypt2  main.cxx ../include/objects.h ${UIS_HDRS} ${SRC} ${gui_SRC})
-target_link_libraries(encrypt2 Qt5::Widgets
-    encrypt
-    ${GPGME_LIBRARY}
-    sha1
-    telecharger
-    sql
-    ${SQLITE3_LIBRARY}
-    )
+target_link_libraries(encrypt2 Qt5::Widgets)
+target_link_libraries(encrypt2 encrypt ${GPGME_LIBRARY})
+target_link_libraries(encrypt2 sha1)
+target_link_libraries(encrypt2 telecharger)
+target_link_libraries(encrypt2 conversation)
+target_link_libraries(encrypt2 sql ${SQLITE3_LIBRARY})
 ###
 
 install(TARGETS encrypt2

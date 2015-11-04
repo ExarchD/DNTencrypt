@@ -132,36 +132,6 @@ string print_data (gpgme_data_t out) {
 }
 
 
-int msg_to_gpgme_data(string enc_msg) {
-    gpgme_error_t err;
-    gpgme_data_t in;
-    err = gpgme_new (&ctx);
-    fail_if_err (err);
-    if (err) return 1;
-    const char *buf = enc_msg.c_str();
-    size_t nread=strlen(buf);
-    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
-    fail_if_err (err);
-    if (err) return 1;
-    decrypter(in);
-    return 0;
-}
-
-int file_to_gpgme_data(string enc_msg) {
-    gpgme_error_t err;
-    gpgme_data_t in;
-    err = gpgme_new (&ctx);
-    fail_if_err (err);
-    if (err) return 1;
-    const char *buf = enc_msg.c_str();
-    size_t nread=strlen(buf);
-    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
-    fail_if_err (err);
-    if (err) return 1;
-    decrypter(in);
-    return 0;
-}
-
 
 
 
@@ -225,6 +195,36 @@ int decrypter(gpgme_data_t in) {
     return 0;
 
 }	
+
+int msg_to_gpgme_data(string enc_msg) {
+    gpgme_error_t err;
+    gpgme_data_t in;
+    err = gpgme_new (&ctx);
+    fail_if_err (err);
+    if (err) return 1;
+    const char *buf = enc_msg.c_str();
+    size_t nread=strlen(buf);
+    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
+    fail_if_err (err);
+    if (err) return 1;
+    decrypter(in);
+    return 0;
+}
+
+int file_to_gpgme_data(string enc_msg) {
+    gpgme_error_t err;
+    gpgme_data_t in;
+    err = gpgme_new (&ctx);
+    fail_if_err (err);
+    if (err) return 1;
+    const char *buf = enc_msg.c_str();
+    size_t nread=strlen(buf);
+    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
+    fail_if_err (err);
+    if (err) return 1;
+    decrypter(in);
+    return 0;
+}
 
 
 

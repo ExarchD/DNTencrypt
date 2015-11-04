@@ -12,6 +12,7 @@
 #else
 #include <sys/socket.h>
 #include <netdb.h>
+#include <encrypter.h>
 #endif
 #define BUF_SIZE 5000
 #include <iostream>

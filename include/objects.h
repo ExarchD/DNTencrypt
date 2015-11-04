@@ -4,15 +4,12 @@
 #include <string>
 #include <gpgme.h>
 int server();
-void init_gpgme (gpgme_protocol_t proto);
 void main_encrypter(std::vector<std::string> recipients, std::string msg);
 void retrieve();
 int start_mainwindow();
 void set_user(std::string email);
 void set_serverip(std::string ip_addr);
 int exit_program();
-int msg_to_gpgme_data(std::string enc_msg);
-int decrypter(gpgme_data_t in);
 void message_reader();
 void thread_message_reader(std::vector<std::string> enc_messages, int begin, int end);
 void config_edit(std::string key_new, std::string value_new);
@@ -20,7 +17,6 @@ void gen_key (const char * xml_string);
 void qrecord(std::string key_new, std::string value_new);
 void load_config();
 void qconvo(std::string convolog, int itr);
-int gpg_wait ();
 void load_key();
 int database_insert(std::string message);
 struct message_type {
