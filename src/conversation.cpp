@@ -1,10 +1,10 @@
 #include <conversation.h> 
 #include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
 
-/* Conversation::Conversation(): */
-/*     itr (0), hash (""), recipients ("") */
-/* {} */
-     void send ()
+     int Conversation::send (vector<string> recipients, string msg)
         {
-            std::cout << "sadfas" << std::endl;
+            cout << msg << endl;
         }

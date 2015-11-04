@@ -10,7 +10,7 @@
         public:
             Conversation();
             void load ();
-            void send ();
+            int send (std::vector<std::string> recipients, std::string msg);
             int retrieve ( std::vector<std::string> recipients);
             int add (std::vector<std::string> recipients, std::string salt);
             int remove (std::vector<std::string> recipients, std::string salt);

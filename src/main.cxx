@@ -252,8 +252,8 @@ int main (int argc, char* argv[] ) {
 
     Conversation *convos;
     /* convos->send(basic,msg); */
-    convos->send();
-    /* int success = convos->send(5); */
+    /* convos->send(); */
+    int success = convos->send(test, msg);
 
     
     /* qrecord("Key","Value"); */
