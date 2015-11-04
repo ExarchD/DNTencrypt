@@ -3,14 +3,15 @@
 #include <vector>
 #include <string>
 #include <gpgme.h>
+#include <thread>
 int server();
 void main_encrypter(std::vector<std::string> recipients, std::string msg);
-void retrieve();
-int start_mainwindow();
-void set_user(std::string email);
-void set_serverip(std::string ip_addr);
+/* void retrieve(); */
+/* int start_mainwindow(); */
+/* void set_user(std::string email); */
+/* void set_serverip(std::string ip_addr); */
 int exit_program();
-void message_reader();
+/* void message_reader(); */
 void thread_message_reader(std::vector<std::string> enc_messages, int begin, int end);
 void config_edit(std::string key_new, std::string value_new);
 void gen_key (const char * xml_string);

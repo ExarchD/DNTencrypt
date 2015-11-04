@@ -23,6 +23,7 @@
 
 using namespace std;
 string user_email;
+Conversation convos;
 string server_ip;
 int port_value;
 bool configfileexist;
@@ -222,12 +223,12 @@ void retrieve() {
 void signalHandler( int signum )
 {
     cout << "Interrupt signal (" << signum << ") received.\n";
+    convos.endretrieve();
 
     exit_program();
     //   exit(signum);  
 
 }
-
 
 
 int main (int argc, char* argv[] ) {
@@ -250,10 +251,14 @@ int main (int argc, char* argv[] ) {
     
     string msg="msg";
 
-    Conversation *convos;
     /* convos->send(basic,msg); */
     /* convos->send(); */
-    int success = convos->send(test, msg);
+    /* int success = convos->send(test, msg); */
+    convos.init();
+    convos.startretrieve2();
+    /* std::thread first(convos.startretrieve()); */
+    /* int ret = convos->retrieve(test); */
+    /* std::thread(convos->retrieve,"HI"); */
 
     
     /* qrecord("Key","Value"); */
