@@ -31,6 +31,10 @@ private slots:
     void closeEvent (QCloseEvent *event);
 
 
+    void on_chatstart_pressed();
+
+    void on_chatstart_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

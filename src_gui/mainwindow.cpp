@@ -5,6 +5,7 @@
 #include "objects.h"
 //#include <qtconcurrentrun.h>
 #include <passphrase.h>
+#include <chatinit.h>
 #include <QKeyEvent>
 #include <QSettings>
 #include <iostream>
@@ -185,3 +186,16 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
 
 
+
+void MainWindow::on_chatstart_pressed()
+{
+    chatinit *chat = new chatinit;
+    chat->show();
+    chat->raise();
+    chat->activateWindow();
+}
+
+void MainWindow::on_chatstart_clicked()
+{
+
+}

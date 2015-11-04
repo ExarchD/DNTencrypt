@@ -24,6 +24,7 @@ private slots:
 
 private:
     Ui::chatinit *ui;
+    void regenerate_list();
 };
 
 #endif // CHATINIT_H
