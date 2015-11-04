@@ -13,8 +13,8 @@ class Conversation
     Conversation();
     bool running;
     void init ();
-    void startretrieve ();
-    void endretrieve ();
+    void startretrieval_thread ();
+    void endretrieval_thread ();
     int add (std::vector<std::string> recipients, std::string salt);
     int remove (std::vector<std::string> recipients, std::string salt);
 
@@ -29,7 +29,7 @@ class Conversation
     std::vector<conversation_list> myconvos;
     std::thread t1;
     int send (std::vector<std::string> recipients, std::string msg);
-    int retrieve ();
+    int retrieve_thread ();
     std::vector<std::string> salts;
     std::vector<std::string> ids;
     std::vector<int> iterators; 

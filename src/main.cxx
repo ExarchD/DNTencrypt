@@ -208,7 +208,7 @@ int exit_program() {
     
     /* convos.endretrieve(); */
     cout << "joining threads" << endl;
-    convos.endretrieve();
+    convos.endretrieval_thread();
     cout << "saving convos" << endl;
     save_convos(conversations);
     cout << "exiting" << endl;
@@ -243,7 +243,7 @@ int main (int argc, char* argv[] ) {
 
     cout << "starting conversation object" << endl;
     convos.init();
-    convos.startretrieve();
+    convos.startretrieval_thread();
 
     QApplication a(argc, argv);
     MainWindow w;

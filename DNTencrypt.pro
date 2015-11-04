@@ -8,10 +8,7 @@ DEPENDPATH += . \
               form_gui \
               include \
               src \
-              src_gui \
-              build/src \
-              build/CMakeFiles/2.8.12.2/CompilerIdC \
-              build/CMakeFiles/2.8.12.2/CompilerIdCXX
+              src_gui
 INCLUDEPATH += . include build/src
 
 # Input
@@ -21,25 +18,18 @@ HEADERS += include/gpg-error.h \
            include/mytextedit.h \
            include/objects.h \
            include/passphrase.h \
-           include/passphraseform.h \
            include/settings.h \
            include/sha1.h \
-           include/t-support.h
+           include/t-support.h \
+    include/chatinit.h \
+    form_gui/chatinit.h
 FORMS += form_gui/mainwindow.ui \
          form_gui/passphrase.ui \
-         form_gui/passphraseform.ui \
-         form_gui/settings.ui
-SOURCES += example.cxx \
-           src/encrypter.cpp \
-           src/logger.cpp \
-           src/main.cxx \
-           src/retriever.cpp \
-           src/sender.cpp \
-           src/sha1.cpp \
-           src/sql.cpp \
-           src_gui/mainwindow.cpp \
+         form_gui/settings.ui \
+    form_gui/passphraseform.ui \
+    form_gui/chatinit.ui
+SOURCES += src_gui/mainwindow.cpp \
            src_gui/passphrase.cpp \
            src_gui/passphraseform.cpp \
            src_gui/settings.cpp \
-           build/CMakeFiles/2.8.12.2/CompilerIdC/CMakeCCompilerId.c \
-           build/CMakeFiles/2.8.12.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
+    form_gui/chatinit.cpp

@@ -37,25 +37,25 @@ find_package(Qt5Concurrent)
 
 QT5_WRAP_UI(UIS_HDRS
     ../form_gui/mainwindow.ui
-    ../form_gui/passphraseform.ui
     ../form_gui/passphrase.ui
     ../form_gui/settings.ui
+    ../form_gui/chatinit.ui
     )
 
 SET(SRC
     ../src_gui/mainwindow.cpp
-    ../src_gui/passphraseform.cpp
     ../src_gui/passphrase.cpp
     ../src_gui/qrecorder.cpp
     ../src_gui/settings.cpp
+    ../src_gui/chatinit.cpp
     )
 
 
 qt5_wrap_cpp(gui_SRC 
     ../include/mainwindow.h
-    ../include/passphraseform.h
     ../include/passphrase.h
     ../include/settings.h
+    ../include/chatinit.h
     )
 
 

@@ -32,7 +32,7 @@ void Conversation::init ()
 
 }
 
-int Conversation::retrieve ()
+int Conversation::retrieve_thread ()
 {
 
     int counter = 0;
@@ -75,12 +75,12 @@ int Conversation::retrieve ()
 }
 
 
-void Conversation::startretrieve ()
+void Conversation::startretrieval_thread ()
 {
-    t1=std::thread (&Conversation::retrieve, this);
+    t1=std::thread (&Conversation::retrieve_thread, this);
 }
 
-void Conversation::endretrieve ()
+void Conversation::endretrieval_thread ()
 {
     running=0;
     t1.join();
