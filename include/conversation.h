@@ -23,6 +23,7 @@ class Conversation
     std::string hash;
     int urgency;
     int iterator;
+    int noresponse;
     std::string salt;
 };
     std::vector<conversation_list> myconvos;

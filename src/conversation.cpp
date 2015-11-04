@@ -27,6 +27,7 @@ void Conversation::init ()
     vide_convo.salt="salt";
     vide_convo.urgency=1;
     vide_convo.iterator=1;
+    vide_convo.noresponse=0;
     myconvos.push_back(vide_convo);
 
 }
@@ -42,17 +43,28 @@ int Conversation::retrieve ()
         sleep(1);
         for ( int cons =0; cons < myconvos.size(); cons++)
         {
-            if (myconvos[cons].urgency == 1) {
-                if ( counter % 1 == 0 ) cout << "Every second" << endl;
-            }
-            if (myconvos[cons].urgency == 2) {
-                if ( counter % 20 == 0 ) cout << "Every twenty seconds" << endl;
-            }
-            if (myconvos[cons].urgency == 3) {
-                if ( counter % 30 == 0 ) cout << "Every thirty seconds" << endl;
-            }
-            if (myconvos[cons].urgency == 4) {
-                if ( counter % 300 == 0 ) cout << "Every five minutes" << endl;
+            cout << myconvos[cons].urgency << endl;
+            if ( counter % myconvos[cons].urgency == 0 ) 
+            {
+                cout << "Every " << myconvos[cons].urgency << " seconds" << endl;
+                /* if (!send(retrieval) */
+                myconvos[cons].noresponse++;
+                if (myconvos[cons].noresponse > 5)
+                {
+                    if (myconvos[cons].urgency == 60)
+                        myconvos[cons].urgency=300;
+                    if (myconvos[cons].urgency == 30)
+                        myconvos[cons].urgency=60;
+                    if (myconvos[cons].urgency == 15)
+                        myconvos[cons].urgency=30;
+                    if (myconvos[cons].urgency == 5)
+                        myconvos[cons].urgency=15;
+                    if (myconvos[cons].urgency == 1)
+                        myconvos[cons].urgency=5;
+                    myconvos[cons].noresponse=0;
+
+                }
+
             }
         }
         if ( counter == 300 ) counter = 0;
