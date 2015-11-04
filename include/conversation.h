@@ -19,6 +19,13 @@ class Conversation
     int remove (std::vector<std::string> recipients, std::string salt);
 
     private:
+    struct conversation_list {
+    std::string hash;
+    int urgency;
+    int iterator;
+    std::string salt;
+};
+    std::vector<conversation_list> myconvos;
     std::thread t1;
     int send (std::vector<std::string> recipients, std::string msg);
     int retrieve ();
