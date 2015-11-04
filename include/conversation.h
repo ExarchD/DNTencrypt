@@ -13,16 +13,15 @@ class Conversation
     Conversation();
     bool running;
     void init ();
-    void startretrieve (Conversation d);
-    void startretrieve2 ();
+    void startretrieve ();
     void endretrieve ();
-    int send (std::vector<std::string> recipients, std::string msg);
-    int retrieve ();
     int add (std::vector<std::string> recipients, std::string salt);
     int remove (std::vector<std::string> recipients, std::string salt);
-    std::thread t1;
 
     private:
+    std::thread t1;
+    int send (std::vector<std::string> recipients, std::string msg);
+    int retrieve ();
     std::vector<std::string> salts;
     std::vector<std::string> ids;
     std::vector<int> iterators; 

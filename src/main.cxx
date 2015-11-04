@@ -206,6 +206,9 @@ int exit_program() {
     // shifting messages to long term storage, re-encrypting databases
     // collecting threads
     
+    /* convos.endretrieve(); */
+    cout << "joining threads" << endl;
+    convos.endretrieve();
     cout << "saving convos" << endl;
     save_convos(conversations);
     cout << "exiting" << endl;
@@ -223,7 +226,6 @@ void retrieve() {
 void signalHandler( int signum )
 {
     cout << "Interrupt signal (" << signum << ") received.\n";
-    convos.endretrieve();
 
     exit_program();
     //   exit(signum);  
@@ -238,36 +240,11 @@ int main (int argc, char* argv[] ) {
     encrypt2_init();
 
     if (debug > 1 ) cout << "encryption initialized" << endl;
-    //        std::thread(thread_message_reader, enc_messages,begin,end);
-    //     string ret_message="1;7e72f698584929fb8523825b7a2da3a6a616839b;ec5f6dcd77ab7e60df700e682dd89113f6b1186c";
-    //       sender(server_ip.c_str(), 6655, ret_message.data(), 5000);
 
-
-    /* cout << check_serverstatus(server_ip.c_str(),port_value) << endl; */
-    cout << "starting" << endl;
-    std::vector<std::string> test;
-    string basic="HI";
-    test.push_back(basic);
-    
-    string msg="msg";
-
-    /* convos->send(basic,msg); */
-    /* convos->send(); */
-    /* int success = convos->send(test, msg); */
+    cout << "starting conversation object" << endl;
     convos.init();
-    convos.startretrieve2();
-    /* std::thread first(convos.startretrieve()); */
-    /* int ret = convos->retrieve(test); */
-    /* std::thread(convos->retrieve,"HI"); */
+    convos.startretrieve();
 
-    
-    /* qrecord("Key","Value"); */
-    /* conversations=load_convos(); */
-    /* convo blank; */
-    /* blank.hash="zip"; */
-    /* blank.iterator=0; */
-    /* conversations.push_back(blank); */
-    /* load_convos(); */
     QApplication a(argc, argv);
     MainWindow w;
     if (debug > 1 ) cout << "main window loaded" << endl;
