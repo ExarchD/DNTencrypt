@@ -25,11 +25,13 @@ void Conversation::init ()
     vide_convo.urgency=1;
     vide_convo.noresponse=0;
     vide_convo.iterator=1;
-    vide_convo.salt="a348ec8d18e,First chat";
+    vide_convo.salt="a348ec8d18e,+&=First chat";
     vector<string> emails;
     emails.push_back("pluthd@gmail.com");
     vide_convo.recipients=emails;
     myconvos.push_back(vide_convo);
+    myconvos_intime=myconvos;
+
 
 }
 
@@ -109,14 +111,42 @@ vector<Conversation::gui_convo> Conversation::list_convos ()
 {
 
     vector<gui_convo> n;
-    for ( int con_itr=0; con_itr<myconvos.size(); con_itr++)
+    /* list=myconvos; */
+
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+    cout << myconvos.size() << endl;
+        for ( int cons =0; cons < myconvos.size(); cons++)
     {
-        std::string s=myconvos[con_itr].salt;
+        std::string s=myconvos[cons].salt;
         std::string delimiter = ",+&=";
         std::string token = s.substr(0, s.find(delimiter)); 
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
+        cout << token << endl;
         gui_convo mygui_convo;
         mygui_convo.name=token;
-        mygui_convo.recipients=myconvos[con_itr].recipients;
+        mygui_convo.recipients=myconvos[cons].recipients;
         n.push_back(mygui_convo);
     }
 

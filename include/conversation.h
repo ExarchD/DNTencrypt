@@ -34,6 +34,7 @@ struct conversationItem {
     std::vector<std::string> recipients;
 };
     std::vector<conversationItem> myconvos;
+    std::vector<conversationItem> myconvos_intime;
     std::thread t1;
     int retrieve_thread ();
     std::vector<std::string> salts;

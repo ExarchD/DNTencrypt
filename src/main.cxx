@@ -243,6 +243,7 @@ int main (int argc, char* argv[] ) {
 
     cout << "starting conversation object" << endl;
     convos.init();
+    /* convos.list_convos(); */
     convos.startretrieval_thread();
 
     QApplication a(argc, argv);
