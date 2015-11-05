@@ -3,15 +3,15 @@
 #include <fstream>
 #include "ui_mainwindow.h"
 #include "objects.h"
-//#include <qtconcurrentrun.h>
 #include <passphrase.h>
 #include <chatinit.h>
 #include <QKeyEvent>
 #include <QSettings>
 #include <iostream>
 #include <settings.h>
+#include <conversation.h>
 
-//using namespace QtConcurrent;
+Conversation *myconvo;
 
 MainWindow::MainWindow(QWidget *parent) :
 
@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     if (debug > 0 ) std::cout << "window initialized" << std::endl;
     QSettings settings("DNT", "config");
     if(!settings.contains("port") || !settings.contains("server_ip") || !settings.contains("user_email") )
-    /* if(!settings.contains("port") && !settings.contains("server_ip") && !settings.contains("user_email") ) */
     {
         Passphrase *w = new Passphrase;
         this->hide();
@@ -43,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete myconvo;
     delete ui;
 }
 
@@ -63,21 +63,10 @@ void MainWindow::regenerate_list() {
 }
 
 
-
-
-//std::string ip = ui->lineEdit->text().toStdString();
-//char str[INET_ADDRSTRLEN];
-//struct sockaddr_in sa;
-// //test = inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr));
-// if (inet_pton(AF_INET, ip.c_str(), &(sa.sin_addr)) != 1 ) ui->label_4->show();
-// else {
-//set_serverip(ip);
-
 QString timestamp()
 {
     time_t now = time(0);
     tm *ltm = localtime(&now);
-    //   if ((ltm->tm_min) < 10) std::cout << "HI" << std::endl;
     QString t_stamp=QString::number(ltm->tm_hour)+":"+QString::number(ltm->tm_min);
     return t_stamp;
 }
@@ -99,27 +88,20 @@ void MainWindow::sendMessage(){
     std::sort(email_list.begin(), email_list.end());
     main_encrypter(email_list, text);
     ui->mytextEdit->setFocus();
+    /* myconvo->send(email_list, text); */
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
-    for (unsigned int i=0; i < recipients.count(); ++i) {
-        QListWidgetItem* item = recipients[i];
-    }
+    /* QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems(); */
+    /* for (unsigned int i=0; i < recipients.count(); ++i) { */
+    /*     QListWidgetItem* item = recipients[i]; */
+    /* } */
     sendMessage();
-
-
-    //  QFuture<void> f1 = run(retrieve);
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    //    QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems();
-    //    for (int i=0; i < recipients.count(); ++i) {
-    //     QListWidgetItem* item = recipients[i];
-
-
 
     std::ofstream outfile;
     outfile.open("rejected.txt", std::ios_base::app);
@@ -187,15 +169,15 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 
 
-void MainWindow::on_chatstart_pressed()
-{
-    chatinit *chat = new chatinit;
-    chat->show();
-    chat->raise();
-    chat->activateWindow();
-}
+    void MainWindow::on_chatstart_pressed()
+    {
+        chatinit *chat = new chatinit;
+        chat->show();
+        chat->raise();
+        chat->activateWindow();
+    }
 
-void MainWindow::on_chatstart_clicked()
-{
+    void MainWindow::on_chatstart_clicked()
+    {
 
-}
+    }

@@ -17,6 +17,7 @@ class Conversation
     void endretrieval_thread ();
     int add (std::vector<std::string> recipients, std::string salt);
     int remove (std::vector<std::string> recipients, std::string salt);
+    int send (std::vector<std::string> recipients, std::string msg);
 
     private:
     struct conversation_list {
@@ -28,7 +29,6 @@ class Conversation
 };
     std::vector<conversation_list> myconvos;
     std::thread t1;
-    int send (std::vector<std::string> recipients, std::string msg);
     int retrieve_thread ();
     std::vector<std::string> salts;
     std::vector<std::string> ids;
