@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <conversation.h>
 
 namespace Ui {
     class MainWindow;
@@ -11,15 +12,16 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT  
     public:
-        explicit MainWindow(QWidget *parent = 0);
+        explicit MainWindow(Conversation *myconvos, QWidget *parent = 0);
         ~MainWindow();
 
         void regenerate_friendlist();
-        void regenerate_convolist();
+        void regenerate_convolist(Conversation *myconvos);
         private slots:
             void on_pushButton_clicked();
 
         void sendMessage();
+
 
         void on_pushButton_3_clicked();
 
@@ -36,6 +38,7 @@ class MainWindow : public QMainWindow
         void on_chatstart_clicked();
 
     private:
+        Conversation myconvos;
         Ui::MainWindow *ui;
 };
 

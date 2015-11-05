@@ -17,6 +17,7 @@ class Conversation
     Conversation();
     bool running;
     void init ();
+    std::vector<gui_convo> list ();
     void startretrieval_thread ();
     void endretrieval_thread ();
     std::vector<gui_convo> list_convos ();

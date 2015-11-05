@@ -11,10 +11,9 @@
 #include <settings.h>
 #include <conversation.h>
 
-Conversation myconvo;
 std::vector<Conversation::gui_convo> known_chats;
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Conversation *myconvos, QWidget *parent) :
 
 
 
@@ -36,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     load_config();
     load_key();
-    regenerate_convolist();
+    regenerate_convolist(myconvos);
     ui->mytextEdit->installEventFilter(this);
 
 }
@@ -47,20 +46,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::regenerate_convolist() {
+void MainWindow::regenerate_convolist(Conversation *myconvos) {
     ui->listWidget_2->clear();
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    std::cout << "HI" << std::endl;
-    known_chats = myconvo.list_convos();
+    known_chats = myconvos->list();
     for (unsigned int h=0; h < known_chats.size(); h++) {
         const char * name = known_chats[h].name.c_str();
         new QListWidgetItem(tr(name), ui->listWidget_2);

@@ -243,15 +243,23 @@ int main (int argc, char* argv[] ) {
 
     cout << "starting conversation object" << endl;
     convos.init();
-    /* convos.list_convos(); */
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
+    cout << convos.list().size() << endl;
     convos.startretrieval_thread();
 
     QApplication a(argc, argv);
-    MainWindow w;
-    if (debug > 1 ) cout << "main window loaded" << endl;
-    w.show();
-    return a.exec();
-    if (debug > 1 ) cout << "closing..." << endl;
+    MainWindow w(&convos);
+if (debug > 1 ) cout << "main window loaded" << endl;
+w.show();
+return a.exec();
+if (debug > 1 ) cout << "closing..." << endl;
 
-    return 0;
+return 0;
 }
