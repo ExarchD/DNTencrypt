@@ -85,3 +85,10 @@ void Conversation::endretrieval_thread ()
     running=0;
     t1.join();
 }
+
+int Conversation::add (std::vector<std::string> recipients, std::string salt, std::string name)
+{
+
+    std::cout << salt << " " << name << std::endl;
+
+}

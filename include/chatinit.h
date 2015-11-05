@@ -20,7 +20,7 @@ private slots:
 
     void on_excludeb_pressed();
 
-    void on_beginb_pressed();
+    void on_beginb_clicked();
 
 private:
     Ui::chatinit *ui;

@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Chat salt</string>
+    <string>Chat salt (optional)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -154,6 +154,25 @@
    </property>
    <property name="text">
     <string>&lt;-</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="warn_notitle">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>390</y>
+     <width>201</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0004;&quot;&gt;Choose a title!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

@@ -15,7 +15,7 @@ class Conversation
     void init ();
     void startretrieval_thread ();
     void endretrieval_thread ();
-    int add (std::vector<std::string> recipients, std::string salt);
+    int add (std::vector<std::string> recipients, std::string salt, std::string name);
     int remove (std::vector<std::string> recipients, std::string salt);
     int send (std::vector<std::string> recipients, std::string msg);
 
