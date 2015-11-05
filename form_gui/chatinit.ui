@@ -87,6 +87,9 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the title of your chat&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
   <widget class="QLineEdit" name="chatsalt">
    <property name="geometry">
@@ -96,6 +99,9 @@
      <width>261</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill this in for a custom salt, otherwise one will be generated. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A salt is something to help disguise information. The cracking of Enigma was helped by the fact that the British knew some words that would almost always be in message. We don't use your salt in the encryption, but in the generation of a hash, so that people can't snoop on your messages just by knowing the participants (They would also need to crack the encryption...). As a side bonus, this also provides an easy way to allow multiple conversations with the same members.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QListWidget" name="chatlist">
@@ -107,6 +113,9 @@
      <height>321</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;These will be the recipients of your messages&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
   </widget>
   <widget class="QListWidget" name="friendlist">
    <property name="geometry">
@@ -116,6 +125,9 @@
      <width>261</width>
      <height>321</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the list of all known keys and associated aliases. To add friends you should ask them for their gpg keys, and then sign those keys. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">

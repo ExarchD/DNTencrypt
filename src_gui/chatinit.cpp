@@ -23,11 +23,11 @@ void chatinit::regenerate_list() {
         const char * name = list[h].name.c_str();
         new QListWidgetItem(tr(name), ui->friendlist);
     }
-    ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->friendlist->setSelectionMode(QAbstractItemView::ExtendedSelection);
     for (unsigned int i = 0; i <  list.size(); i++)
     {
         const char * email = list[i].email.c_str();
-        ui->listWidget->item(i)->setToolTip(email);
+        ui->friendlist->item(i)->setToolTip(email);
     }
 }
 
