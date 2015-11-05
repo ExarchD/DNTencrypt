@@ -9,10 +9,10 @@
 #include <objects.h>
  
 
-class ENCRYPTER
+class Encrypter
 {
 public:
-    ENCRYPTER();
+    Encrypter();
  
 private:
 bool comparefriends(friends a, friends b);
