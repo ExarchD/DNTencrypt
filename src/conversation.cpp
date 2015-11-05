@@ -21,13 +21,14 @@ int Conversation::send (vector<string> recipients, string msg)
 void Conversation::init ()
 {
     running=true;
-    /* vector<conversation_list> myconvos; */
-    conversation_list vide_convo;
-    vide_convo.hash="hash";
-    vide_convo.salt="salt";
+    conversationItem vide_convo;
     vide_convo.urgency=1;
-    vide_convo.iterator=1;
     vide_convo.noresponse=0;
+    vide_convo.iterator=1;
+    vide_convo.salt="a348ec8d18e,First chat";
+    vector<string> emails;
+    emails.push_back("pluthd@gmail.com");
+    vide_convo.recipients=emails;
     myconvos.push_back(vide_convo);
 
 }
@@ -88,7 +89,37 @@ void Conversation::endretrieval_thread ()
 
 int Conversation::add (std::vector<std::string> recipients, std::string salt, std::string name)
 {
+    conversationItem created;
+    created.urgency=1;
+    created.noresponse=0;
+    created.iterator=1;
+    created.salt=salt+",+&="+name;
+    created.recipients=recipients;
 
-    std::cout << salt << " " << name << std::endl;
+    for ( int mem=0; mem<recipients.size(); mem++)
+    {
+        /* send message to each member of the conversation with */
+        /* the salt, the members, etc etc */
+    }
 
 }
+
+
+vector<Conversation::gui_convo> Conversation::list_convos ()
+{
+
+    vector<gui_convo> n;
+    for ( int con_itr=0; con_itr<myconvos.size(); con_itr++)
+    {
+        std::string s=myconvos[con_itr].salt;
+        std::string delimiter = ",+&=";
+        std::string token = s.substr(0, s.find(delimiter)); 
+        gui_convo mygui_convo;
+        mygui_convo.name=token;
+        mygui_convo.recipients=myconvos[con_itr].recipients;
+        n.push_back(mygui_convo);
+    }
+
+    return n;
+}
+

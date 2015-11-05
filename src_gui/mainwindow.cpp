@@ -12,6 +12,7 @@
 #include <conversation.h>
 
 Conversation *myconvo;
+std::vector<Conversation::gui_convo> known_chats;
 
 MainWindow::MainWindow(QWidget *parent) :
 
@@ -36,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     load_config();
     load_key();
     ui->mytextEdit->installEventFilter(this);
-    regenerate_list();
+    /* regenerate_convolist(); */
 
 }
 
@@ -46,8 +47,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::regenerate_convolist() {
+    ui->listWidget_2->clear();
+    known_chats = myconvo->list_convos();
+    for (unsigned int h=0; h < known_chats.size(); h++) {
+        const char * name = known_chats[h].name.c_str();
+        new QListWidgetItem(tr(name), ui->listWidget_2);
+    }
+    /* ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection); */
+    /* for (unsigned int i = 0; i <  list.size(); i++) */
+    /* { */
+    /*     const char * email = list[i].email.c_str(); */
+    /*     ui->listWidget->item(i)->setToolTip(email); */
+    /* } */
+}
 
-void MainWindow::regenerate_list() {
+void MainWindow::regenerate_friendlist() {
     ui->listWidget->clear();
     std::vector<friends> list = list_friends(0);
     for (unsigned int h=0; h < list.size(); h++) {
@@ -112,7 +127,7 @@ void MainWindow::on_pushButton_3_clicked()
         outfile << "\n";
     }
     outfile.close();
-    regenerate_list();
+    /* regenerate_list(); */
     ui->listWidget->update();
 
 

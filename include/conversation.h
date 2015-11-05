@@ -10,29 +10,36 @@ class Conversation
 {
 
     public:
+    struct gui_convo {
+    std::string name;
+    std::vector<std::string> recipients;
+};
     Conversation();
     bool running;
     void init ();
     void startretrieval_thread ();
     void endretrieval_thread ();
+    std::vector<gui_convo> list_convos ();
     int add (std::vector<std::string> recipients, std::string salt, std::string name);
     int remove (std::vector<std::string> recipients, std::string salt);
     int send (std::vector<std::string> recipients, std::string msg);
 
     private:
-    struct conversation_list {
-    std::string hash;
+struct conversationItem {
+    /* std::string title; */
     int urgency;
-    int iterator;
     int noresponse;
+    int iterator;
     std::string salt;
+    std::vector<std::string> recipients;
 };
-    std::vector<conversation_list> myconvos;
+    std::vector<conversationItem> myconvos;
     std::thread t1;
     int retrieve_thread ();
     std::vector<std::string> salts;
     std::vector<std::string> ids;
     std::vector<int> iterators; 
 };
+    
 
 #endif /* CONVERSATION_HPP */
