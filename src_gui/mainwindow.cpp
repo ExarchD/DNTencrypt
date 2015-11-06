@@ -59,18 +59,37 @@ void MainWindow::anger() {
     regenerate_convolist(mainconvos);
 }
 
-void MainWindow::regenerate_friendlist() {
+void MainWindow::regenerate_friendlist(QString title) {
     ui->listWidget->clear();
-    std::cout <<  ui->listWidget_2->currentItem()->text().toStdString() << std::endl;
+    int currentconvo;
+    for ( int citr =0; citr < known_chats.size(); citr++)
+    {
+        if (title.toStdString()==known_chats[citr].name) currentconvo=citr;
+    }
+
+    std::cout << known_chats[currentconvo].recipients.size() << std::endl;
+    std::vector<std::string> conrec=known_chats[currentconvo].recipients;
     std::vector<friends> list = list_friends(0);
+    std::vector<friends> shortlist;
     for (unsigned int h=0; h < list.size(); h++) {
-        const char * name = list[h].name.c_str();
+        for (unsigned int k=0; k < conrec.size(); k++)
+        {
+            std::cout << conrec[k] << " " << list[h].email << std::endl;
+            if (conrec[k] == list[h].email) {
+                std::cout << "Matched" << std::endl;
+                shortlist.push_back(list[h]);
+            }
+        }
+    }
+
+    for (unsigned int j=0; j < shortlist.size(); j++) {
+        const char * name = shortlist[j].name.c_str();
         new QListWidgetItem(tr(name), ui->listWidget);
     }
     ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    for (unsigned int i = 0; i <  list.size(); i++)
+    for (unsigned int i = 0; i <  shortlist.size(); i++)
     {
-        const char * email = list[i].email.c_str();
+        const char * email = shortlist[i].email.c_str();
         ui->listWidget->item(i)->setToolTip(email);
     }
 }
@@ -167,17 +186,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
     void MainWindow::closeEvent (QCloseEvent *event)
     {
-
         exit_program();
-        //    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
-        //                                                                tr("Are you sure?\n"),
-        //                                                                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
-        //                                                                QMessageBox::Yes);
-        //    if (resBtn != QMessageBox::Yes) {
-        //        event->ignore();
-        //    } else {
-        //        event->accept();
-        //    }
     }
 
 
@@ -186,15 +195,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
         
         chat = new chatinit(mainconvos);
-        /* QObject::connect(chat, &chatinit::regen(), this, &MainWindow::regenerate_convolist(mainconvos)); */
-        /* QObject::connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos)); */
-        /* connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos)); */
-        /* chatinit chat(mainconvos,&parent); */
-        /* chat->setParent(this); */
-        /* chatinit chat(mainconvos); */
-    /* MainWindow w(&convos); */
         chat->show();
-        /* connect(chat, SIGNAL(regen()), this, SLOT(regenerate_convolist(mainconvos))); */
         connect(chat, SIGNAL(regen()), this, SLOT(anger()));
         chat->raise();
         chat->activateWindow();
@@ -209,8 +210,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
 {
-
-regenerate_friendlist();
+regenerate_friendlist(item->text());
 
 }
 

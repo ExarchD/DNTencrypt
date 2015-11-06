@@ -42,14 +42,14 @@ int Conversation::retrieve_thread ()
     while (running)
     {
         counter++;
-        cout << counter << endl;
+        /* cout << counter << endl; */
         sleep(1);
         for ( int cons =0; cons < myconvos.size(); cons++)
         {
-            cout << myconvos[cons].urgency << endl;
+            /* cout << myconvos[cons].urgency << endl; */
             if ( counter % myconvos[cons].urgency == 0 ) 
             {
-                cout << myconvos[cons].salt <<  "Every " << myconvos[cons].urgency << " seconds" << endl;
+                /* cout << myconvos[cons].salt <<  "Every " << myconvos[cons].urgency << " seconds" << endl; */
                 /* if (!send(retrieval) */
                 myconvos[cons].noresponse++;
                 if (myconvos[cons].noresponse > 5)

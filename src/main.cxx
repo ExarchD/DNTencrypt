@@ -1,25 +1,25 @@
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-#include <stdlib.h>
-#include <stdio.h>
-#include <sstream>
-#include <string.h>
-#include <QApplication>
-#include <mainwindow.h>
-#include "passphrase.h"
-#include <vector>
-#include <iostream>
+#include <ext/alloc_traits.h>  // for __alloc_traits<>::value_type
+#include <mainwindow.h>        // for MainWindow
+#include <QApplication>      // for QApplication
+#include <stdio.h>             // for rename
+#include <stdlib.h>            // for exit
+#include <unistd.h>            // for sleep
+#include <csignal>             // for signal
+#include <iostream>            // for operator<<, basic_ostream, cout, etc
+#include <string>              // for string, operator+, operator<<, etc
+#include <vector>              // for allocator, vector
+#include "conversation.h"      // for Conversation
+#include "encrypter.h"         // for encrypter, init_gpgme
+#include "gpgme.h"             // for ::GPGME_PROTOCOL_OpenPGP
+#include "objects.h"           // for convo, message_type, save_convos
+#include "sha1.h"              // for sha1
+#include "telecharger.h"       // for sender
 #include <fstream>
-#include <unistd.h>
-#include <thread>
-#include "objects.h"
-#include <csignal>
-#include "sha1.h"
-#include "telecharger.h"
-#include "encrypter.h"
-#include "conversation.h"
+#include <sstream>
 
+/* #ifdef HAVE_CONFIG_H */
+/* #include <config.h> */
+/* #endif */
 
 using namespace std;
 string user_email;
@@ -35,8 +35,6 @@ vector<convo> conversations;
 void store_line(string key, string value) {
     if (key == "user_email") user_email=value;
     if (key == "server_ip") server_ip=value;
-    /* if (key == "port") port_value=std::stoi(value); */
-    /* if (key == "debug") debug=std::stoi(value); */
 }
 
 

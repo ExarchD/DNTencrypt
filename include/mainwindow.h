@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
         ~MainWindow();
 
         int num;
-        void regenerate_friendlist();
+        void regenerate_friendlist(QString title);
         void regenerate_convolist(Conversation *myconvos);
         chatinit *chat;
 

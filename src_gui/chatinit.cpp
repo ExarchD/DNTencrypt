@@ -16,7 +16,6 @@ chatinit::chatinit(Conversation *mainconvo, QWidget *parent) :
 
 chatinit::~chatinit()
 {
-    /* parent()->regenerate_convolist(chatconvo); */
     delete chatconvo;
     delete ui;
 }
@@ -68,9 +67,12 @@ void chatinit::on_beginb_clicked()
 
     std::vector<std::string> email_list;
     email_list.clear();
-    QList<QListWidgetItem*> recipients = ui->chatlist->selectedItems();
+    QList<QListWidgetItem*> recipients = ui->chatlist->findItems("",Qt::MatchContains);
+    std::cout << recipients.size() << std::endl;
     for (int i=0; i < recipients.count(); ++i) {
+        std::cout << "here's one" << std::endl;
         QListWidgetItem* item = recipients[i];
+        /* email_list.push_back( item->text().toStdString()); */
         email_list.push_back( item->toolTip().toStdString());
     }
     std::sort(email_list.begin(), email_list.end());
@@ -89,6 +91,7 @@ void chatinit::on_beginb_clicked()
     else
     {
 
+    std::cout << email_list.size() << std::endl;
     chatconvo->add(email_list, salt.toStdString(), title.toStdString());
     emit regen();
 
