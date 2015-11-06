@@ -1,5 +1,4 @@
-make conversation objects? they are created at startup. They are fed participants, and then messages. Internally they have an iterator, a hash, the salt, etc. The can do: sending, retrieving, etc etc;
-
+create a vector of textBrowser objects. textedit objects are added to the vector when a new message is recieved(for the first time in a session) or when a new chat is created or clicked on for the first time in a session.
 
 clientside:
 
