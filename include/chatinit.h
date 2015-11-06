@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <conversation.h>
+#include <mainwindow.h>
+
 
 namespace Ui {
 class chatinit;
@@ -22,6 +24,10 @@ private slots:
     void on_excludeb_pressed();
 
     void on_beginb_clicked();
+
+signals:
+    void regen();
+
 
 private:
     Ui::chatinit *ui;

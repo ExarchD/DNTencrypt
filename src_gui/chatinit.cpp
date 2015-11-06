@@ -91,7 +91,8 @@ void chatinit::on_beginb_clicked()
     {
 
     chatconvo->add(email_list, salt.toStdString(), title.toStdString());
-    /* chatconvo->init(); */
+    emit regen();
+
     close();
     }
 }

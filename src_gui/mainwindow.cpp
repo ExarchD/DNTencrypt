@@ -13,7 +13,7 @@
 
 std::vector<Conversation::gui_convo> known_chats;
 
-MainWindow::MainWindow(Conversation *myconvos, QWidget *parent) :
+MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
 
 
     QMainWindow(parent),
@@ -32,6 +32,7 @@ MainWindow::MainWindow(Conversation *myconvos, QWidget *parent) :
         qrecord("debug","0");
     }
     ui->setupUi(this);
+    num=5;
     load_config();
     load_key();
     mainconvos=myconvos;
@@ -177,12 +178,14 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
 
 
-
     void MainWindow::on_chatstart_pressed()
     {
 
         
         chatinit *chat = new chatinit(mainconvos);
+        /* QObject::connect(chat, &chatinit::regen(), this, &MainWindow::regenerate_convolist(mainconvos)); */
+        /* QObject::connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos)); */
+        connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos));
         /* chatinit chat(mainconvos,&parent); */
         /* chat->setParent(this); */
         /* chatinit chat(mainconvos); */
@@ -204,3 +207,4 @@ void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
 
 regenerate_friendlist();
 }
+

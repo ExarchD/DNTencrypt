@@ -4,6 +4,7 @@
 #include <QListWidgetItem>
 #include <QMainWindow>
 #include <conversation.h>
+#include <QObject>
 
 namespace Ui {
     class MainWindow;
@@ -13,11 +14,16 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT  
     public:
-        explicit MainWindow(Conversation *myconvos, QWidget *parent = 0);
+        explicit MainWindow(Conversation *myconvos, QMainWindow *parent = 0);
         ~MainWindow();
 
+        int num;
         void regenerate_friendlist();
         void regenerate_convolist(Conversation *myconvos);
+
+        public slots:
+            int rsandom() const {return 5;}
+
         private slots:
             void on_pushButton_clicked();
 
