@@ -3,7 +3,6 @@
 #include "objects.h"
 #include "conversation.h"
 #include "iostream"
-#include "mainwindow.h"
 
 chatinit::chatinit(Conversation *mainconvo, QWidget *parent) :
     QDialog(parent),

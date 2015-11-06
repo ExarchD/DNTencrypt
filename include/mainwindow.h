@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <conversation.h>
 #include <QObject>
+#include <chatinit.h>
 
 namespace Ui {
     class MainWindow;
@@ -20,9 +21,10 @@ class MainWindow : public QMainWindow
         int num;
         void regenerate_friendlist();
         void regenerate_convolist(Conversation *myconvos);
+        chatinit *chat;
 
         public slots:
-            int rsandom() const {return 5;}
+            void anger();
 
         private slots:
             void on_pushButton_clicked();

@@ -43,7 +43,7 @@ MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
 
 MainWindow::~MainWindow()
 {
-    /* delete myconvo; */
+    delete mainconvos;
     delete ui;
 }
 
@@ -54,6 +54,9 @@ void MainWindow::regenerate_convolist(Conversation *myconvos) {
         const char * name = known_chats[h].name.c_str();
         new QListWidgetItem(tr(name), ui->listWidget_2);
     }
+}
+void MainWindow::anger() {
+    regenerate_convolist(mainconvos);
 }
 
 void MainWindow::regenerate_friendlist() {
@@ -182,15 +185,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     {
 
         
-        chatinit *chat = new chatinit(mainconvos);
+        chat = new chatinit(mainconvos);
         /* QObject::connect(chat, &chatinit::regen(), this, &MainWindow::regenerate_convolist(mainconvos)); */
         /* QObject::connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos)); */
-        connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos));
+        /* connect(chat, SIGNAL(regen()), this, regenerate_convolist(mainconvos)); */
         /* chatinit chat(mainconvos,&parent); */
         /* chat->setParent(this); */
         /* chatinit chat(mainconvos); */
     /* MainWindow w(&convos); */
         chat->show();
+        /* connect(chat, SIGNAL(regen()), this, SLOT(regenerate_convolist(mainconvos))); */
+        connect(chat, SIGNAL(regen()), this, SLOT(anger()));
         chat->raise();
         chat->activateWindow();
         regenerate_convolist(mainconvos);
@@ -206,5 +211,6 @@ void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
 {
 
 regenerate_friendlist();
+
 }
 
