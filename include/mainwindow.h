@@ -50,6 +50,7 @@ class MainWindow : public QMainWindow
         void on_chatstart_clicked();
 
         void on_listWidget_2_itemClicked(QListWidgetItem *item);
+        /* void on_listWidget_2_itemPressed(QListWidgetItem *item); */
          
 private:
         Conversation *mainconvos;
@@ -57,7 +58,7 @@ private:
         struct convocont
         {
         std::string title;
-        QTextDocument* doc;
+        QString doc;
         };
         std::vector<convocont> alltexts;
         QListWidgetItem *old_item;

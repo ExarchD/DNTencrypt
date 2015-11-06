@@ -72,7 +72,6 @@ void chatinit::on_beginb_clicked()
     for (int i=0; i < recipients.count(); ++i) {
         std::cout << "here's one" << std::endl;
         QListWidgetItem* item = recipients[i];
-        /* email_list.push_back( item->text().toStdString()); */
         email_list.push_back( item->toolTip().toStdString());
     }
     std::sort(email_list.begin(), email_list.end());

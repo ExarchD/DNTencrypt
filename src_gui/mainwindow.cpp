@@ -36,8 +36,6 @@ MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
     num=5;
     load_config();
     load_key();
-    /* olditem=ui->listWidget_2->currentItem(); */
-    /* std::cout << olditem->text().toStdString() << std::endl; */
     mainconvos=myconvos;
     regenerate_convolist(myconvos);
     ui->mytextEdit->installEventFilter(this);
@@ -56,19 +54,22 @@ void MainWindow::regenerate_convolist(Conversation *myconvos) {
     olditem=ui->listWidget_2->takeItem(0);
     olditem->setHidden(true);
 
+    alltexts.clear();
     known_chats = myconvos->list();
+    std::cout << "alltexts size " << alltexts.size() << std::endl;
+    std::cout << "known convos size " << known_chats.size() << std::endl;
     for (unsigned int h=0; h < known_chats.size(); h++) {
         const char * name = known_chats[h].name.c_str();
         new QListWidgetItem(tr(name), ui->listWidget_2);
 
-             QTextDocument *doc = new QTextDocument;
-             doc=ui->textBrowser->document();
+        QString docorig=ui->textBrowser->document()->toHtml();
         convocont newconvocont;
-        newconvocont.doc=doc;
+        newconvocont.doc=docorig;
         newconvocont.title=known_chats[h].name;
         alltexts.push_back(newconvocont);
 
     }
+    std::cout << "alltexts size " << alltexts.size() << std::endl;
 
 }
 void MainWindow::anger() {
@@ -219,7 +220,6 @@ void MainWindow::on_chatstart_pressed()
     connect(chat, SIGNAL(regen()), this, SLOT(anger()));
     chat->raise();
     chat->activateWindow();
-    regenerate_convolist(mainconvos);
 
 }
 
@@ -229,27 +229,28 @@ void MainWindow::on_chatstart_clicked()
 }
 
 void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
+/* void MainWindow::on_listWidget_2_itemPressed(QListWidgetItem *item) */
 {
+  /* QTextDocument *docorig = new QTextDocument; */
     if (olditem->text().toStdString()!="hidguy")
     {
         std::cout <<"selected item" << std::endl;
+        std::cout <<"number of convos " << alltexts.size() << std::endl;
         bool match=0;
         for ( int td=0; td < alltexts.size(); td++) 
         {
             if (alltexts[td].title == olditem->text().toStdString())
             {
-                QTextDocument *doc = new QTextDocument(ui->textBrowser->document());
-                alltexts[td].doc=doc;
+                QString docorig=ui->textBrowser->document()->toHtml();
+                alltexts[td].doc=docorig;
                 match=1;
-                /* delete doc; */
             }
         }
         if (!match)
         {
-            QTextDocument *doc = new QTextDocument;
-            doc=ui->textBrowser->document();
+            QString docorig=ui->textBrowser->document()->toHtml();
             convocont newconvocont;
-            newconvocont.doc=doc;
+            newconvocont.doc=docorig;
             newconvocont.title=item->text().toStdString();
             alltexts.push_back(newconvocont);
         }
@@ -259,9 +260,11 @@ void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
         if (alltexts[te].title == item->text().toStdString())
         {
             std::cout << "match" << std::endl;
-             QTextDocument *doc = new QTextDocument;
-             doc=ui->textBrowser->document();
-             if(!doc->isEmpty()) ui->textBrowser->setDocument(doc);
+            ui->textBrowser->clear();
+            QString newtext=alltexts[te].doc;
+            /* ui->textBrowser->setDocument(doc); */
+            /* ui->textBrowser->append("Me ("+timestamp()+"): "); */
+            ui->textBrowser->append(newtext);
             std::cout << "success" << std::endl;
 
         }
