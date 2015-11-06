@@ -12,6 +12,7 @@
 #include <conversation.h>
 
 std::vector<Conversation::gui_convo> known_chats;
+QListWidgetItem *olditem;
 
 MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
 
@@ -35,6 +36,8 @@ MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
     num=5;
     load_config();
     load_key();
+    /* olditem=ui->listWidget_2->currentItem(); */
+    /* std::cout << olditem->text().toStdString() << std::endl; */
     mainconvos=myconvos;
     regenerate_convolist(myconvos);
     ui->mytextEdit->installEventFilter(this);
@@ -49,15 +52,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::regenerate_convolist(Conversation *myconvos) {
     ui->listWidget_2->clear();
+    new QListWidgetItem(tr("hidguy"), ui->listWidget_2);
+    olditem=ui->listWidget_2->takeItem(0);
+    olditem->setHidden(true);
+
     known_chats = myconvos->list();
     for (unsigned int h=0; h < known_chats.size(); h++) {
         const char * name = known_chats[h].name.c_str();
         new QListWidgetItem(tr(name), ui->listWidget_2);
+
+             QTextDocument *doc = new QTextDocument;
+             doc=ui->textBrowser->document();
+        convocont newconvocont;
+        newconvocont.doc=doc;
+        newconvocont.title=known_chats[h].name;
+        alltexts.push_back(newconvocont);
+
     }
+
 }
 void MainWindow::anger() {
     regenerate_convolist(mainconvos);
 }
+
 
 void MainWindow::regenerate_friendlist(QString title) {
     ui->listWidget->clear();
@@ -153,64 +170,104 @@ void MainWindow::on_pushButton_3_clicked()
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (event->type()==QEvent::KeyPress) {
+    if (event->type()==QEvent::KeyPress) 
+    {
         QKeyEvent* key = static_cast<QKeyEvent*>(event);
-        //        if ((e->key() == Qt::Key_Enter || e->key() == 16777220){
-        if ( (key->key()==Qt::Key_Enter) || (key->key()==Qt::Key_Return) && !((key->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) {
+        if ( (key->key()==Qt::Key_Enter) || (key->key()==Qt::Key_Return) && !((key->modifiers() & Qt::ShiftModifier) == Qt::ShiftModifier)) 
+        {
             sendMessage();
         } else {
             return QObject::eventFilter(obj, event);
         }
         return true;
-    } else {
+    } 
+    else
+    {
         return QObject::eventFilter(obj, event);
     }
     return false;
-    }
+}
 
 
-    void MainWindow::on_quit_config_triggered()
-    {
-        this->hide();
-        exit_program();
-    }
+void MainWindow::on_quit_config_triggered()
+{
+    this->hide();
+    exit_program();
+}
 
 
-    void MainWindow::on_actionSettings_triggered()
-    {
-        settings *sset= new settings();
-        sset->show();
-        sset->raise();
-        sset->activateWindow();
-    }
+void MainWindow::on_actionSettings_triggered()
+{
+    settings *sset= new settings();
+    sset->show();
+    sset->raise();
+    sset->activateWindow();
+}
 
-    void MainWindow::closeEvent (QCloseEvent *event)
-    {
-        exit_program();
-    }
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    exit_program();
+}
 
 
-    void MainWindow::on_chatstart_pressed()
-    {
+void MainWindow::on_chatstart_pressed()
+{
 
-        
-        chat = new chatinit(mainconvos);
-        chat->show();
-        connect(chat, SIGNAL(regen()), this, SLOT(anger()));
-        chat->raise();
-        chat->activateWindow();
-        regenerate_convolist(mainconvos);
 
-    }
+    chat = new chatinit(mainconvos);
+    chat->show();
+    connect(chat, SIGNAL(regen()), this, SLOT(anger()));
+    chat->raise();
+    chat->activateWindow();
+    regenerate_convolist(mainconvos);
 
-    void MainWindow::on_chatstart_clicked()
-    {
+}
 
-    }
+void MainWindow::on_chatstart_clicked()
+{
+
+}
 
 void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
 {
-regenerate_friendlist(item->text());
+    if (olditem->text().toStdString()!="hidguy")
+    {
+        std::cout <<"selected item" << std::endl;
+        bool match=0;
+        for ( int td=0; td < alltexts.size(); td++) 
+        {
+            if (alltexts[td].title == olditem->text().toStdString())
+            {
+                QTextDocument *doc = new QTextDocument(ui->textBrowser->document());
+                alltexts[td].doc=doc;
+                match=1;
+                /* delete doc; */
+            }
+        }
+        if (!match)
+        {
+            QTextDocument *doc = new QTextDocument;
+            doc=ui->textBrowser->document();
+            convocont newconvocont;
+            newconvocont.doc=doc;
+            newconvocont.title=item->text().toStdString();
+            alltexts.push_back(newconvocont);
+        }
+    }
+    for ( int te=0; te < alltexts.size(); te++) 
+    {
+        if (alltexts[te].title == item->text().toStdString())
+        {
+            std::cout << "match" << std::endl;
+             QTextDocument *doc = new QTextDocument;
+             doc=ui->textBrowser->document();
+             if(!doc->isEmpty()) ui->textBrowser->setDocument(doc);
+            std::cout << "success" << std::endl;
+
+        }
+    }
+    regenerate_friendlist(item->text());
+    olditem=item;
 
 }
 

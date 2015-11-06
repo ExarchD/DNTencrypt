@@ -6,6 +6,8 @@
 #include <conversation.h>
 #include <QObject>
 #include <chatinit.h>
+#include <QTextDocument>
+#include <vector>
 
 namespace Ui {
     class MainWindow;
@@ -22,6 +24,7 @@ class MainWindow : public QMainWindow
         void regenerate_friendlist(QString title);
         void regenerate_convolist(Conversation *myconvos);
         chatinit *chat;
+        /* std::vector<QTextDocument> all_texts; */
 
         public slots:
             void anger();
@@ -47,10 +50,17 @@ class MainWindow : public QMainWindow
         void on_chatstart_clicked();
 
         void on_listWidget_2_itemClicked(QListWidgetItem *item);
-
+         
 private:
         Conversation *mainconvos;
         Ui::MainWindow *ui;
+        struct convocont
+        {
+        std::string title;
+        QTextDocument* doc;
+        };
+        std::vector<convocont> alltexts;
+        QListWidgetItem *old_item;
 };
 
 #endif // MAINWINDOW_H
