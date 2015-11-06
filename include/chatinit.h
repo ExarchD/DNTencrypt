@@ -2,6 +2,7 @@
 #define CHATINIT_H
 
 #include <QDialog>
+#include <conversation.h>
 
 namespace Ui {
 class chatinit;
@@ -12,9 +13,9 @@ class chatinit : public QDialog
     Q_OBJECT
 
 public:
-    explicit chatinit(QWidget *parent = 0);
+    explicit chatinit(Conversation *chatconvo, QWidget *parent = 0);
     ~chatinit();
-
+     
 private slots:
     void on_includeb_pressed();
 
@@ -24,6 +25,7 @@ private slots:
 
 private:
     Ui::chatinit *ui;
+    Conversation *chatconvo;
     void regenerate_list();
 };
 

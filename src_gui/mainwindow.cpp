@@ -16,7 +16,6 @@ std::vector<Conversation::gui_convo> known_chats;
 MainWindow::MainWindow(Conversation *myconvos, QWidget *parent) :
 
 
-
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -35,6 +34,7 @@ MainWindow::MainWindow(Conversation *myconvos, QWidget *parent) :
     ui->setupUi(this);
     load_config();
     load_key();
+    mainconvos=myconvos;
     regenerate_convolist(myconvos);
     ui->mytextEdit->installEventFilter(this);
 
@@ -53,16 +53,11 @@ void MainWindow::regenerate_convolist(Conversation *myconvos) {
         const char * name = known_chats[h].name.c_str();
         new QListWidgetItem(tr(name), ui->listWidget_2);
     }
-    /* ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection); */
-    /* for (unsigned int i = 0; i <  list.size(); i++) */
-    /* { */
-    /*     const char * email = list[i].email.c_str(); */
-    /*     ui->listWidget->item(i)->setToolTip(email); */
-    /* } */
 }
 
 void MainWindow::regenerate_friendlist() {
     ui->listWidget->clear();
+    std::cout <<  ui->listWidget_2->currentItem()->text().toStdString() << std::endl;
     std::vector<friends> list = list_friends(0);
     for (unsigned int h=0; h < list.size(); h++) {
         const char * name = list[h].name.c_str();
@@ -185,13 +180,27 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
     void MainWindow::on_chatstart_pressed()
     {
-        chatinit *chat = new chatinit;
+
+        
+        chatinit *chat = new chatinit(mainconvos);
+        /* chatinit chat(mainconvos,&parent); */
+        /* chat->setParent(this); */
+        /* chatinit chat(mainconvos); */
+    /* MainWindow w(&convos); */
         chat->show();
         chat->raise();
         chat->activateWindow();
+        regenerate_convolist(mainconvos);
+
     }
 
     void MainWindow::on_chatstart_clicked()
     {
 
     }
+
+void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
+{
+
+regenerate_friendlist();
+}

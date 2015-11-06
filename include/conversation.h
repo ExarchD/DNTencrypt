@@ -25,7 +25,6 @@ class Conversation
     int remove (std::vector<std::string> recipients, std::string salt);
     int send (std::vector<std::string> recipients, std::string msg);
 
-    private:
 struct conversationItem {
     /* std::string title; */
     int urgency;
@@ -36,6 +35,7 @@ struct conversationItem {
 };
     std::vector<conversationItem> myconvos;
     std::vector<conversationItem> myconvos_intime;
+    private:
     std::thread t1;
     int retrieve_thread ();
     std::vector<std::string> salts;

@@ -3,20 +3,21 @@
 #include "objects.h"
 #include "conversation.h"
 #include "iostream"
+#include "mainwindow.h"
 
-Conversation *chatconvo;
-
-chatinit::chatinit(QWidget *parent) :
+chatinit::chatinit(Conversation *mainconvo, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::chatinit)
 {
     ui->setupUi(this);
+    chatconvo=mainconvo;
     regenerate_list();
     ui->warn_notitle->hide();
 }
 
 chatinit::~chatinit()
 {
+    /* parent()->regenerate_convolist(chatconvo); */
     delete chatconvo;
     delete ui;
 }
@@ -80,7 +81,6 @@ void chatinit::on_beginb_clicked()
     
     if (salt.isEmpty() )
     {
-        /* TODO: generate a random salt */
         salt="a38e48f821";
     }
     if (title.isEmpty() )
@@ -91,6 +91,7 @@ void chatinit::on_beginb_clicked()
     {
 
     chatconvo->add(email_list, salt.toStdString(), title.toStdString());
+    /* chatconvo->init(); */
     close();
     }
 }

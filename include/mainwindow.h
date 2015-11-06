@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QListWidgetItem>
 #include <QMainWindow>
 #include <conversation.h>
 
@@ -37,8 +38,10 @@ class MainWindow : public QMainWindow
 
         void on_chatstart_clicked();
 
-    private:
-        Conversation myconvos;
+        void on_listWidget_2_itemClicked(QListWidgetItem *item);
+
+private:
+        Conversation *mainconvos;
         Ui::MainWindow *ui;
 };
 

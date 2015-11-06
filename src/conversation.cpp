@@ -30,14 +30,6 @@ void Conversation::init ()
     emails.push_back("pluthd@gmail.com");
     vide_convo.recipients=emails;
     myconvos.push_back(vide_convo);
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
-    cout << myconvos.size() << endl;
     myconvos_intime=myconvos;
 
 
@@ -57,7 +49,7 @@ int Conversation::retrieve_thread ()
             cout << myconvos[cons].urgency << endl;
             if ( counter % myconvos[cons].urgency == 0 ) 
             {
-                cout << "Every " << myconvos[cons].urgency << " seconds" << endl;
+                cout << myconvos[cons].salt <<  "Every " << myconvos[cons].urgency << " seconds" << endl;
                 /* if (!send(retrieval) */
                 myconvos[cons].noresponse++;
                 if (myconvos[cons].noresponse > 5)
@@ -99,6 +91,20 @@ void Conversation::endretrieval_thread ()
 
 int Conversation::add (std::vector<std::string> recipients, std::string salt, std::string name)
 {
+    conversationItem vide_convo;
+    /* vide_convo.urgency=1; */
+    /* vide_convo.noresponse=0; */
+    /* vide_convo.iterator=1; */
+    /* vide_convo.salt="a348ec8d18e,+&=First chat"; */
+    /* vector<string> emails; */
+    /* emails.push_back("pluthd@gmail.com"); */
+    /* vide_convo.recipients=emails; */
+    /* myconvos.push_back(vide_convo); */
+    /* for ( int mem=0; mem<recipients.size(); mem++) */
+    /* { */
+    /*     /1* send message to each member of the conversation with *1/ */
+    /*     /1* the salt, the members, etc etc *1/ */
+    /* } */
     conversationItem created;
     created.urgency=1;
     created.noresponse=0;
@@ -106,11 +112,7 @@ int Conversation::add (std::vector<std::string> recipients, std::string salt, st
     created.salt=salt+",+&="+name;
     created.recipients=recipients;
 
-    for ( int mem=0; mem<recipients.size(); mem++)
-    {
-        /* send message to each member of the conversation with */
-        /* the salt, the members, etc etc */
-    }
+    myconvos.push_back(created);
 
 }
 
