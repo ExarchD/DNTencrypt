@@ -138,95 +138,118 @@ string print_data (gpgme_data_t out) {
 
 
 
-int decrypter(gpgme_data_t in) {
+string decrypter(string enc_msg, bool sigcheck) {
     gpgme_error_t err;
-    gpgme_data_t out;
+    gpgme_data_t in, out;
     err = gpgme_new (&ctx);
+    fail_if_err (err);
+    const char *buf = enc_msg.c_str();
+    size_t nread=strlen(buf);
+    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
+    fail_if_err (err);
+    cout << "1" << endl;
+
     gpgme_decrypt_result_t result;
     gpgme_verify_result_t sig_result;
     err = gpgme_data_new (&out);
     fail_if_err (err);
-    if (err) return 1;
 
+    cout << "2" << endl;
     err = gpgme_op_decrypt_verify (ctx, in, out);
     fail_if_err (err);
     sig_result = gpgme_op_verify_result (ctx);
-    string sig_id = string(sig_result->signatures->fpr);
 
-    gpgme_key_t key;
-    err = gpgme_get_key ( ctx, sig_result->signatures->fpr,&key, 0); 
-    cout << key->uids->name << endl;
-    cout << key->uids->email << endl;
-    fail_if_err (err);
-
-    time_t timeGMT = (time_t)sig_result->signatures->timestamp;
-    cout << ctime (&timeGMT) << endl;;
-    fail_if_err (err);
-    if (err) return 1;
-    result = gpgme_op_decrypt_result (ctx);
-    cout << result->recipients << endl;
-
-    key=NULL;
-
-    err = gpgme_op_keylist_start (ctx, "", 0);
-    while (!err)
+    if (sigcheck)
     {
-        err = gpgme_op_keylist_next (ctx, &key);
-        if (debug > 1 ) cout << "next key" << endl;
-        if (err)
-            break;
-        if (key->uids && key->uids->name) {
-            if (key->uids && key->uids->email){
-                if (debug > 1 ) cout << "key has email and id" << endl;
-                cout << key->uids->email << endl;
+        /* string sig_id = string(sig_result->signatures->fpr); */
+        gpgme_key_t key;
+        err = gpgme_get_key ( ctx, sig_result->signatures->fpr,&key, 0); 
+        cout << key->uids->name << endl;
+        cout << key->uids->email << endl;
+        fail_if_err (err);
+
+        time_t timeGMT = (time_t)sig_result->signatures->timestamp;
+        cout << ctime (&timeGMT) << endl;;
+        fail_if_err (err);
+        result = gpgme_op_decrypt_result (ctx);
+        cout << result->recipients << endl;
+
+        key=NULL;
+
+        err = gpgme_op_keylist_start (ctx, "", 0);
+        while (!err)
+        {
+            err = gpgme_op_keylist_next (ctx, &key);
+            if (debug > 1 ) cout << "next key" << endl;
+            if (err)
+                break;
+            if (key->uids && key->uids->name) {
+                if (key->uids && key->uids->email){
+                    if (debug > 1 ) cout << "key has email and id" << endl;
+                    cout << key->uids->email << endl;
+                }
             }
-        }}
-
-
-
-    if (result->unsupported_algorithm)
-    {
-        fprintf (stderr, "%s:%i: unsupported algorithm: %s\n",
-                __FILE__, __LINE__, result->unsupported_algorithm);
-        return (1);
+        }
     }
-    cout << print_data (out) << endl;
+    cout << "3" << endl;
+    /* if (result->unsupported_algorithm) */
+    /* { */
+    /*     cout << "3.4" << endl; */
+    /*     fprintf (stderr, "%s:%i: unsupported algorithm: %s\n", */
+    /*             __FILE__, __LINE__, result->unsupported_algorithm); */
+    /* } */
+    cout << "4" << endl;
+    string b;
+    #define BUF_SIZE 512
+    char buf2[BUF_SIZE + 1];
+    if (debug > 1 ) cout << "seeking through data"<< endl;
+    int ret = gpgme_data_seek (out, 0, SEEK_SET);
+    if (debug > 1 ) cout << "loading data into a string" << endl;
+    cout << "5" << endl;
+    if (ret)
+        fail_if_err (gpgme_err_code_from_errno (errno));
+    while ((ret = gpgme_data_read (out, buf2, BUF_SIZE)) > 0){
+        for (int x = 0; x < ret; x++) {
+            b+= buf2[x];
+        }
+    }
     gpgme_data_release (in);
     gpgme_data_release (out);
     gpgme_release (ctx);
-    return 0;
+    cout << "5" << endl;
+    return b;
 
 }	
 
-int msg_to_gpgme_data(string enc_msg) {
-    gpgme_error_t err;
-    gpgme_data_t in;
-    err = gpgme_new (&ctx);
-    fail_if_err (err);
-    if (err) return 1;
-    const char *buf = enc_msg.c_str();
-    size_t nread=strlen(buf);
-    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
-    fail_if_err (err);
-    if (err) return 1;
-    decrypter(in);
-    return 0;
-}
+/* int msg_to_gpgme_data(string enc_msg) { */
+/*     gpgme_error_t err; */
+/*     gpgme_data_t in; */
+/*     err = gpgme_new (&ctx); */
+/*     fail_if_err (err); */
+/*     if (err) return 1; */
+/*     const char *buf = enc_msg.c_str(); */
+/*     size_t nread=strlen(buf); */
+/*     err = gpgme_data_new_from_mem (&in, buf, nread, 1 ); */
+/*     fail_if_err (err); */
+/*     if (err) return 1; */
+/*     decrypter(in); */
+/*     return 0; */
+/* } */
 
-int file_to_gpgme_data(string enc_msg) {
-    gpgme_error_t err;
-    gpgme_data_t in;
-    err = gpgme_new (&ctx);
-    fail_if_err (err);
-    if (err) return 1;
-    const char *buf = enc_msg.c_str();
-    size_t nread=strlen(buf);
-    err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
-    fail_if_err (err);
-    if (err) return 1;
-    decrypter(in);
-    return 0;
-}
+/* int file_to_gpgme_data(string enc_msg) { */
+/*     gpgme_error_t err; */
+/*     gpgme_data_t in; */
+/*     err = gpgme_new (&ctx); */
+/*     fail_if_err (err); */
+/*     if (err) return 1; */
+/*     const char *buf = enc_msg.c_str(); */
+/*     size_t nread=strlen(buf); */
+/*     err = gpgme_data_new_from_mem (&in, buf, nread, 1 ); */
+/*     fail_if_err (err); */
+/*     if (err) return 1; */
+/*     decrypter(in); */
+/*     return 0; */
+/* } */
 
 
 

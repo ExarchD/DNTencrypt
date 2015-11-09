@@ -157,7 +157,9 @@ void Conversation::csave_convos()
             unency+="$@@&;";
             unency+=myconvos[x].recipients[y];
         }
-        newenc.enc_info=unency;
+        vector<string> stringrec;
+        message_type tempmes=encrypter(stringrec, unency);
+        newenc.enc_info=tempmes.message;
         allenc_msg.push_back(newenc);
     }
     record_convos(allenc_msg);
@@ -172,8 +174,10 @@ void Conversation::cload_convos()
         vide_convo.iterator=allenc_msg[x].iterator;
         vide_convo.urgency=allenc_msg[x].urgency;
         vide_convo.noresponse=allenc_msg[x].noresponse;
+        string unencyp=decrypter(allenc_msg[x].enc_info, 0);
+        cout << unencyp << endl;
         string delimiter="$@@&;";
-        string s=allenc_msg[x].enc_info;
+        string s=unencyp;
         size_t pos = s.find(delimiter);
         vide_convo.salt=s.substr(0, pos);
         s.erase(0, s.find(delimiter)+delimiter.length());
