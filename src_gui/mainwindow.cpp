@@ -9,6 +9,7 @@
 #include <QSettings>
 #include <iostream>
 #include <settings.h>
+#include <qrecorder.h>
 #include <conversation.h>
 
 std::vector<Conversation::gui_convo> known_chats;
@@ -37,6 +38,8 @@ MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
     load_config();
     load_key();
     mainconvos=myconvos;
+    mainconvos->init();
+    mainconvos->startretrieval_thread();
     regenerate_convolist(myconvos);
     ui->mytextEdit->installEventFilter(this);
 
@@ -136,17 +139,13 @@ void MainWindow::sendMessage(){
         email_list.push_back( item->toolTip().toStdString());
     }
     std::sort(email_list.begin(), email_list.end());
-    main_encrypter(email_list, text);
+    /* main_encrypter(email_list, text); */
+    mainconvos->send(email_list, text);
     ui->mytextEdit->setFocus();
-    /* myconvo->send(email_list, text); */
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    /* QList<QListWidgetItem*> recipients = ui->listWidget->selectedItems(); */
-    /* for (unsigned int i=0; i < recipients.count(); ++i) { */
-    /*     QListWidgetItem* item = recipients[i]; */
-    /* } */
     sendMessage();
 }
 
@@ -162,7 +161,6 @@ void MainWindow::on_pushButton_3_clicked()
         outfile << "\n";
     }
     outfile.close();
-    /* regenerate_list(); */
     ui->listWidget->update();
 
 
@@ -262,8 +260,6 @@ void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
             std::cout << "match" << std::endl;
             ui->textBrowser->clear();
             QString newtext=alltexts[te].doc;
-            /* ui->textBrowser->setDocument(doc); */
-            /* ui->textBrowser->append("Me ("+timestamp()+"): "); */
             ui->textBrowser->append(newtext);
             std::cout << "success" << std::endl;
 

@@ -3,6 +3,7 @@
 #include <objects.h>
 #include <iostream>
 #include <string>
+#include <qrecorder.h>
 #include <qdebug.h>
 #ifdef __WIN32__
 #define __WIN32__WINNT

@@ -4,6 +4,7 @@
 #include <vector>
 #include <unistd.h>
 #include <thread>
+#include <encrypter.h>
 using namespace std;
 
 
@@ -14,7 +15,16 @@ Conversation::Conversation ()
 
 int Conversation::send (vector<string> recipients, string msg)
 {
-    cout << msg << endl;
+
+    message_type enc_msg=encrypter(recipients, msg);
+    for (int x=0; x < enc_msg.members.size(); x++)
+    {
+
+
+
+
+
+    }
     return 0;
 }
 
@@ -42,15 +52,11 @@ int Conversation::retrieve_thread ()
     while (running)
     {
         counter++;
-        /* cout << counter << endl; */
         sleep(1);
         for ( int cons =0; cons < myconvos.size(); cons++)
         {
-            /* cout << myconvos[cons].urgency << endl; */
             if ( counter % myconvos[cons].urgency == 0 ) 
             {
-                /* cout << myconvos[cons].salt <<  "Every " << myconvos[cons].urgency << " seconds" << endl; */
-                /* if (!send(retrieval) */
                 myconvos[cons].noresponse++;
                 if (myconvos[cons].noresponse > 5)
                 {
@@ -92,19 +98,6 @@ void Conversation::endretrieval_thread ()
 int Conversation::add (std::vector<std::string> recipients, std::string salt, std::string name)
 {
     conversationItem vide_convo;
-    /* vide_convo.urgency=1; */
-    /* vide_convo.noresponse=0; */
-    /* vide_convo.iterator=1; */
-    /* vide_convo.salt="a348ec8d18e,+&=First chat"; */
-    /* vector<string> emails; */
-    /* emails.push_back("pluthd@gmail.com"); */
-    /* vide_convo.recipients=emails; */
-    /* myconvos.push_back(vide_convo); */
-    /* for ( int mem=0; mem<recipients.size(); mem++) */
-    /* { */
-    /*     /1* send message to each member of the conversation with *1/ */
-    /*     /1* the salt, the members, etc etc *1/ */
-    /* } */
     conversationItem created;
     created.urgency=1;
     created.noresponse=0;
@@ -143,7 +136,6 @@ vector<Conversation::gui_convo> Conversation::list()
         std::string s=myconvos[cons].salt;
         std::string delimiter = ",+&=";
         s.erase(0, s.find(delimiter)+delimiter.length());
-        /* std::string token = s.substr(0, s.find(delimiter)); */ 
         gui_convo mygui_convo;
         mygui_convo.name=s;
         mygui_convo.recipients=myconvos[cons].recipients;

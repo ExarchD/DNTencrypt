@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <qdebug.h>
+#include <qrecorder.h>
 #ifdef __WIN32__
 #define __WIN32__WINNT
 #include <winsock2.h>

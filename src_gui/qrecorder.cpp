@@ -41,8 +41,8 @@ void qconvo(std::string convolog, int itr)
     settings.endGroup();
 }
 
-void load_config () {
-
+void load_config () 
+{
     QSettings settings("DNT", "config");
     foreach (const QString &key, settings.childKeys()) {
         qsetvalue (key);
@@ -58,7 +58,8 @@ void save_convos( vector<convo> savelist)
     }
 }
 
-std::vector <convo> load_convos () {
+std::vector <convo> load_convos () 
+{
     QSettings settings("DNT", "config");
     foreach (const QString &group, settings.childGroups()) {
     cout << group.toStdString() << endl;

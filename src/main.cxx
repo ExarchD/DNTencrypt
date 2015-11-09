@@ -1,5 +1,6 @@
 #include <ext/alloc_traits.h>  // for __alloc_traits<>::value_type
 #include <mainwindow.h>        // for MainWindow
+#include <qrecorder.h>        // for MainWindow
 #include <QApplication>      // for QApplication
 #include <stdio.h>             // for rename
 #include <stdlib.h>            // for exit
@@ -48,40 +49,40 @@ void main_encrypter(vector<std::string> recipients, string msg)
     /* If there is no hash match, then send a convo init message */
     /* then send actual message */
 
-    message_type current_message = encrypter(recipients, msg);
-    string message_key = current_message.pre_hash;
-    cout << message_key << endl;
-    string b = current_message.message;
-    cout << b << endl;
-    string recipts_key = current_message.recipients;
-    cout << recipts_key << endl;
+    /* message_type current_message = encrypter(recipients, msg); */
+    /* string message_key = current_message.pre_hash; */
+    /* cout << message_key << endl; */
+    /* string b = current_message.message; */
+    /* cout << b << endl; */
+    /* string recipts_key = current_message.recipients; */
+    /* cout << recipts_key << endl; */
 
 
-    cout << conversations.size() << endl;
-    bool match = 0;
-    for ( int x =0; x < conversations.size(); x++ )
-    {
-        if (sha1(message_key) == conversations[x].hash) 
-        {
-            cout << "matched" << endl;
-            match = 1;
-            while (true){
-                string full_msg_key=message_key+to_string(msg_index);
-                string parsedmsg = "0;"+sha1(full_msg_key)+";"+b+";"+recipts_key; 
-                conversations[x].iterator++;
-                if (sender(server_ip.c_str(), port_value, msg.c_str(), 512))
-                    break;
-            }
+    /* cout << conversations.size() << endl; */
+    /* bool match = 0; */
+    /* for ( int x =0; x < conversations.size(); x++ ) */
+    /* { */
+    /*     if (sha1(message_key) == conversations[x].hash) */ 
+    /*     { */
+    /*         cout << "matched" << endl; */
+    /*         match = 1; */
+    /*         while (true){ */
+    /*             string full_msg_key=message_key+to_string(msg_index); */
+    /*             string parsedmsg = "0;"+sha1(full_msg_key)+";"+b+";"+recipts_key; */ 
+    /*             conversations[x].iterator++; */
+    /*             if (sender(server_ip.c_str(), port_value, msg.c_str(), 512)) */
+    /*                 break; */
+    /*         } */
 
-        }
-    }
-    if (!match) {
-            cout << "unmatched" << endl;
-        convo newconvo;
-        newconvo.hash=sha1(message_key);
-        newconvo.iterator=1;
-        conversations.push_back(newconvo);
-    }
+    /*     } */
+    /* } */
+    /* if (!match) { */
+    /*         cout << "unmatched" << endl; */
+    /*     convo newconvo; */
+    /*     newconvo.hash=sha1(message_key); */
+    /*     newconvo.iterator=1; */
+    /*     conversations.push_back(newconvo); */
+    /* } */
 }
 
 void config_edit(string key_new, string value_new) {
@@ -234,14 +235,12 @@ void signalHandler( int signum )
 int main (int argc, char* argv[] ) {
     signal(SIGINT, signalHandler); 
     debug = 2;
-    init_gpgme (GPGME_PROTOCOL_OpenPGP);
+    /* init_gpgme (GPGME_PROTOCOL_OpenPGP); */
     encrypt2_init();
 
     if (debug > 1 ) cout << "encryption initialized" << endl;
 
     cout << "starting conversation object" << endl;
-    convos.init();
-    convos.startretrieval_thread();
 
     QApplication a(argc, argv);
     MainWindow w(&convos);

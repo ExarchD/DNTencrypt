@@ -1,4 +1,8 @@
-create a vector of textBrowser objects. textedit objects are added to the vector when a new message is recieved(for the first time in a session) or when a new chat is created or clicked on for the first time in a session.
+hard mode: conversations are stored only as a series of hashes and encrypted messages. When you wish to continue a conversation, you input the members, the title and salt of the conversation. Then the history will be able to load. 
+
+also be able to turn off conversation logging.
+
+
 
 clientside:
 
