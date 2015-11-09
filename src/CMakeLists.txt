@@ -58,10 +58,10 @@ qt5_wrap_cpp(gui_SRC
     ../include/chatinit.h
     )
 
-find_program(iwyu_path NAMES include-what-you-use iwyu)
-if(NOT iwyu_path)
-    message(FATAL_ERROR "Could not find the program include-what-you-use")
-endif()
+# find_program(iwyu_path NAMES include-what-you-use iwyu)
+# if(NOT iwyu_path)
+#     message(FATAL_ERROR "Could not find the program include-what-you-use")
+# endif()
 
 
 add_executable(encrypt2  main.cxx ../include/objects.h ${UIS_HDRS} ${SRC} ${gui_SRC})
@@ -73,7 +73,7 @@ target_link_libraries(encrypt2 conversation)
 target_link_libraries(encrypt2 sql ${SQLITE3_LIBRARY})
 ###
 
-set_property(TARGET encrypt2 PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
+#set_property(TARGET encrypt2 PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 
 install(TARGETS encrypt2
     RUNTIME DESTINATION bin

@@ -33,12 +33,6 @@ int msg_index;
 vector<convo> conversations;
 
 
-void store_line(string key, string value) {
-    if (key == "user_email") user_email=value;
-    if (key == "server_ip") server_ip=value;
-}
-
-
 void main_encrypter(vector<std::string> recipients, string msg)
 {
     /* message_type current_msg = encrypter(recipients, msg); */
@@ -84,141 +78,21 @@ void main_encrypter(vector<std::string> recipients, string msg)
     /*     conversations.push_back(newconvo); */
     /* } */
 }
-
-void config_edit(string key_new, string value_new) {
-    ifstream iconf;
-    iconf.open("config.txt");
-    ofstream oconf;
-    oconf.open("config_tmp.txt");
-    string line;
-    string strTemp;
-    store_line(key_new, value_new);
-    while(iconf >> strTemp)
-    {
-        string key;
-        key = strTemp.substr(0, strTemp.find("="));
-        if (debug > 3) cout << key_new  << " " << value_new << endl;
-        if(key == key_new){
-            strTemp = key_new+"="+value_new;
-        }
-        strTemp += "\n";
-        oconf << strTemp;
-        rename("config_tmp.txt","config.txt");
-    }
-    oconf.close();
-    iconf.close();
+void message_writer(){
+    ifstream encryp_file;
+    encryp_file.open("messages.txt");
+    // add in the write down part
+    encryp_file.close();
 }
-
-
-
-void encrypt2_init() {
-    string line;
-    if (std::ifstream("config.txt"))
-    {
-        configfileexist=true;
-        ifstream conf;
-        conf.open("config.txt");
-        cout << "LOADING CONFIG" << endl;
-        while (getline (conf, line))
-        {
-            istringstream is_line(line);
-            string key;
-            if( getline(is_line, key, '=') )
-            {
-                string value;
-                if( getline(is_line, value) )
-                    cout << key << " set to: " << value << endl;
-                store_line(key, value);
-            }
-        }
-        cout << "CONFIG LOADED" << endl;
-    }
-    else 
-    {
-        cout << "creating config file" << endl;
-        configfileexist=false;
-        ofstream myfile;
-        myfile.open ("config.txt");
-        myfile << "port=\nserver_ip=\nuser_email=\n";
-        myfile.close();
-
-    }
-}
-
-/*
-   void thread_message_reader(vector<string> enc_messages, int begin, int end) {
-   for ( int i=begin; i < end; i++){
-   decrypter(enc_messages[i],true);
-   }
-
-   }
-
-   void thread_message_reader2(vector<string> enc_messages, int begin, int end) {
-   for ( int i=begin; i < end; i++){
-   decrypter2(enc_messages[i],true);
-   }
-
-   }
-   */
-    /*
-       void message_reader() {
-       vector<string> enc_messages;
-       string line;
-       ifstream encryp_file;
-       encryp_file.open("messages.txt");
-       string s;
-       string paragraph;
-       while (getline (encryp_file, s)) { 
-       paragraph += s + "\n";
-       if (s == "-----END PGP MESSAGE-----") 	{
-       enc_messages.push_back(paragraph);
-       paragraph.clear();
-       }
-       }
-
-       int threads = 1;
-       std::thread myThreads[3];
-       encryp_file.close();
-       for (int j=0; j<threads; j++) {
-       int begin=0;
-       if (j != 0) begin=(j*enc_messages.size())/threads;
-       int end=((j+1)*enc_messages.size())/threads;
-       myThreads[j] = std::thread(thread_message_reader, enc_messages,begin,end);
-       }
-
-       for (int j=0; j<threads; j++) {
-       myThreads[j].join();
-       }
-
-       }
-       */
-
-        void message_writer(){
-            ifstream encryp_file;
-            encryp_file.open("messages.txt");
-            // add in the write down part
-            encryp_file.close();
-        }
 
 int exit_program() {
-    // do all the necessary closing things
-    // shifting messages to long term storage, re-encrypting databases
-    // collecting threads
-    
-    /* convos.endretrieve(); */
     cout << "joining threads" << endl;
     convos.endretrieval_thread();
     cout << "saving convos" << endl;
-    save_convos(conversations);
+    convos.csave_convos();
+    /* save_convos(conversations); */
     cout << "exiting" << endl;
     exit(0);
-}
-
-void retrieve() {
-    while (1) {
-        std::cout << "waiting 2 seconds" << std::endl;
-        sleep(2);
-    }
 }
 
 
@@ -227,27 +101,25 @@ void signalHandler( int signum )
     cout << "Interrupt signal (" << signum << ") received.\n";
 
     exit_program();
-    //   exit(signum);  
 
 }
 
 
 int main (int argc, char* argv[] ) {
     signal(SIGINT, signalHandler); 
-    debug = 2;
-    /* init_gpgme (GPGME_PROTOCOL_OpenPGP); */
-    encrypt2_init();
+    init_gpgme (GPGME_PROTOCOL_OpenPGP);
 
     if (debug > 1 ) cout << "encryption initialized" << endl;
 
     cout << "starting conversation object" << endl;
 
+    convos.cload_convos();
     QApplication a(argc, argv);
     MainWindow w(&convos);
-if (debug > 1 ) cout << "main window loaded" << endl;
-w.show();
-return a.exec();
-if (debug > 1 ) cout << "closing..." << endl;
+    if (debug > 1 ) cout << "main window loaded" << endl;
+    w.show();
+    return a.exec();
+    if (debug > 1 ) cout << "closing..." << endl;
 
-return 0;
+    return 0;
 }

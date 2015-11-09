@@ -20,6 +20,14 @@ struct friends {
     std::string name;
     std::string email;
 };
+struct enc_convo{
+    int urgency;
+    int noresponse;
+    int iterator;
+    std::string enc_info;
+};
+void record_convos(std::vector <enc_convo> allenc_convos);
+std::vector <enc_convo> load_convos();
 std::vector<friends> list_friends(bool secret);
 extern std::string user_email;
 extern std::string server_ip;

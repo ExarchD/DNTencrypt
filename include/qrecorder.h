@@ -17,7 +17,6 @@ void qconvo(std::string convolog, int itr) ;
 };
 void load_config ();
 void qrecord(std::string key_new, std::string value_new) ;
-std::vector <convo> load_convos ();
-void save_convos( vector<convo> savelist);
+/* std::vector <convo> load_convos (); */
 
 #endif /* QRECORDER_HPP */

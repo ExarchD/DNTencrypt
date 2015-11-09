@@ -32,14 +32,6 @@ void qrecord(std::string key_new, std::string value_new)
     qsetvalue(qkey);
 }
 
-void qconvo(std::string convolog, int itr) 
-{
-    QSettings settings("DNT", "config");
-    QString qconvo = QString::fromStdString(convolog);
-    settings.beginGroup(qconvo);
-    settings.setValue("itr", itr);
-    settings.endGroup();
-}
 
 void load_config () 
 {
@@ -50,19 +42,42 @@ void load_config ()
 
 }
 
-void save_convos( vector<convo> savelist)
+void record_convos(std::vector <enc_convo> allenc_convos)
 {
-    for (int x = 0; x < savelist.size(); x++ )
+    cout << "Now recording" << endl;
+    QSettings settings("DNT", "config");
+    for (int x=0; x < allenc_convos.size(); x++)
     {
-        qconvo(savelist[x].hash, savelist[x].iterator);
+        cout << "Recording " << x << "conversation" << endl;
+        std::string name="convo"+std::to_string(x);
+        QString qname=QString::fromStdString(name);
+        settings.beginGroup(qname);
+        settings.setValue(QString::fromStdString("enc_info"),QString::fromStdString(allenc_convos[x].enc_info));
+        settings.setValue(QString::fromStdString("itr"),allenc_convos[x].iterator);
+        settings.setValue(QString::fromStdString("urgency"),allenc_convos[x].urgency);
+        settings.setValue(QString::fromStdString("resp"),allenc_convos[x].noresponse);
+        settings.endGroup();
     }
 }
 
-std::vector <convo> load_convos () 
+std::vector <enc_convo> load_convos () 
 {
     QSettings settings("DNT", "config");
-    foreach (const QString &group, settings.childGroups()) {
-    cout << group.toStdString() << endl;
+    std::vector <enc_convo> allconvos;
+    foreach (const QString &group, settings.childGroups()) 
+    {
+        settings.beginGroup(group);
+        enc_convo indivconvo;
+        foreach (const QString &key, settings.childKeys()) 
+        {
+            cout << key.toStdString() << endl;
+            QString stuff = settings.value(key).toString();
+            if (key=="enc_info") indivconvo.enc_info=stuff.toStdString();
+            if (key=="itr") indivconvo.iterator=stuff.toInt();
+            if (key=="urgency") indivconvo.urgency=stuff.toInt();
+            if (key=="resp") indivconvo.noresponse=stuff.toInt();
+        }
+        allconvos.push_back(indivconvo);
     }
-
+    return allconvos;
 }

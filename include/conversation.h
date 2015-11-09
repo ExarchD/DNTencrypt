@@ -24,9 +24,10 @@ class Conversation
     int add (std::vector<std::string> recipients, std::string salt, std::string name);
     int remove (std::vector<std::string> recipients, std::string salt);
     int send (std::vector<std::string> recipients, std::string msg);
+    void csave_convos();
+    void cload_convos();
 
 struct conversationItem {
-    /* std::string title; */
     int urgency;
     int noresponse;
     int iterator;

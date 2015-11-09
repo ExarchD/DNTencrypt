@@ -21,9 +21,6 @@ int Conversation::send (vector<string> recipients, string msg)
     {
 
 
-
-
-
     }
     return 0;
 }
@@ -31,16 +28,16 @@ int Conversation::send (vector<string> recipients, string msg)
 void Conversation::init ()
 {
     running=true;
-    conversationItem vide_convo;
-    vide_convo.urgency=1;
-    vide_convo.noresponse=0;
-    vide_convo.iterator=1;
-    vide_convo.salt="a348ec8d18e,+&=First chat";
-    vector<string> emails;
-    emails.push_back("pluthd@gmail.com");
-    vide_convo.recipients=emails;
-    myconvos.push_back(vide_convo);
-    myconvos_intime=myconvos;
+    /* conversationItem vide_convo; */
+    /* vide_convo.urgency=1; */
+    /* vide_convo.noresponse=0; */
+    /* vide_convo.iterator=1; */
+    /* vide_convo.salt="a348ec8d18e,+&=First chat"; */
+    /* vector<string> emails; */
+    /* emails.push_back("pluthd@gmail.com"); */
+    /* vide_convo.recipients=emails; */
+    /* myconvos.push_back(vide_convo); */
+    /* myconvos_intime=myconvos; */
 
 
 }
@@ -145,3 +142,53 @@ vector<Conversation::gui_convo> Conversation::list()
     return n;
 }
 
+void Conversation::csave_convos()
+{
+    std::vector<enc_convo> allenc_msg;
+    for (int x=0; x < myconvos.size(); x++) 
+    {
+        enc_convo newenc;
+        newenc.urgency=myconvos[x].urgency;
+        newenc.noresponse=myconvos[x].urgency;
+        newenc.iterator=myconvos[x].iterator;
+        string unency=myconvos[x].salt;
+        for ( int y=0; y < myconvos[x].recipients.size(); y++)
+        {
+            unency+="$@@&;";
+            unency+=myconvos[x].recipients[y];
+        }
+        newenc.enc_info=unency;
+        allenc_msg.push_back(newenc);
+    }
+    record_convos(allenc_msg);
+}
+
+void Conversation::cload_convos()
+{
+    std::vector<enc_convo> allenc_msg=load_convos();
+        conversationItem vide_convo;
+    for (int x=0; x < allenc_msg.size(); x++)
+    {
+        vide_convo.iterator=allenc_msg[x].iterator;
+        vide_convo.urgency=allenc_msg[x].urgency;
+        vide_convo.noresponse=allenc_msg[x].noresponse;
+        string delimiter="$@@&;";
+        string s=allenc_msg[x].enc_info;
+        size_t pos = s.find(delimiter);
+        vide_convo.salt=s.substr(0, pos);
+        s.erase(0, s.find(delimiter)+delimiter.length());
+        std::vector<std::string> recipients;
+        string srecipt=s;
+        std::string token;
+        while ((pos = s.find(delimiter)) != std::string::npos) {
+            token = s.substr(0, pos);
+            recipients.push_back(token);
+            std::cout << token << std::endl;
+            s.erase(0, pos + delimiter.length());
+
+        }
+        vide_convo.recipients=recipients;
+
+        myconvos.push_back(vide_convo);
+    }
+}
