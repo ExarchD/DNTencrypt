@@ -147,31 +147,31 @@ string decrypter(string enc_msg, bool sigcheck) {
     size_t nread=strlen(buf);
     err = gpgme_data_new_from_mem (&in, buf, nread, 1 );
     fail_if_err (err);
-    cout << "1" << endl;
 
     gpgme_decrypt_result_t result;
     gpgme_verify_result_t sig_result;
     err = gpgme_data_new (&out);
     fail_if_err (err);
 
-    cout << "2" << endl;
+
+    gpgme_key_t key;
     err = gpgme_op_decrypt_verify (ctx, in, out);
     fail_if_err (err);
     sig_result = gpgme_op_verify_result (ctx);
+    err = gpgme_get_key ( ctx, sig_result->signatures->fpr,&key, 0); 
+    cout << key->uids->name << endl;
+    cout << key->uids->email << endl;
+    fail_if_err (err);
 
     if (sigcheck)
     {
-        /* string sig_id = string(sig_result->signatures->fpr); */
-        gpgme_key_t key;
-        err = gpgme_get_key ( ctx, sig_result->signatures->fpr,&key, 0); 
-        cout << key->uids->name << endl;
-        cout << key->uids->email << endl;
-        fail_if_err (err);
-
         time_t timeGMT = (time_t)sig_result->signatures->timestamp;
         cout << ctime (&timeGMT) << endl;;
         fail_if_err (err);
-        result = gpgme_op_decrypt_result (ctx);
+    }
+    result = gpgme_op_decrypt_result (ctx);
+    if (sigcheck)
+    {
         cout << result->recipients << endl;
 
         key=NULL;
@@ -191,16 +191,8 @@ string decrypter(string enc_msg, bool sigcheck) {
             }
         }
     }
-    cout << "3" << endl;
-    /* if (result->unsupported_algorithm) */
-    /* { */
-    /*     cout << "3.4" << endl; */
-    /*     fprintf (stderr, "%s:%i: unsupported algorithm: %s\n", */
-    /*             __FILE__, __LINE__, result->unsupported_algorithm); */
-    /* } */
-    cout << "4" << endl;
     string b;
-    #define BUF_SIZE 512
+#define BUF_SIZE 512
     char buf2[BUF_SIZE + 1];
     if (debug > 1 ) cout << "seeking through data"<< endl;
     int ret = gpgme_data_seek (out, 0, SEEK_SET);
@@ -216,7 +208,6 @@ string decrypter(string enc_msg, bool sigcheck) {
     gpgme_data_release (in);
     gpgme_data_release (out);
     gpgme_release (ctx);
-    cout << "5" << endl;
     return b;
 
 }	

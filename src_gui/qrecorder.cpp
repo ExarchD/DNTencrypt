@@ -77,6 +77,7 @@ std::vector <enc_convo> load_convos ()
             if (key=="urgency") indivconvo.urgency=stuff.toInt();
             if (key=="resp") indivconvo.noresponse=stuff.toInt();
         }
+        settings.endGroup();
         allconvos.push_back(indivconvo);
     }
     return allconvos;
