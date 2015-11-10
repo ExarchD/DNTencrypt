@@ -168,14 +168,13 @@ void Conversation::csave_convos()
 void Conversation::cload_convos()
 {
     std::vector<enc_convo> allenc_msg=load_convos();
-        conversationItem vide_convo;
+    conversationItem vide_convo;
     for (int x=0; x < allenc_msg.size(); x++)
     {
         vide_convo.iterator=allenc_msg[x].iterator;
         vide_convo.urgency=allenc_msg[x].urgency;
         vide_convo.noresponse=allenc_msg[x].noresponse;
         string unencyp=decrypter(allenc_msg[x].enc_info, 0);
-        cout << unencyp << endl;
         string delimiter="$@@&;";
         string s=unencyp;
         size_t pos = s.find(delimiter);
@@ -187,10 +186,10 @@ void Conversation::cload_convos()
         while ((pos = s.find(delimiter)) != std::string::npos) {
             token = s.substr(0, pos);
             recipients.push_back(token);
-            std::cout << token << std::endl;
             s.erase(0, pos + delimiter.length());
 
         }
+        recipients.push_back(s);
         vide_convo.recipients=recipients;
 
         myconvos.push_back(vide_convo);
