@@ -1,0 +1,28 @@
+types:
+    - analyze
+    - build
+    # - test
+
+analyze-server:
+    type: analyze
+    allow_failure: true
+    script:
+    - cd build/
+    - make clean
+
+build-server-debug:
+    type: build
+    script:
+    - cd build/
+    - cmake ../
+    - make
+
+# build-server-release:
+#     type: build
+#     allow_failure: true
+#     script:
+#         - cd Release
+#     - make clean
+# tags:
+#     - SLES11SP3
+
