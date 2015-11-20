@@ -14,6 +14,7 @@
 
 std::vector<Conversation::gui_convo> known_chats;
 QListWidgetItem *olditem;
+int globcurrentconvo;
 
 MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
 
@@ -39,6 +40,7 @@ MainWindow::MainWindow(Conversation *myconvos, QMainWindow *parent) :
     load_key();
     mainconvos=myconvos;
     mainconvos->init();
+    globcurrentconvo=-9;
     mainconvos->startretrieval_thread();
     regenerate_convolist(myconvos);
     ui->mytextEdit->installEventFilter(this);
@@ -125,6 +127,12 @@ QString timestamp()
 }
 
 void MainWindow::sendMessage(){
+    if (globcurrentconvo < 0 ) 
+    {
+        std::cout << "WARNING, no convo selected" << std::endl; 
+        return;
+    }
+
     std::string text = ui->mytextEdit->toPlainText().toStdString();
     ui->textBrowser->setTextColor(Qt::red);
     ui->textBrowser->append("Me ("+timestamp()+"): ");
@@ -258,6 +266,7 @@ void MainWindow::on_listWidget_2_itemClicked(QListWidgetItem *item)
         if (alltexts[te].title == item->text().toStdString())
         {
             std::cout << "match" << std::endl;
+            globcurrentconvo=te;
             ui->textBrowser->clear();
             QString newtext=alltexts[te].doc;
             ui->textBrowser->append(newtext);
