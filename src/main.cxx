@@ -32,7 +32,6 @@ int debug;
 int msg_index;
 vector<convo> conversations;
 
-
 void main_encrypter(vector<std::string> recipients, string msg)
 {
     /* message_type current_msg = encrypter(recipients, msg); */
