@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['salt',['salt',['../structConversation_1_1conversationItem.html#a5dccdf9e2fa3d1c701e613cf883b166b',1,'Conversation::conversationItem']]],
+  ['secret',['secret',['../struct__gpgme__subkey.html#ad59be9e6927f4d5e2e32d05ebc2aabd6',1,'_gpgme_subkey::secret()'],['../struct__gpgme__key.html#a2c77165181bcf253d70bbad23a0842ab',1,'_gpgme_key::secret()']]],
+  ['secret_5fimported',['secret_imported',['../struct__gpgme__op__import__result.html#afe757bb4ceb109f35b5fcceccbf44609',1,'_gpgme_op_import_result']]],
+  ['secret_5fread',['secret_read',['../struct__gpgme__op__import__result.html#a317df06deb087b3e4a70f8db4193121d',1,'_gpgme_op_import_result']]],
+  ['secret_5funchanged',['secret_unchanged',['../struct__gpgme__op__import__result.html#a3f3e724be97bb43d383b52f4134587ff',1,'_gpgme_op_import_result']]],
+  ['seek',['seek',['../structgpgme__data__cbs.html#aafe035b09fb4e6b5d50a01008badcf02',1,'gpgme_data_cbs']]],
+  ['server_5fip',['server_ip',['../main_8cxx.html#acad69672dbbabfee43ab39d81a89cabc',1,'server_ip():&#160;main.cxx'],['../objects_8h.html#a5a52dc39328cbd2ec3d47c981a662817',1,'server_ip():&#160;main.cxx']]],
+  ['sig_5fclass',['sig_class',['../struct__gpgme__key__sig.html#ae101a16956857e27c99f4528d929c8e8',1,'_gpgme_key_sig::sig_class()'],['../struct__gpgme__new__signature.html#a1eaff2fab5db73926339d672909a8cb5',1,'_gpgme_new_signature::sig_class()']]],
+  ['signatures',['signatures',['../struct__gpgme__user__id.html#a14ce4e3c5a14748262cde1e5ebf5f1be',1,'_gpgme_user_id::signatures()'],['../struct__gpgme__op__sign__result.html#a88850c3c702dcd1d6b7bc8fc3098e1d3',1,'_gpgme_op_sign_result::signatures()'],['../struct__gpgme__op__verify__result.html#aa31ebc4b89eef75b32786dd07678e4c0',1,'_gpgme_op_verify_result::signatures()']]],
+  ['skipped_5fnew_5fkeys',['skipped_new_keys',['../struct__gpgme__op__import__result.html#a1a53f36eed744cbaf6d019405d55b282',1,'_gpgme_op_import_result']]],
+  ['sock',['sock',['../struct__gpgrt__syshd.html#ae95839437cebfafea4e1dd2372d007d6',1,'_gpgrt_syshd']]],
+  ['status',['status',['../struct__gpgme__key__sig.html#a05c1173474d2edd2f9bb3e703f7001ea',1,'_gpgme_key_sig::status()'],['../struct__gpgme__recipient.html#a79d649c29a8a3eb3a27210468e1ec1e0',1,'_gpgme_recipient::status()'],['../struct__gpgme__signature.html#a26d50d8f0357aa6901bec52b9fb208bc',1,'_gpgme_signature::status()'],['../struct__gpgme__import__status.html#aa61ee9719f7bbb84435c01d800c3b2ce',1,'_gpgme_import_status::status()']]],
+  ['string',['string',['../structgpgme__conf__arg.html#ae577b4aba8aa699348043004b8a331f2',1,'gpgme_conf_arg']]],
+  ['sub',['sub',['../struct__gpgme__op__genkey__result.html#ac61e1335bdc8812dcfe36704f1dc429d',1,'_gpgme_op_genkey_result']]],
+  ['subkeys',['subkeys',['../struct__gpgme__key.html#a04c9353e677e139384458201259d9d05',1,'_gpgme_key']]],
+  ['summary',['summary',['../struct__gpgme__signature.html#a9d2d8f51cc98ff1fa7d26300640629d5',1,'_gpgme_signature']]]
+];
