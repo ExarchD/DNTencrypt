@@ -4,7 +4,6 @@
 #include <vector>
 #include <unistd.h>
 #include <thread>
-#include <encrypter.h>
 using namespace std;
 
 

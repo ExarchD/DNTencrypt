@@ -1,7 +1,7 @@
 include_directories(../include)
 include_directories(../src_gui)
 set(HEADER_FILES ../include/objects.h)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -D_FILE_OFFSET_BITS=64")
 
 
 find_path(GPGME_INCLUDE_DIR gpgme.h)
