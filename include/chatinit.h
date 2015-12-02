@@ -18,19 +18,34 @@ public:
     ~chatinit();
      
 private slots:
+    /** 
+     * @brief Adds an id to the new chat
+     */
     void on_includeb_pressed();
 
+    /** 
+     * @brief Removes an id from the new chat
+     */
     void on_excludeb_pressed();
 
+    /** 
+     * @brief Initializes the new chat
+     */
     void on_beginb_clicked();
 
 signals:
+    /** 
+     * @brief Signals the mainwindow to regenerate the chat list
+     */
     void regen();
 
 
 private:
     Ui::chatinit *ui;
     Conversation *chatconvo;
+    /** 
+     * @brief Loads up the friendslist by calling the Conversation object
+     */
     void regenerate_list();
 };
 
