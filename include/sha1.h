@@ -50,6 +50,13 @@ private:
     static void read(std::istream &is, std::string &s, int max);
 };
  
+/** 
+ * @brief Generates a hash based on an input string
+ * 
+ * @param string The input string
+ * 
+ * @return A hash
+ */
 std::string sha1(const std::string &string);
  
  
