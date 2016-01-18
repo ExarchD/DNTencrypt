@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <thread>
-#include <encrypter.h>
 
 
 class Conversation
@@ -15,6 +14,10 @@ class Conversation
          * @brief A simplier conversation struct for gui purposes
          */
     struct gui_convo {
+        /** 
+         * @brief A hash based identifier to simplify conversation matching
+         */
+    std::string id;
         /** 
          * @brief A combination of the salt, a delimiter, and the user-friendly name 
          * of the conversation.
@@ -35,7 +38,6 @@ class Conversation
      * @brief Initializes the Conversation object
      */
     void init ();
-    std::vector<gui_convo> list ();
     /** 
      * @brief Starts the retrieval thread
      */
@@ -50,7 +52,7 @@ class Conversation
      * 
      * @return Returns the gui_convo objects for the gui to use 
      */
-    std::vector<gui_convo> list_convos ();
+    std::vector<gui_convo> list ();
     /** 
      * @brief Adds a new conversation to the vector of convos
      * 
@@ -94,6 +96,17 @@ struct conversationItem {
      * @brief Salt to disquise the hash
      */
     std::string salt;
+
+    /** 
+     * @brief Name of the conversation
+     */
+    std::string name;
+
+    /** 
+     * @brief A hash of the salt and name to create a unique identifier for the conversation
+     */
+    std::string idhash;
+
     /** 
      * @brief A list of intended recipients
      */

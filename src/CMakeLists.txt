@@ -1,7 +1,7 @@
 include_directories(../include)
 include_directories(../src_gui)
 set(HEADER_FILES ../include/objects.h)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -D_FILE_OFFSET_BITS=64")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -D_FILE_OFFSET_BITS=64 -lprofiler")
 
 
 find_path(GPGME_INCLUDE_DIR gpgme.h)
@@ -23,10 +23,11 @@ if(NOT SQLITE3_LIBRARY)
 endif()
 
 add_library(telecharger telecharger.cpp )
-add_library(conversation conversation.cpp ../include/conversation.h )
-add_library(sql sql.cpp)
-add_library(encrypt encrypter.cpp )
 add_library(sha1 sha1.cpp ../include/sha1.h )
+add_library(encrypter encrypter.cpp ../include/encrypter.h)
+add_library(conversation conversation.cpp ../include/conversation.h )
+target_link_libraries(conversation sha1)
+add_library(sql sql.cpp)
 
 # Qt5 requirements
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -65,12 +66,13 @@ qt5_wrap_cpp(gui_SRC
 
 
 add_executable(encrypt2  main.cxx ../include/objects.h ${UIS_HDRS} ${SRC} ${gui_SRC})
-target_link_libraries(encrypt2 Qt5::Widgets)
-target_link_libraries(encrypt2 encrypt ${GPGME_LIBRARY})
-target_link_libraries(encrypt2 sha1)
-target_link_libraries(encrypt2 telecharger)
-target_link_libraries(encrypt2 conversation)
-target_link_libraries(encrypt2 sql ${SQLITE3_LIBRARY})
+target_link_libraries(encrypt2
+    Qt5::Widgets
+    sha1
+    encrypter ${GPGME_LIBRARY}
+    telecharger
+    conversation
+    sql ${SQLITE3_LIBRARY})
 ###
 
 #set_property(TARGET encrypt2 PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})

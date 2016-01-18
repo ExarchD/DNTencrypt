@@ -4,6 +4,9 @@
 #include <vector>
 #include <unistd.h>
 #include <thread>
+#include <sha1.h>
+#include <encrypter.h>
+
 using namespace std;
 
 
@@ -98,31 +101,16 @@ int Conversation::add (std::vector<std::string> recipients, std::string salt, st
     created.urgency=1;
     created.noresponse=0;
     created.iterator=1;
-    created.salt=salt+",+&="+name;
+    created.salt=salt;
+    created.name=name;
     created.recipients=recipients;
+    string idhash= sha1(salt+",+&="+name);
+    created.idhash=idhash;
 
     myconvos.push_back(created);
 
 }
 
-
-vector<Conversation::gui_convo> Conversation::list_convos ()
-{
-
-    vector<gui_convo> n;
-    for ( int cons =0; cons < myconvos.size(); cons++)
-    {
-        std::string s=myconvos[cons].salt;
-        std::string delimiter = ",+&=";
-        std::string token = s.substr(0, s.find(delimiter)); 
-        gui_convo mygui_convo;
-        mygui_convo.name=token;
-        mygui_convo.recipients=myconvos[cons].recipients;
-        n.push_back(mygui_convo);
-    }
-
-    return n;
-}
 
 vector<Conversation::gui_convo> Conversation::list()
 {
@@ -134,6 +122,7 @@ vector<Conversation::gui_convo> Conversation::list()
         s.erase(0, s.find(delimiter)+delimiter.length());
         gui_convo mygui_convo;
         mygui_convo.name=s;
+        mygui_convo.id=myconvos[cons].idhash;
         mygui_convo.recipients=myconvos[cons].recipients;
         n.push_back(mygui_convo);
     }

@@ -1,3 +1,5 @@
+create message id hash for simplifying checks between the gui and the conversation object. 
+
 hard mode: conversations are stored only as a series of hashes and encrypted messages. When you wish to continue a conversation, you input the members, the title and salt of the conversation. Then the history will be able to load. 
 
 also be able to turn off conversation logging.
