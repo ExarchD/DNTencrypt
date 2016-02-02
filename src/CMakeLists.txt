@@ -65,8 +65,8 @@ qt5_wrap_cpp(gui_SRC
 # endif()
 
 
-add_executable(encrypt2  main.cxx ../include/objects.h ${UIS_HDRS} ${SRC} ${gui_SRC})
-target_link_libraries(encrypt2
+add_executable(DNTclient  main.cxx ../include/objects.h ${UIS_HDRS} ${SRC} ${gui_SRC})
+target_link_libraries(DNTclient
     Qt5::Widgets
     sha1
     encrypter ${GPGME_LIBRARY}
@@ -75,9 +75,9 @@ target_link_libraries(encrypt2
     sql ${SQLITE3_LIBRARY})
 ###
 
-#set_property(TARGET encrypt2 PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
+#set_property(TARGET DNTclient PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 
-install(TARGETS encrypt2
+install(TARGETS DNTclient
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib/static)
